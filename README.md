@@ -20,7 +20,9 @@ example:
 
 ### send a pull request in github repo
     
-    Some member of the team has to aprove the code and accept the pull request.
-    hello
+
+  Some member of the team has to aprove the code and accept the pull request.
+  hello
+ 
 
 
