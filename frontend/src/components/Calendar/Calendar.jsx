@@ -2,8 +2,9 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import "./Calendar.css"
 
-function Calendar() {
+export default function Calendar() {
   
   /*****************************************************************************
   *    Ideally, we would request user's event info from database and create    *
@@ -34,25 +35,25 @@ function Calendar() {
   }
 
   return(
-    <FullCalendar 
-      plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
-      dateClick={handleDateClick}
-      eventClick={handleEventClick}
-      headerToolbar={{
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-      }}
-      events={[
-        // Dummy data
-        // ideally, we would be able to pull user's events from the db and pass that into this field
-        {title: 'Group Projects Due', date: '2022-08-30T13:00:00'},
-        {title: 'Group Project Presentations', start: '2022-09-01T09:00:00', end: '2022-09-02T15:30:00'},
-        {title: 'Graduation Day!', date: '2022-09-02', allDay:true}
-      ]}
-    />
+    <div className='container-fluid calendar'>
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        dateClick={handleDateClick}
+        eventClick={handleEventClick}
+        headerToolbar={{
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        }}
+        events={[
+          // Dummy data
+          // ideally, we would be able to pull user's events from the db and pass that into this field
+          {title: 'Group Projects Due', date: '2022-08-30T13:00:00'},
+          {title: 'Group Project Presentations', start: '2022-09-01T09:00:00', end: '2022-09-02T15:30:00'},
+          {title: 'Graduation Day!', date: '2022-09-02', allDay:true}
+        ]}
+      />
+    </div>
   )
 }
-
-export default Calendar
