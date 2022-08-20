@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import { StreamChat } from 'stream-chat';
-import { Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window, LoadingIndicator } from 'stream-chat-react';
+import { Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window, LoadingIndicator, ChannelList } from 'stream-chat-react';
 
 import './chatroom.css'
 
@@ -19,7 +19,12 @@ function Chatroom ({user}) {
         return response.data.token
     }
     const [client, setClient] = useState(null)
-    const [channel, setChannel] = useState(null)
+    // const [channel, setChannel] = useState(null)
+
+    // filters only the channles that the user is a member of
+    const filters = {type: 'messaging', members: {$in: [user.id]}}
+    // puts the channel with the lattest message at the top
+    const sort = {last_message_at: -1}
 
     useEffect(()=> {
         async function init() {
@@ -27,6 +32,7 @@ function Chatroom ({user}) {
             const userToken = getToken()
             const chatClient = StreamChat.getInstance(apiKey)
             //need to get this userToken from the backend
+            // https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
             await chatClient.connectUser(user, userToken)
             // instead of "custom_channel_id" we probably want to put something like groupChat_<group_id> or eventChat_<event_id>
             const channel = chatClient.channel('messaging', 'custom_channel_id', {
@@ -38,7 +44,7 @@ function Chatroom ({user}) {
               })
             
             await channel.watch()
-            setChannel(channel)
+            // setChannel(channel)
             setClient(chatClient)
 
         }
@@ -47,18 +53,22 @@ function Chatroom ({user}) {
     }, [])
 
     // if the channel or client hasn't been updated yet show a loading image
-    if (!channel || !client) return <LoadingIndicator />
+    // if (!channel || !client) return <LoadingIndicator />
+    if (!client) return <LoadingIndicator />
 
     return (
         <Chat client = {client} theme = "messaging light">
-            <Channel channel = {channel}>
+        <ChannelList 
+        filters ={filters}
+        sort = {sort}/>    
+            {/* <Channel channel = {channel}> */}
                 <Window>
                     <ChannelHeader />
                     <MessageList />
                     <MessageInput />
                 </Window>
                 <Thread />
-            </Channel>
+            {/* </Channel> */}
         </Chat>
     )
 }
