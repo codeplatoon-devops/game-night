@@ -24,6 +24,7 @@ export default function App() {
   const [user, setUser] = useState(null) //setting to true will set LoginNavbar
 
 
+
 	return (
 		<div className="App">
 			<Router>
