@@ -1,3 +1,6 @@
+import "primereact/resources/themes/mdc-dark-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import HomePage from "./pages/HomePage";
