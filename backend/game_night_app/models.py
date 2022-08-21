@@ -1,4 +1,3 @@
-from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -63,7 +62,7 @@ class EventGame(models.Model):
 
 ## Not sure I interpreted the requirements for this model correctly?
 class EventUser(models.Model):
-    owner=models.ForeignKey(User, on_delete=CASCADE)
+    owner=models.ForeignKey(User, on_delete=models.CASCADE)
     attendee=models.ManyToManyField(User, related_name="eventusers")
     event=models.ManyToManyField(Event, related_name="eventusers")
 
