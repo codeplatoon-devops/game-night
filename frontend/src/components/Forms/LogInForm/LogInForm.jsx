@@ -59,7 +59,7 @@ export const LoginForm = () => {
 	);
 
 	return (
-		<div className="form-signup">
+		<div className="form-login">
 			<div className="flex justify-content-center">
 				<div className="card">
 					<h2 className="text-center">Log in</h2>
@@ -141,7 +141,7 @@ export const LoginForm = () => {
 								<Button
 									type="submit"
 									label="Continue"
-									className="mt-2"
+									className="mt-2 btn-continue"
 								/>
 							</form>
 						)}

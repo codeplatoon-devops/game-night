@@ -1,4 +1,4 @@
-import "primereact/resources/themes/mdc-dark-indigo/theme.css";
+import "primereact/resources/themes/saga-purple/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
@@ -13,7 +13,7 @@ import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
 import EventDetailPage from "./pages/EventDetailPage";
 
-import LogoutNavBar from './components/NavBar/LogoutNavBar'
+import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
 
 import "./App.css";
@@ -21,15 +21,13 @@ import "./App.css";
 export default function App() {
 	let { eventId } = useParams();
 
-  const [user, setUser] = useState(null) //setting to true will set LoginNavbar
-
-
+	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
 
 	return (
 		<div className="App">
 			<Router>
-      {user ? <LoginNavBar /> : <LogoutNavBar />}
-      <div className="separator"></div>
+				{user ? <LoginNavBar /> : <LogoutNavBar />}
+				<div className="separator"></div>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/login" element={<LoginPage />} />
@@ -37,7 +35,7 @@ export default function App() {
 					<Route path="/calendar" element={<CalendarPage />} />
 					<Route path="/account" element={<AccountPage />} />
 					<Route path="/events" element={<EventPage />} />
-          <Route path="/groups" element={<GroupPage />} />
+					<Route path="/groups" element={<GroupPage />} />
 					<Route
 						path="/events/:eventId"
 						element={<EventDetailPage />}

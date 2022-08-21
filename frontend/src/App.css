@@ -1,19 +1,13 @@
 #root {
-  width: 100%;
-  text-align: center;
+	width: 100%;
+	text-align: center;
 }
 
 /* this is to ensure divs don't show up behind navbar */
 .separator {
-  height: 56px;
+	height: 56px;
 }
 
 .card {
-  padding: 2em;
+	padding: 2em;
 }
-
-.read-the-docs {
-  color: #888;
-}
-
-
