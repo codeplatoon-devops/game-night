@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view
 import requests
 import os
 from dotenv import load_dotenv
+from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
 
 load_dotenv()
 
