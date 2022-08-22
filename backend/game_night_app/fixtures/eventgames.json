@@ -1,0 +1,42 @@
+[
+    {
+        "model": "game_night_app.EventGame",
+        "pk": 1,
+        "fields": {
+            "game_id": "1",
+            "event_id": "1"
+        }
+    },
+    {
+        "model": "game_night_app.EventGame",
+        "pk": 2,
+        "fields": {
+            "game_id": "2",
+            "event_id": "2"
+        }
+    },
+    {
+        "model": "game_night_app.EventGame",
+        "pk": 3,
+        "fields": {
+            "game_id": "3",
+            "event_id": "3"
+        }
+    },
+    {
+        "model": "game_night_app.EventGame",
+        "pk": 4,
+        "fields": {
+            "game_id": "4",
+            "event_id": "4"
+        }
+    },
+    {
+        "model": "game_night_app.EventGame",
+        "pk": 5,
+        "fields": {
+            "game_id": "5",
+            "event_id": "5"
+        }
+    }
+]
