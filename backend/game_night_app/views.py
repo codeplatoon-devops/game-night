@@ -117,6 +117,26 @@ def log_out(request):
     logout(request)
     return JsonResponse({'user logged out': True})
 
+@api_view(['POST'])
+def log_in(request):
+    print('in django login, request is', request)
+    username= request.data['username']
+    password = request.data['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            try:
+                login(request._request, user)
+                print(f"{username} IS LOGGED IN!!!!!!!!!")
+                return JsonResponse({'success': "True", 'action': 'user logged in'}) 
+            except Exception as e:
+                return JsonResponse({'success': "False", 'reason': f'failed to login, {str(e)}'})
+        else:
+            return JsonResponse({'success': "False", 'reason': 'This account has been disabled, please sign-up again'})
+    else:
+        return JsonResponse({'success': "False", 'reason': "This account doesn't exist, please sign-up"})    
+
+
 @api_view(['GET'])
 def bga_games(request):
     api_id = str(os.getenv('GM_CLIENT_ID'))
