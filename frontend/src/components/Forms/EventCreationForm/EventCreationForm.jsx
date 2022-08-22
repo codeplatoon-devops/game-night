@@ -10,19 +10,33 @@ import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
 import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
+import { Checkbox } from "primereact/checkbox";
+import { Chips } from "primereact/chips";
 import "./EventCreationForm.css";
+import { useNavigate } from "react-router-dom";
 
 export const EventCreationForm = () => {
-	const [showMessage, setShowMessage] = useState(false);
+	const [showMessage, setShowMessage] = useState(false); // for submission dialog
 	const [formData, setFormData] = useState({});
-	const [isPublic, setIsPublic] = useState(false);
-	const [category, setCategory] = useState("");
-	const [eventDate, setEventDate] = useState(null);
-	const [state, setState] = useState(null);
-	const [maxAttendees, setMaxAttendees] = useState(null);
-	const isPublicSelect = [
-		{ label: "Private", value: false },
-		{ label: "Public", value: true },
+	const [eventName, setEventName] = useState(""); // event name
+	const [isPrivate, setIsPrivate] = useState(true); // event privacy
+	const [category, setCategory] = useState(null); // category
+	const [eventStartDate, setEventStartDate] = useState(null); // start datetime
+	const [eventEndDate, setEventEndDate] = useState(null); // end datetime
+	const [state, setState] = useState(null); // state for event location
+	const [maxAttendees, setMaxAttendees] = useState(null); // max attendees
+	const [createChat, setCreateChat] = useState(false); // create a chat for the event?
+	const [games, setGames] = useState([]); // what games will be there?
+	const [isAllDay, setIsAllDay] = useState(false); // is it an all-day event
+	const [description, setDescription] = useState("");
+	const [aLineOne, setALineOne] = useState("");
+	const [aLineTwo, setALineTwo] = useState("");
+	const [city, setCity] = useState("");
+	const [zip, setZip] = useState("");
+	const navigate = useNavigate();
+	const isPrivateSelect = [
+		{ label: "Private", value: true },
+		{ label: "Public", value: false },
 	];
 	const categorySelectItems = [
 		{ label: "Board Games", value: "BG" },
@@ -88,30 +102,42 @@ export const EventCreationForm = () => {
 		{ label: "Wyoming", value: "WY" },
 	];
 
-	const validate = (data) => {
+	const validate = (data, form) => {
 		let errors = {};
 
-		if (!data.eventname) {
+		if (!eventName) {
 			errors.eventname = "Event name is required.";
 		}
-		if (!data.addressline1) {
+		if (!aLineOne) {
 			errors.addressline1 = "Address Line 1 is required.";
 		}
-		if (!data.city) {
+		if (!eventStartDate) {
+			errors.eventstartdate = "Start date is required.";
+		}
+		if (!eventEndDate) {
+			errors.eventenddate = "End date is required.";
+		}
+		if (!city) {
 			errors.city = "City is required.";
 		}
-		if (!data.zipcode) {
+		if (!zip) {
 			errors.zipcode = "Zipcode is required.";
 		}
-
+		console.log(errors);
 		return errors;
 	};
 
 	const onSubmit = (data, form) => {
 		setFormData(data);
 		setShowMessage(true);
+		form.restart;
+	};
 
-		form.restart();
+	// hardcoded to event '1' for now
+	// TODO: update to event code when generated
+	const onAck = () => {
+		setShowMessage(false);
+		navigate("/events/1");
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
@@ -129,7 +155,7 @@ export const EventCreationForm = () => {
 				label="OK"
 				className="p-button-text"
 				autoFocus
-				onClick={() => setShowMessage(false)}
+				onClick={onAck}
 			/>
 		</div>
 	);
@@ -148,7 +174,7 @@ export const EventCreationForm = () => {
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
 					<h5>Event Creation Successful!</h5>
 					<p style={{ lineHeight: 1.5 }}>
-						Your event has been saved under name{" "}
+						Your event has been saved under the code{" "}
 						<b>{formData.eventname}</b>. Please proceed to the next
 						page for more details.
 					</p>
@@ -164,9 +190,13 @@ export const EventCreationForm = () => {
 							initialValues={{
 								eventname: "",
 								category: null,
-								maxattendees: 0,
-								ispublic: false,
-								date: null,
+								maxattendees: 1,
+								isprivate: true,
+								chatcreation: true,
+								boardGames: [],
+								eventstartdate: null,
+								eventenddate: null,
+								allday: false,
 								description: "",
 								addressline1: "",
 								addressline2: "",
@@ -182,44 +212,24 @@ export const EventCreationForm = () => {
 								>
 									<Row>
 										<Col xs={7}>
-											<Field
-												name="eventname"
-												render={({ input, meta }) => (
-													<div className="field">
-														<span className="p-float-label">
-															<InputText
-																id="eventname"
-																{...input}
-																autoFocus
-																className={classNames(
-																	{
-																		"p-invalid":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															/>
-															<label
-																htmlFor="eventname"
-																className={classNames(
-																	{
-																		"p-error":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															>
-																Event name*
-															</label>
-														</span>
-														{getFormErrorMessage(
-															meta
-														)}
-													</div>
-												)}
-											/>
+											<div className="field">
+												<span className="p-float-label">
+													<InputText
+														name="eventname"
+														id="eventname"
+														autoFocus
+														value={eventName}
+														onChange={(e) =>
+															setEventName(
+																e.value
+															)
+														}
+													/>
+													<label htmlFor="eventname">
+														Event name*
+													</label>
+												</span>
+											</div>
 										</Col>
 										<Col xs={5}>
 											<div className="field">
@@ -238,48 +248,36 @@ export const EventCreationForm = () => {
 										</Col>
 									</Row>
 									<Row>
-										<Col xs={5}>
+										<Col>
+											<div className="field">
+												<span className="p-float-label">
+													<Chips
+														id="boardgames"
+														name="boardgames"
+														value={games}
+														onChange={(e) =>
+															setGames(e.value)
+														}
+														tooltip="Type in a game then press enter to add it to your game list."
+													/>
+													<label htmlFor="boardgames">
+														Games
+													</label>
+												</span>
+											</div>
+										</Col>
+									</Row>
+									<Row>
+										<Col xs={4}>
 											<div className="field">
 												<SelectButton
-													value={isPublic}
-													options={isPublicSelect}
+													value={isPrivate}
+													options={isPrivateSelect}
 													onChange={(e) =>
-														setIsPublic(e.value)
+														setIsPrivate(e.value)
 													}
 												></SelectButton>
 											</div>
-										</Col>
-										<Col xs={7}>
-											<Field
-												name="eventdate"
-												render={({ input }) => (
-													<div className="field">
-														<span className="p-float-label">
-															<Calendar
-																id="eventdate"
-																{...input}
-																dateFormat="mm/dd/yy"
-																mask="99/99/9999"
-																showIcon
-																showTime
-																hourFormat="12"
-																value={
-																	eventDate
-																}
-																onChange={(e) =>
-																	setEventDate(
-																		e.value
-																	)
-																}
-																showButtonBar
-															/>
-															<label htmlFor="eventdate">
-																Event Date
-															</label>
-														</span>
-													</div>
-												)}
-											/>
 										</Col>
 										<Col xs={4}>
 											<div className="field">
@@ -298,163 +296,170 @@ export const EventCreationForm = () => {
 												/>
 											</div>
 										</Col>
-									</Row>
-									<Row>
-										<Field
-											name="description"
-											render={({ input, meta }) => (
-												<div className="field">
-													<span className="p-float-label">
-														<InputTextarea
-															id="description"
-															{...input}
-															className={classNames(
-																{
-																	"p-invalid":
-																		isFormFieldValid(
-																			meta
-																		),
-																}
-															)}
-														/>
-														<label
-															htmlFor="description"
-															className={classNames(
-																{
-																	"p-error":
-																		isFormFieldValid(
-																			meta
-																		),
-																}
-															)}
-														>
-															Description
-														</label>
-													</span>
-													{getFormErrorMessage(meta)}
-												</div>
-											)}
-										/>
-									</Row>
-									<Row>
 										<Col>
-											<Field
-												name="addressline1"
-												render={({ input, meta }) => (
-													<div className="field">
-														<span className="p-float-label">
-															<InputText
-																id="addressline1"
-																{...input}
-																className={classNames(
-																	{
-																		"p-invalid":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															/>
-															<label
-																htmlFor="addressline1"
-																className={classNames(
-																	{
-																		"p-error":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															>
-																Address Line 1*
-															</label>
-														</span>
-														{getFormErrorMessage(
-															meta
-														)}
-													</div>
-												)}
-											/>
-										</Col>
-										<Col>
-											<Field
-												name="addressline2"
-												render={({ input, meta }) => (
-													<div className="field">
-														<span className="p-float-label">
-															<InputText
-																id="addressline2"
-																{...input}
-																className={classNames(
-																	{
-																		"p-invalid":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															/>
-															<label
-																htmlFor="addressline2"
-																className={classNames(
-																	{
-																		"p-error":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															>
-																Address Line 2
-															</label>
-														</span>
-														{getFormErrorMessage(
-															meta
-														)}
-													</div>
-												)}
-											/>
+											<div className="field">
+												<Checkbox
+													id="chatcreation"
+													name="chatcreation"
+													onChange={(e) =>
+														setCreateChat(
+															!createChat
+														)
+													}
+													checked={createChat}
+												/>
+												<label
+													htmlFor="chatcreation"
+													className="p-checkbox-label"
+												>
+													Create event chat
+												</label>
+											</div>
 										</Col>
 									</Row>
 									<Row>
 										<Col xs={5}>
-											<Field
-												name="city"
-												render={({ input, meta }) => (
-													<div className="field">
-														<span className="p-float-label">
-															<InputText
-																id="city"
-																{...input}
-																className={classNames(
-																	{
-																		"p-invalid":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															/>
-															<label
-																htmlFor="city"
-																className={classNames(
-																	{
-																		"p-error":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															>
-																City*
-															</label>
-														</span>
-														{getFormErrorMessage(
-															meta
-														)}
-													</div>
-												)}
-											/>
+											<div className="field">
+												<span className="p-float-label">
+													<Calendar
+														name="eventstartdate"
+														id="eventstartdate"
+														dateFormat="mm/dd/yy"
+														mask="99/99/9999"
+														showIcon
+														showTime={!isAllDay}
+														hourFormat="12"
+														value={eventStartDate}
+														maxDate={eventEndDate}
+														onChange={(e) =>
+															setEventStartDate(
+																e.value
+															)
+														}
+														showButtonBar
+													/>
+													<label htmlFor="eventstartdate">
+														Event Start
+													</label>
+												</span>
+											</div>
+										</Col>
+										<Col xs={5}>
+											<div className="field">
+												<span className="p-float-label">
+													<Calendar
+														id="eventenddate"
+														name="eventenddate"
+														dateFormat="mm/dd/yy"
+														mask="99/99/9999"
+														showIcon
+														showTime={!isAllDay}
+														hourFormat="12"
+														value={eventEndDate}
+														onChange={(e) =>
+															setEventEndDate(
+																e.value
+															)
+														}
+														minDate={eventStartDate}
+														showButtonBar
+													/>
+													<label htmlFor="eventenddate">
+														Event End
+													</label>
+												</span>
+											</div>
+										</Col>
+										<Col xs={2}>
+											<div className="field">
+												<Checkbox
+													name="allday"
+													id="allday"
+													checked={isAllDay}
+													onChange={(e) =>
+														setIsAllDay(!isAllDay)
+													}
+												/>
+												<label
+													htmlFor="allday"
+													className="p-checkbox-label"
+												>
+													All day
+												</label>
+											</div>
+										</Col>
+									</Row>
+
+									<Row>
+										<div className="field">
+											<span className="p-float-label">
+												<InputTextarea
+													name="description"
+													id="description"
+													value={description}
+													onChange={(e) =>
+														setDescription(e.value)
+													}
+												/>
+												<label htmlFor="description">
+													Description
+												</label>
+											</span>
+										</div>
+									</Row>
+									<Row>
+										<Col>
+											<div className="field">
+												<span className="p-float-label">
+													<InputText
+														id="addressline1"
+														name="addressline1"
+														value={aLineOne}
+														onChange={(e) =>
+															setALineOne(e.value)
+														}
+													/>
+													<label htmlFor="addressline1">
+														Address Line 1*
+													</label>
+												</span>
+											</div>
+										</Col>
+										<Col>
+											<div className="field">
+												<span className="p-float-label">
+													<InputText
+														id="addressline2"
+														name="addressline2"
+														value={aLineTwo}
+														onChange={(e) =>
+															setALineTwo(e.value)
+														}
+													/>
+													<label htmlFor="addressline2">
+														Address Line 2
+													</label>
+												</span>
+											</div>
+										</Col>
+									</Row>
+									<Row>
+										<Col xs={5}>
+											<div className="field">
+												<span className="p-float-label">
+													<InputText
+														id="city"
+														name="city"
+														value={city}
+														onChange={(e) =>
+															setCity(e.value)
+														}
+													/>
+													<label htmlFor="city">
+														City*
+													</label>
+												</span>
+											</div>
 										</Col>
 										<Col xs={5}>
 											<div className="field">
@@ -470,43 +475,22 @@ export const EventCreationForm = () => {
 											</div>
 										</Col>
 										<Col xs={2}>
-											<Field
-												name="zipcode"
-												render={({ input, meta }) => (
-													<div className="field">
-														<span className="p-float-label">
-															<InputText
-																id="zipcode"
-																{...input}
-																className={classNames(
-																	{
-																		"p-invalid":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															/>
-															<label
-																htmlFor="zipcode"
-																className={classNames(
-																	{
-																		"p-error":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															>
-																Zipcode*
-															</label>
-														</span>
-														{getFormErrorMessage(
-															meta
-														)}
-													</div>
-												)}
-											/>
+											<div className="field">
+												<span className="p-float-label">
+													<InputText
+														id="zipcode"
+														name="zipcode"
+														keyfilter="int"
+														value={zip}
+														onChange={(e) =>
+															setZip(e.value)
+														}
+													/>
+													<label htmlFor="zipcode">
+														Zipcode*
+													</label>
+												</span>
+											</div>
 										</Col>
 									</Row>
 									<Button
