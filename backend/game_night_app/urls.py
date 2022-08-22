@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.send_the_homepage),
+    path('logout', views.log_out),
     path('games', views.bga_games),
 ]

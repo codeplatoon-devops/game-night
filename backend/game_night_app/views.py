@@ -16,6 +16,11 @@ def send_the_homepage(request):
     theIndex = open('static/index.html').read()
     return HttpResponse(theIndex)
 
+@api_view(['POST'])
+def log_out(request):
+    logout(request)
+    return JsonResponse({'user logged out': True})
+
 @api_view(['GET'])
 def bga_games(request):
     api_id = str(os.getenv('GM_CLIENT_ID'))
