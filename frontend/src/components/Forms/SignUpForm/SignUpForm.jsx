@@ -8,10 +8,14 @@ import { Dialog } from "primereact/dialog";
 import { Divider } from "primereact/divider";
 import { classNames } from "primereact/utils";
 import "./SignUpForm.css";
+import axios from 'axios'
+import {useNavigate } from 'react-router-dom'
 
 export const SignUpForm = () => {
 	const [showMessage, setShowMessage] = useState(false);
 	const [formData, setFormData] = useState({});
+	
+	const nav= useNavigate()
 
 	const validate = (data) => {
 		let errors = {};
@@ -40,10 +44,22 @@ export const SignUpForm = () => {
 	};
 
 	const onSubmit = (data, form) => {
+		console.log('submitted signupform, data is', data)
+		// what about an event prevent default? Do we need to set the form data or just send it to the server?
+		// event.preventDefault();
 		setFormData(data);
 		setShowMessage(true);
-		// clear form
-		form.restart();
+		axios.post('/signup', data).then((response)=> {
+			console.log('signup response', response)
+			if (response.data.success==='False') {
+                window.alert(response.data.reason)
+            }
+            else {    
+				// clear form
+				form.restart();
+                nav("/login");
+            }
+        })
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);

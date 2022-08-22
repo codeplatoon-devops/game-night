@@ -8,6 +8,7 @@ urlpatterns = [
     path('eventrequest/create', views.create_event_request),
     path('eventrequest/view', views.view_event_request),
     path('logout', views.log_out),
+    path('signup', views.sign_up),
     path('games', views.bga_games),
 
 ]
