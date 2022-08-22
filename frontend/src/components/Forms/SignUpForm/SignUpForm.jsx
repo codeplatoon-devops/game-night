@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import { Form, Field } from "react-final-form";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -79,7 +80,7 @@ export const SignUpForm = () => {
 	);
 
 	return (
-		<div className="form-signup">
+		<Container as={Row} className="form-signup">
 			<Dialog
 				visible={showMessage}
 				onHide={() => setShowMessage(false)}
@@ -98,192 +99,198 @@ export const SignUpForm = () => {
 					</p>
 				</div>
 			</Dialog>
-
-			<div className="flex justify-content-center">
-				<div className="card">
-					<h2 className="text-center">Sign Up</h2>
-					<Form
-						onSubmit={onSubmit}
-						initialValues={{
-							firstname: "",
-							lastname: "",
-							username: "",
-							email: "",
-							password: "",
-						}}
-						validate={validate}
-						render={({ handleSubmit }) => (
-							<form onSubmit={handleSubmit} className="p-fluid">
-								<Field
-									name="firstname"
-									render={({ input, meta }) => (
-										<div className="field">
-											<span className="p-float-label">
-												<InputText
-													id="firstname"
-													{...input}
-													autoFocus
-													className={classNames({
-														"p-invalid":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												/>
-												<label
-													htmlFor="firstname"
-													className={classNames({
-														"p-error":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												>
-													First Name*
-												</label>
-											</span>
-											{getFormErrorMessage(meta)}
-										</div>
-									)}
-								/>
-								<Field
-									name="lastname"
-									render={({ input, meta }) => (
-										<div className="field">
-											<span className="p-float-label">
-												<InputText
-													id="lastname"
-													{...input}
-													className={classNames({
-														"p-invalid":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												/>
-												<label
-													htmlFor="lastname"
-													className={classNames({
-														"p-error":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												>
-													Last Name*
-												</label>
-											</span>
-											{getFormErrorMessage(meta)}
-										</div>
-									)}
-								/>
-								<Field
-									name="username"
-									render={({ input, meta }) => (
-										<div className="field">
-											<span className="p-float-label">
-												<InputText
-													id="username"
-													{...input}
-													className={classNames({
-														"p-invalid":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												/>
-												<label
-													htmlFor="username"
-													className={classNames({
-														"p-error":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												>
-													Username*
-												</label>
-											</span>
-											{getFormErrorMessage(meta)}
-										</div>
-									)}
-								/>
-								<Field
-									name="email"
-									render={({ input, meta }) => (
-										<div className="field">
-											<span className="p-float-label p-input-icon-right">
-												<i className="pi pi-envelope" />
-												<InputText
-													id="email"
-													{...input}
-													className={classNames({
-														"p-invalid":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												/>
-												<label
-													htmlFor="email"
-													className={classNames({
-														"p-error":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												>
-													Email*
-												</label>
-											</span>
-											{getFormErrorMessage(meta)}
-										</div>
-									)}
-								/>
-								<Field
-									name="password"
-									render={({ input, meta }) => (
-										<div className="field">
-											<span className="p-float-label">
-												<Password
-													id="password"
-													{...input}
-													toggleMask
-													className={classNames({
-														"p-invalid":
-															isFormFieldValid(
-																meta
-															),
-													})}
-													header={passwordHeader}
-													footer={passwordFooter}
-												/>
-												<label
-													htmlFor="password"
-													className={classNames({
-														"p-error":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												>
-													Password*
-												</label>
-											</span>
-											{getFormErrorMessage(meta)}
-										</div>
-									)}
-								/>
-								<Button
-									type="submit"
-									label="Submit"
-									className="mt-2"
-								/>
-							</form>
-						)}
-					/>
+			<Col></Col>
+			<Col>
+				<div className="flex justify-content-center">
+					<div className="card">
+						<h2 className="text-center">Sign Up</h2>
+						<Form
+							onSubmit={onSubmit}
+							initialValues={{
+								firstname: "",
+								lastname: "",
+								username: "",
+								email: "",
+								password: "",
+							}}
+							validate={validate}
+							render={({ handleSubmit }) => (
+								<form
+									onSubmit={handleSubmit}
+									className="p-fluid"
+								>
+									<Field
+										name="firstname"
+										render={({ input, meta }) => (
+											<div className="field">
+												<span className="p-float-label">
+													<InputText
+														id="firstname"
+														{...input}
+														autoFocus
+														className={classNames({
+															"p-invalid":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+													/>
+													<label
+														htmlFor="firstname"
+														className={classNames({
+															"p-error":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+													>
+														First Name*
+													</label>
+												</span>
+												{getFormErrorMessage(meta)}
+											</div>
+										)}
+									/>
+									<Field
+										name="lastname"
+										render={({ input, meta }) => (
+											<div className="field">
+												<span className="p-float-label">
+													<InputText
+														id="lastname"
+														{...input}
+														className={classNames({
+															"p-invalid":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+													/>
+													<label
+														htmlFor="lastname"
+														className={classNames({
+															"p-error":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+													>
+														Last Name*
+													</label>
+												</span>
+												{getFormErrorMessage(meta)}
+											</div>
+										)}
+									/>
+									<Field
+										name="username"
+										render={({ input, meta }) => (
+											<div className="field">
+												<span className="p-float-label">
+													<InputText
+														id="username"
+														{...input}
+														className={classNames({
+															"p-invalid":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+													/>
+													<label
+														htmlFor="username"
+														className={classNames({
+															"p-error":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+													>
+														Username*
+													</label>
+												</span>
+												{getFormErrorMessage(meta)}
+											</div>
+										)}
+									/>
+									<Field
+										name="email"
+										render={({ input, meta }) => (
+											<div className="field">
+												<span className="p-float-label p-input-icon-right">
+													<i className="pi pi-envelope" />
+													<InputText
+														id="email"
+														{...input}
+														className={classNames({
+															"p-invalid":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+													/>
+													<label
+														htmlFor="email"
+														className={classNames({
+															"p-error":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+													>
+														Email*
+													</label>
+												</span>
+												{getFormErrorMessage(meta)}
+											</div>
+										)}
+									/>
+									<Field
+										name="password"
+										render={({ input, meta }) => (
+											<div className="field">
+												<span className="p-float-label">
+													<Password
+														id="password"
+														{...input}
+														toggleMask
+														className={classNames({
+															"p-invalid":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+														header={passwordHeader}
+														footer={passwordFooter}
+													/>
+													<label
+														htmlFor="password"
+														className={classNames({
+															"p-error":
+																isFormFieldValid(
+																	meta
+																),
+														})}
+													>
+														Password*
+													</label>
+												</span>
+												{getFormErrorMessage(meta)}
+											</div>
+										)}
+									/>
+									<Button
+										type="submit"
+										label="Submit"
+										className="mt-2"
+									/>
+								</form>
+							)}
+						/>
+					</div>
 				</div>
-			</div>
-		</div>
+			</Col>
+			<Col></Col>
+		</Container>
 	);
 };
