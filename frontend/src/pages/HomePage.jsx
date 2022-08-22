@@ -1,3 +1,54 @@
+import CarouselHome from '../components/Carousel/CarouselHome'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { LoginForm } from "../components/Forms/LogInForm/LogInForm";
+import { Card } from 'primereact/card';
+
 export default function HomePage() {
-	return <h1>Homepage</h1>;
+	return (
+		<div>
+		<Container>
+		<Row>
+			<Col md={8}>
+				<img
+				src='https://assets.dicebreaker.com/board-game-friends-playing-table-sofa.jpeg/BROK/resize/1200x1200%3E/format/jpg/quality/70/board-game-friends-playing-table-sofa.jpeg'
+				width={900}
+				height={500}
+				/>
+			</Col>
+			<Col md={4}>
+			<div>
+				<Card title="About Us">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</Card>
+			</div>
+			</Col>
+		</Row>
+		<Row>
+			<Col>
+				<LoginForm />
+			</Col>
+		</Row>
+
+		</Container>
+
+		</div>
+	// <>
+	// 	<div className="wrapper">
+	// 		<div className="carousel-z-index">
+	// 			<CarouselHome />
+	// 		</div>
+	// 	<Container>
+	// 		<Row>
+	// 			<Col className="card-z-index">
+	// 				<Card title="About Us">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</Card>
+	// 			</Col>
+	// 			<Col className="signup-z-index">
+	// 				<LoginForm />
+	// 			</Col>
+	// 		</Row>
+	// 	</Container>
+	// 	</div>
+	// </>
+	
+	);
 }
