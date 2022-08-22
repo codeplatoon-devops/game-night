@@ -133,3 +133,32 @@ def bga_games(request):
     raw_response = requests.get(url, params=payload)
     json_response = raw_response.json()
     return JsonResponse(json_response)
+
+@api_view(['POST'])
+def sign_up(request):
+    print('IN DJANGO SIGN UP, REQUEST.DATA IS', request.data)
+    user_email=request.data['email']
+    username = request.data['username']
+    password = request.data['password']
+    first_name = request.data['firstname']
+    last_name = request.data['lastname']
+    print('IN DJANGO SIGN UP', user_email, username, first_name, last_name)
+    try:
+        all_users = AppUser.objects.all()
+        all_user_emails=[]
+        for user in all_users:
+            all_user_emails.append(user.email)
+        if user_email in all_user_emails:
+            return JsonResponse({'success': "False", 'reason': 'This email already exists, please log-in'})
+        else:
+            # https://docs.djangoproject.com/en/4.1/ref/contrib/auth/
+            newUser = AppUser.objects.create_user(username=username, password=password, email=user_email, last_name= last_name, first_name=first_name)
+            newUser.full_clean
+            newUser.save()
+            list= GroupList(owner = newUser)
+            list.full_clean
+            list.save()
+            print('new user is', newUser, 'new list is', list)
+            return JsonResponse({'success': "True", 'action': 'user signed up, list created'})
+    except Exception as e:
+        return JsonResponse({'success': "False", 'reason': str(e)})
