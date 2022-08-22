@@ -1,0 +1,62 @@
+[
+    {
+        "model": "game_night_app.Event",
+        "pk": 1,
+        "fields": {
+            "category": "C1",
+            "max_participants": "4",
+            "private": "True",
+            "address": "1",
+            "date_time": "2022-08-12 11:44:59",
+            "about": "These are starter notes for this event"
+        }
+    },
+    {
+        "model": "game_night_app.Event",
+        "pk": 2,
+        "fields": {
+            "category": "C2",
+            "max_participants": "2",
+            "private": "False",
+            "address": "2",
+            "date_time": "2022-08-01 09:15:00",
+            "about": "These are starter notes for this event"
+        }
+    },
+    {
+        "model": "game_night_app.Event",
+        "pk": 3,
+        "fields": {
+            "category": "C3",
+            "max_participants": "8",
+            "private": "False",
+            "address": "3",
+            "date_time": "2022-08-20 19:15:00",
+            "about": "These are starter notes for this event"
+        }
+    },
+    {
+        "model": "game_night_app.Event",
+        "pk": 4,
+        "fields": {
+            "category": "C4",
+            "max_participants": "5",
+            "private": "True",
+            "address": "4",
+            "date_time": "2022-08-01 12:00:00",
+            "about": "These are starter notes for this event"
+        }
+    },
+    {
+        "model": "game_night_app.Event",
+        "pk": 5,
+        "fields": {
+            "category": "C5",
+            "max_participants": "3",
+            "private": "False",
+            "address": "5",
+            "date_time": "2022-08-15 15:15:15",
+            "about": "These are starter notes for this event"
+        }
+    }
+]
