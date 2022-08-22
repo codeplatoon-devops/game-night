@@ -8,3 +8,8 @@ from rest_framework.decorators import api_view
 def send_the_homepage(request):
     theIndex = open('static/index.html').read()
     return HttpResponse(theIndex)
+
+@api_view(['POST'])
+def log_out(request):
+    logout(request)
+    return JsonResponse({'user logged out': True})
