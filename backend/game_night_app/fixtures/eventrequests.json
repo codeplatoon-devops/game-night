@@ -39,8 +39,8 @@
         "model": "game_night_app.EventRequest",
         "pk": 5,
         "fields": {
-            "sender": 1,
-            "receiver": 2,
+            "sender": 2,
+            "receiver": 3,
             "event": 2
         }
     }

@@ -5,7 +5,7 @@
         "fields": {
             "name": "Group 1",
             "code": "76072927",
-            "members": [
+            "member": [
                 1,
                 2,
                 3
@@ -18,7 +18,7 @@
         "fields": {
             "name": "Group 2",
             "code": "43464537",
-            "members": [
+            "member": [
                 2,
                 3,
                 4
@@ -31,7 +31,7 @@
         "fields": {
             "name": "Group 3",
             "code": "80919121",
-            "members": [
+            "member": [
                 3,
                 4,
                 5
@@ -44,7 +44,7 @@
         "fields": {
             "name": "Group 4",
             "code": "31489218",
-            "members": [
+            "member": [
                 4,
                 5,
                 1
@@ -57,7 +57,7 @@
         "fields": {
             "name": "Group 5",
             "code": "59782772",
-            "members": [
+            "member": [
                 5,
                 1,
                 2
