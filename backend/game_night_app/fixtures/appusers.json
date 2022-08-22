@@ -1,0 +1,47 @@
+[
+    {
+        "model": "game_night_app.AppUser",
+        "pk": 1,
+        "fields": {
+            "password": "password",
+            "is_superuser": "False",
+            "username": "fred",
+            "is_staff": "False",
+            "is_active": "True",
+            "date_joined": "2022-08-08",
+            "email": "fred@email.com",
+            "first_name": "Fred",
+            "last_name": "Smith"
+        }
+    },
+    {
+        "model": "game_night_app.AppUser",
+        "pk": 2,
+        "fields": {
+            "password": "password",
+            "is_superuser": "False",
+            "username": "bill",
+            "is_staff": "False",
+            "is_active": "True",
+            "date_joined": "2022-08-09",
+            "email": "bill@email.com",
+            "first_name": "Bill",
+            "last_name": "Jones"
+        }
+    },
+    {
+        "model": "game_night_app.AppUser",
+        "pk": 3,
+        "fields": {
+            "password": "password",
+            "is_superuser": "False",
+            "username": "sally",
+            "is_staff": "False",
+            "is_active": "True",
+            "date_joined": "2022-08-10",
+            "email": "sally@email.com",
+            "first_name": "Sally",
+            "last_name": "Green"
+        }
+    }
+]

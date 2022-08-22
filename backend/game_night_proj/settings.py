@@ -87,6 +87,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'game_night_app.AppUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
