@@ -1,0 +1,57 @@
+[
+    {
+        "model": "game_night_app.EventUser",
+        "pk": 1,
+        "fields": {
+            "attendee": [
+                1,
+                2,
+                3
+            ]
+        }
+    },
+    {
+        "model": "game_night_app.EventUser",
+        "pk": 2,
+        "fields": {
+            "attendee": [
+                2,
+                3,
+                4
+            ]
+        }
+    },
+    {
+        "model": "game_night_app.EventUser",
+        "pk": 3,
+        "fields": {
+            "attendee": [
+                3,
+                4,
+                5
+            ]
+        }
+    },
+    {
+        "model": "game_night_app.EventUser",
+        "pk": 4,
+        "fields": {
+            "attendee": [
+                4,
+                5,
+                1
+            ]
+        }
+    },
+    {
+        "model": "game_night_app.EventUser",
+        "pk": 5,
+        "fields": {
+            "attendee": [
+                5,
+                1,
+                2
+            ]
+        }
+    }
+]
