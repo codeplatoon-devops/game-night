@@ -24,6 +24,20 @@ class AppUser(AbstractUser):
     def __str__(self):
         return f"ID: {self.id}, Name: {self.first_name} {self.last_name}, username: {self.username}, email: {self.email}"
 
+# do we want to use from localflavor.models import USStateField or just a 2-character CharField?
+# do we also want to use localflavor.us.models.USZipCodeField?
+# allow any other fields to be null/blank?
+class Address(models.Model):
+    address_1 = models.CharField(max_length=128, verbose_name="Address")
+    address_2 = models.CharField( max_length=128, blank=True, null=True, default=None, verbose_name="Address cont'd")
+    city = models.CharField(max_length=64, verbose_name="City")
+    state = models.CharField(max_length=2, verbose_name="State")
+    zip_code = models.CharField(max_length=5, verbose_name="Zip code")
+
+    def __str__(self):
+        return f"ID: {self.id}, Address: {self.address_1}, {self.address_2}, City: {self.city}, State: {self.state}, Zip code: {self.zip_code}"
+
+
 class Event(models.Model):
     CATEGORY1 = 'C1' # What categories do we want?
     CATEGORY2 = 'C2' # Do we want DB to enforce categories?
@@ -40,25 +54,12 @@ class Event(models.Model):
     category=models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=CATEGORY1, verbose_name="Category")
     max_participants=models.IntegerField(blank=True, null=True, default=None, verbose_name="Maximum Participants")
     private=models.BooleanField(default=False, blank=True, null=True, verbose_name="Private game?") # or choice between 'public' and 'private'?
-    location=models.CharField(max_length=32, blank=True, null=True, default=None, verbose_name="Game location") 
+    address=models.ForeignKey(Address, on_delete=models.CASCADE, related_name='addresses') 
     date_time=models.DateTimeField(blank=True, null=True, default=None, verbose_name="Game date and time")
     about=models.TextField(blank=True, null=True, default=None, verbose_name="About")
 
     def __str__(self):
         return f"ID: {self.id}, Category: {self.category}, Location: {self.location}, DateTime: {self.date_time}, Private: {self.private}"
-
-# do we want to use from localflavor.models import USStateField or just a 2-character CharField?
-# do we also want to use localflavor.us.models.USZipCodeField?
-# allow any other fields to be null/blank?
-class Address(models.Model):
-    address_1 = models.CharField(max_length=128, verbose_name="Address")
-    address_2 = models.CharField( max_length=128, blank=True, null=True, default=None, verbose_name="Address cont'd")
-    city = models.CharField(max_length=64, verbose_name="City")
-    state = models.CharField(max_length=2, verbose_name="State")
-    zip_code = models.CharField(max_length=5, verbose_name="Zip code")
-
-    def __str__(self):
-        return f"ID: {self.id}, Address: {self.address_1}, {self.address_2}, City: {self.city}, State: {self.state}, Zip code: {self.zip_code}"
 
 class Game(models.Model):
     title=models.CharField(max_length=32, blank=False, unique=True, verbose_name="Title")
