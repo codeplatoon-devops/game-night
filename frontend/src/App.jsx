@@ -11,6 +11,7 @@ import CalendarPage from "./pages/CalendarPage";
 import AccountPage from "./pages/AccountPage";
 import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
+import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
 
 import LogoutNavBar from "./components/NavBar/LogoutNavBar";
@@ -35,6 +36,10 @@ export default function App() {
 					<Route path="/calendar" element={<CalendarPage />} />
 					<Route path="/account" element={<AccountPage />} />
 					<Route path="/events" element={<EventPage />} />
+					<Route
+						path="/events/create"
+						element={<EventCreatePage />}
+					/>
 					<Route path="/groups" element={<GroupPage />} />
 					<Route
 						path="/events/:eventId"
