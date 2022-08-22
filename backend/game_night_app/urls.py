@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.send_the_homepage),
+    path('games', views.bga_games),
 ]
