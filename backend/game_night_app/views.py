@@ -16,7 +16,7 @@ def send_the_homepage(request):
     theIndex = open('static/index.html').read()
     return HttpResponse(theIndex)
     
-@api_view(['PUT'])
+@api_view(['POST'])
 def create_group_request(request):
     print('YOU ARE IN THE PUT REQUEST ON DJANGO FOR CREATE GROUP REQUESTS')
     user_email = request.user.email
@@ -58,6 +58,54 @@ def view_group_request(request):
         print('list of group_requests:', list_of_group_requests)
         try:
             return JsonResponse({'success': "True", 'group_requests': list_of_group_requests})
+        except Exception as e:
+            return JsonResponse({'success': "False", 'reason': f'something went wrong, {str(e)}'})
+    else:
+        return JsonResponse({'success': "False", 'reason': "you don't have any group requests"})
+
+@api_view(['POST'])
+def create_event_request(request):
+    print('YOU ARE IN THE POST REQUEST ON DJANGO FOR CREATE EVENT REQUESTS')
+    user_email = request.user.email
+    friend_email = request.data['friend_email']
+    # could give the user the option to invite an entire group or send to specific individuals - the rest of the code assumes an individual, but I would think group invite would be nice as well.
+    # would need if we do group invite:::: group_code = request.data['group_code']
+    event_code = request.data['event_code']
+    print('USER EMAIL', user_email, 'FRIEND EMAIL', friend_email, 'event code', event_code)
+    user = AppUser.objects.get(email = user_email)
+    friend = AppUser.objects.get(email = friend_email)
+    event = Event.objects.get(code = code)
+    if event is not None:
+        if friend is not None:
+            try:
+                event_request = EventRequest(sender = user, receiver = friend, event = event)
+                event_request.full_clean
+                event_request.save()
+                print('YOUR NEW EVENT REQUEST IS', event_request)
+                return JsonResponse({'success': "True", 'action':'event request created in db'})
+            except Exception as e:
+                return JsonResponse({'success': "False", 'reason': f'something went wrong, {str(e)}'})
+        else:
+            return JsonResponse({'success': "False", 'reason': 'friends account doesnt exist'})
+    else:
+        return JsonResponse({'success': "False", 'reason': 'event doesnt exist'})
+
+@api_view(['GET'])
+def view_event_request(request):
+    print('YOU ARE IN THE GET REQUEST ON DJANGO FOR VIEW EVENT REQUESTS')
+    user_email = request.user.email
+    user = AppUser.objects.get(email = user_email)
+    # view any requests sent to the user
+    event_requests = EventRequest.objects.filter(receiver= user, is_active = True)
+    if event_requests:
+        list_of_event_requests=[]
+        for item in event_requests:
+            #sends back the emails of all pending event requests
+            sender = item.sender
+            list_of_event_requests.append(sender.email)
+        print('list of event_requests:', list_of_event_requests)
+        try:
+            return JsonResponse({'success': "True", 'event_requests': list_of_event_requests})
         except Exception as e:
             return JsonResponse({'success': "False", 'reason': f'something went wrong, {str(e)}'})
     else:
