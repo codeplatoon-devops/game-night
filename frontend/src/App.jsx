@@ -3,7 +3,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -18,11 +18,30 @@ import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
 
 import "./App.css";
+import React from "react";
+import axios from "axios";
 
 export default function App() {
 	let { eventId } = useParams();
 
 	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
+
+	const whoAmI = async () => {
+		const response = await axios.get('/whoami')
+		const newUser = {'username':response.data.username, 'email': response.data.email}
+		if (response.data.username) {
+			console.log(response)
+		  setUser(newUser)
+		} else {
+			console.log('not working', response)
+		  setUser(false)
+		}
+		
+	  }
+  
+	useEffect(()=> {
+	  whoAmI()
+	},[]) 
 
 	return (
 		<div className="App">

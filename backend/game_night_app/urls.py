@@ -10,6 +10,7 @@ urlpatterns = [
     path('logout', views.log_out),
     path('login', views.log_in),
     path('signup', views.sign_up),
+    path('whoami', views.whoami),
     path('games', views.bga_games),
 
 ]

@@ -182,3 +182,11 @@ def sign_up(request):
             return JsonResponse({'success': "True", 'action': 'user signed up, list created'})
     except Exception as e:
         return JsonResponse({'success': "False", 'reason': str(e)})
+
+def whoami(request):
+    if request.user.is_authenticated:
+        print('user authenticated')
+        data = serializers.serialize("json", [request.user], fields=['email', 'username'])
+        return HttpResponse(data)
+    else:
+        return JsonResponse({'user': False})

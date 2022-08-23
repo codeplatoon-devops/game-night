@@ -8,8 +8,7 @@ import { classNames } from "primereact/utils";
 import { Divider } from "primereact/divider";
 import "./LogInForm.css";
 import { Container, Row, Col } from "react-bootstrap";
-// regular axios gave me an error: https://stackoverflow.com/questions/65900822/import-axios-causes-problems-in-vue-v3-and-vite
-import axios from 'axios'
+import axios from "axios";
 
 export const LoginForm = () => {
 	const [formData, setFormData] = useState({});
@@ -17,13 +16,14 @@ export const LoginForm = () => {
 
 	const validate = (data) => {
 		let errors = {};
-		if (!data.email) {
-			errors.email = "Email is required.";
-		} else if (
-			!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
-		) {
-			errors.email = "Invalid email address. E.g. example@email.com";
-		}
+		if (!data.username) {
+			errors.username = "Username is required.";
+		} 
+		// else if (
+			// !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
+		// ) {
+		// 	errors.email = "Invalid email address. E.g. example@email.com";
+		// }
 		if (!data.password) {
 			errors.password = "Password is required.";
 		}
@@ -74,7 +74,7 @@ export const LoginForm = () => {
 								<Form
 									onSubmit={onSubmit}
 									initialValues={{
-										email: "",
+										username: "",
 										password: "",
 									}}
 									validate={validate}
@@ -84,13 +84,13 @@ export const LoginForm = () => {
 											className="p-fluid"
 										>
 											<Field
-												name="email"
+												name="username"
 												render={({ input, meta }) => (
 													<div className="field">
 														<span className="p-float-label p-input-icon-right">
 															<i className="pi pi-envelope" />
 															<InputText
-																id="email"
+																id="username"
 																{...input}
 																className={classNames(
 																	{
@@ -102,7 +102,7 @@ export const LoginForm = () => {
 																)}
 															/>
 															<label
-																htmlFor="email"
+																htmlFor="username"
 																className={classNames(
 																	{
 																		"p-error":
@@ -112,7 +112,7 @@ export const LoginForm = () => {
 																	}
 																)}
 															>
-																Email*
+																Username*
 															</label>
 														</span>
 														{getFormErrorMessage(
