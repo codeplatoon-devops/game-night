@@ -50,13 +50,13 @@ export const LoginForm = () => {
 	};
 
 	return (
-		<Container as={Row}>
+		<Container>
 			{/* <Col></Col> */}
-			<Col xs={5}>
+			<Col>
 				<Row>
 					<div className="form-login">
 						<div className="flex justify-content-center">
-							<div className="card">
+							<div className="card card-login">
 								<h2 className="text-center">Log in</h2>
 								<Form
 									onSubmit={onSubmit}
@@ -170,7 +170,7 @@ export const LoginForm = () => {
 					</div>
 				</Row>
 			</Col>
-			<Col></Col>
+			{/* <Col></Col> */}
 		</Container>
 	);
 };

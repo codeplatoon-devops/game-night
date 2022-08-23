@@ -4,23 +4,28 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { LoginForm } from "../components/Forms/LogInForm/LogInForm";
 import CardHome from "../components/Card/CardHome";
+import '../App.css'
 
 
 export default function HomePage() {
+	
 	return (
 		<div>
+		<br></br>
 		<Container>
 		<Row>
-			<Col md={8}>
-				<img
-				src='https://assets.dicebreaker.com/board-game-friends-playing-table-sofa.jpeg/BROK/resize/1200x1200%3E/format/jpg/quality/70/board-game-friends-playing-table-sofa.jpeg'
-				width={1000}
-				height={600}
-				/>
+			<Col md={7}>
+			<img
+			src='https://assets.dicebreaker.com/board-game-friends-playing-table-sofa.jpeg/BROK/resize/1200x1200%3E/format/jpg/quality/70/board-game-friends-playing-table-sofa.jpeg'
+			/>
 			</Col>
-			<Col md={4}>
+			<Col md={5}>
 				<CardHome />
-				<LoginForm />
+				<Row>
+					<Col>
+						<LoginForm />
+					</Col>
+				</Row>
 			</Col>
 		</Row>
 
