@@ -8,20 +8,21 @@ import 'stream-chat-react/dist/css/index.css'
 function Chatroom ({user}) {
 
     const apiKey = process.env.REACT_APP_STREAM_API_KEY
-    const user = {
-        // we will get user from the database and it must include the user id for the chat use effect async function to work
-        id: 'john',
-        name: 'John',
-        image: 'https://getstream.imgix.net/images/random_svf/FS.png',
-    }
+    // const user = {
+    //     // we will get user from the database and it must include the user id for the chat use effect async function to work
+    //     id: 'john',
+    //     name: 'John',
+    //     image: 'https://getstream.imgix.net/images/random_svf/FS.png',
+    // }
 
 
     const getToken = async function () {
         const response = await axios.get('/chattoken')
+        console.log(response.data)
         return response.data.token
     }
     const [client, setClient] = useState(null)
-    // const [channel, setChannel] = useState(null)
+    const [channel, setChannel] = useState(null)
 
     // filters only the channels that the user is a member of
     const filters = {type: 'messaging', members: {$in: [user.id]}}
@@ -40,18 +41,18 @@ function Chatroom ({user}) {
             
 
             //shouldn't need all this channel specific stuff since have channel list
-            // const channel = chatClient.channel('messaging', 'custom_channel_id', {
-            //     // add as many custom fields as you'd like
-            //     image: 'https://picsum.photos/200',
-            //     // instead of name 
-            //     name: 'Talk about React',
-            //     members: [user.id]
-            // })
+            const channel = chatClient.channel('messaging', 'custom_channel_id', {
+                // add as many custom fields as you'd like
+                image: 'https://picsum.photos/200',
+                // instead of name 
+                name: 'User1Chat',
+                members: [user.id]
+            })
 
             // await channel.create()
-            // setChannel(channel)
+            setChannel(channel)
             
-            // await channel.watch()
+            await channel.watch()
             setClient(chatClient)
 
         }
@@ -65,18 +66,18 @@ function Chatroom ({user}) {
 
     return (
         <Chat client = {client} theme = "messaging light">
-        <ChannelList 
+        {/* <ChannelList 
         filters ={filters}
-        sort = {sort}/>    
+        sort = {sort}/>     */}
         {/* ChannelList will get all the channels so don't need next line */}
-            {/* <Channel channel = {channel}> */}
+            <Channel channel = {channel}>
                 <Window>
                     <ChannelHeader />
                     <MessageList />
                     <MessageInput />
                 </Window>
                 <Thread />
-            {/* </Channel> */}
+            </Channel>
         </Chat>
     )
 }

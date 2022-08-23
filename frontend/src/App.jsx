@@ -59,7 +59,7 @@ export default function App() {
 						path="/events/create"
 						element={<EventCreatePage />}
 					/>
-					<Route path="/groups" element={<GroupPage />} />
+					<Route path="/groups" element={<GroupPage user={user} />} />
 					<Route
 						path="/events/:eventId"
 						element={<EventDetailPage />}
