@@ -117,7 +117,7 @@ def log_out(request):
     logout(request)
     return JsonResponse({'user logged out': True})
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def log_in(request):
     print('in django login, request is', request)
     username= request.data['username']
