@@ -25,7 +25,7 @@ def create_chat_user_token(request):
     try:
         user_email= request.user.email
         user = AppUser.objects.get(email = user_email)
-        user_id= user.id
+        user_id= str(user.id)
         print('IN TOKEN ON DJANGO, user', user, 'user id', user_id)
         server_client = stream_chat.StreamChat(api_key=os.environ['chatapikey'], api_secret=os.environ['secretchatkey'])
         token = server_client.create_token(user_id)
