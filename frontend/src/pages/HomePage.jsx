@@ -1,31 +1,31 @@
-import CarouselHome from '../components/Carousel/CarouselHome'
+// import CarouselHome from '../components/Carousel/CarouselHome'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { LoginForm } from "../components/Forms/LogInForm/LogInForm";
-import { Card } from 'primereact/card';
+import CardHome from "../components/Card/CardHome";
+import '../App.css'
+
 
 export default function HomePage() {
+	
 	return (
 		<div>
+		<br></br>
 		<Container>
 		<Row>
-			<Col md={8}>
-				<img
-				src='https://assets.dicebreaker.com/board-game-friends-playing-table-sofa.jpeg/BROK/resize/1200x1200%3E/format/jpg/quality/70/board-game-friends-playing-table-sofa.jpeg'
-				width={900}
-				height={500}
-				/>
+			<Col md={7}>
+			<img
+			src='https://assets.dicebreaker.com/board-game-friends-playing-table-sofa.jpeg/BROK/resize/1200x1200%3E/format/jpg/quality/70/board-game-friends-playing-table-sofa.jpeg'
+			/>
 			</Col>
-			<Col md={4}>
-			<div>
-				<Card title="About Us">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</Card>
-			</div>
-			</Col>
-		</Row>
-		<Row>
-			<Col>
-				<LoginForm />
+			<Col md={5}>
+				<CardHome />
+				<Row>
+					<Col>
+						<LoginForm />
+					</Col>
+				</Row>
 			</Col>
 		</Row>
 
