@@ -24,8 +24,9 @@ def send_the_homepage(request):
 def create_chat_user_token(request):
     try:
         user_email= request.user.email
-        user = AppUser.Objects.get(email = email)
+        user = AppUser.objects.get(email = user_email)
         user_id= user.id
+        print('IN TOKEN ON DJANGO, user', user, 'user id', user_id)
         server_client = stream_chat.StreamChat(api_key=os.environ['chatapikey'], api_secret=os.environ['secretchatkey'])
         token = server_client.create_token(user_id)
         print('IN CREATE CHAT USER TOKEN, TOKEN IS', token)
@@ -33,7 +34,14 @@ def create_chat_user_token(request):
     except Exception as e:
         return JsonResponse({'success': "false", 'reason': f'failed to create token, {str(e)}'})
 
-
+@api_view(['GET'])
+def stream_api(request):
+    api=os.environ['stream_key']
+    print('IN STREAM API REQUEST', api, 'type', type(api))
+    try:
+        return JsonResponse({'succes':'true', 'api': api})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to send key, {str(e)}'})
 
     
 @api_view(['POST'])
@@ -134,14 +142,15 @@ def view_event_request(request):
 @api_view(['POST'])
 def log_out(request):
     logout(request)
+    print('USER IS LOGGED OUT')
     return JsonResponse({'user logged out': True})
 
 @api_view(['PUT'])
 def log_in(request):
-    print('in django login, request is', request)
     username= request.data['username']
     password = request.data['password']
     user = authenticate(username=username, password=password)
+    print('user is', user)
     if user is not None:
         if user.is_active:
             try:

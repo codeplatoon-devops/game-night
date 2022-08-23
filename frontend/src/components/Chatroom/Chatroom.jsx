@@ -1,13 +1,22 @@
 import {useEffect, useState} from 'react'
 import { StreamChat } from 'stream-chat';
 import { Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window, LoadingIndicator, ChannelList } from 'stream-chat-react';
-
+import axios from 'axios'
 import './chatroom.css'
 import 'stream-chat-react/dist/css/index.css'
+// import * as dotenv from 'dotenv'
+// dotenv.config()
+// import express from 'express'
 
 function Chatroom ({user}) {
-
-    const apiKey = process.env.REACT_APP_STREAM_API_KEY
+    
+    // const apiKey = REACT_APP_STREAM_API_KEY
+    // console.log('api key', process.env.REACT_APP_STREAM_API_KEY)
+    // console.log(process.env)
+    // require('dotenv').config()
+    // const apiKey = import.meta.env.VITE_STREAM_API_KEY
+    // console.log(import.meta.env.VITE_STREAM_API_KEY)
+    // console.log('process.env', process.env)
     // const user = {
     //     // we will get user from the database and it must include the user id for the chat use effect async function to work
     //     id: 'john',
@@ -15,10 +24,15 @@ function Chatroom ({user}) {
     //     image: 'https://getstream.imgix.net/images/random_svf/FS.png',
     // }
 
+    const getStreamAPI = async function () {
+        const response = await axios.get('/streamapi')
+        console.log('getstream api response.data', response.data.api, 'type', typeof(response.data.api))
+        return response.data.api
+    }
 
     const getToken = async function () {
         const response = await axios.get('/chattoken')
-        console.log(response.data)
+        console.log('gettoken response.data.token', response.data.token, 'type', typeof(response.data.token))
         return response.data.token
     }
     const [client, setClient] = useState(null)
@@ -31,22 +45,25 @@ function Chatroom ({user}) {
 
     useEffect(()=> {
         //this connects the client to the chat
+        // console.log('USER.ID', user.id)
+        // console.log('USER[ID]', user['id'])
+
         async function init() {
             // do i need to await getToken?
             const userToken = getToken()
-            const chatClient = StreamChat.getInstance(apiKey)
+            const chatClient = StreamChat.getInstance(getStreamAPI())
             //need to get this userToken from the backend
             // https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
             await chatClient.connectUser(user, userToken)
             
 
             //shouldn't need all this channel specific stuff since have channel list
-            const channel = chatClient.channel('messaging', 'custom_channel_id', {
+            const channel = chatClient.channel('messaging', 'User1Chat', {
                 // add as many custom fields as you'd like
                 image: 'https://picsum.photos/200',
                 // instead of name 
                 name: 'User1Chat',
-                members: [user.id]
+                members: [user['id']]
             })
 
             // await channel.create()
