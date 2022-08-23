@@ -3,10 +3,12 @@ from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
 import requests
 import os
 from dotenv import load_dotenv
 from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
+from .serializers import EventSerializer
 
 load_dotenv()
 
@@ -190,3 +192,15 @@ def whoami(request):
         return HttpResponse(data)
     else:
         return JsonResponse({'user': False})
+
+@api_view(['GET'])
+def calendar(request):
+    if request.user.is_authenticated:
+        events = Event.objects.get(owner=request.user.id)
+        data = EventSerializer(events)
+        print(data)
+        return Response(data.data)
+    else:
+        return JsonResponse({'user': False})
+    
+

@@ -12,5 +12,6 @@ urlpatterns = [
     path('signup', views.sign_up),
     path('whoami', views.whoami),
     path('games', views.bga_games),
+    path('calendar', views.calendar),
 
 ]
