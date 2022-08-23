@@ -1,6 +1,9 @@
-.container {
+.form-event-create-container {
 	max-width: 100%;
 }
 .p-checkbox-label {
 	margin-left: 10px;
+}
+.form-event-create-card {
+	min-width: 625px;
 }
