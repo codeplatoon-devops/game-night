@@ -29,11 +29,9 @@ export default function App() {
 	const whoAmI = async () => {
 		const response = await axios.get('/whoami')
 		const newUser = {'username':response.data.username, 'email': response.data.email}
-		if (response.data.username) {
-			console.log(response)
+		if (response.data[0].fields.username) {
 		  setUser(newUser)
 		} else {
-			console.log('not working', response)
 		  setUser(false)
 		}
 		
