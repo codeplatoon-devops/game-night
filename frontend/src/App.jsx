@@ -13,6 +13,7 @@ import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
+import getCSRFToken from '../utils'
 
 import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
@@ -24,18 +25,17 @@ import axios from "axios";
 export default function App() {
 	let { eventId } = useParams();
 
+	axios.defaults.headers.common["X-CSRFToken"] = getCSRFToken();
+
 	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
 
 	const whoAmI = async () => {
 		const response = await axios.get('/whoami')
-		const newUser = {'username':response.data.username, 'email': response.data.email}
-		if (response.data[0].fields.username) {
-		  setUser(newUser)
-		} else {
-		  setUser(false)
-		}
-		
-	  }
+		const user = response.data && response.data[0] && response.data[0].fields
+		user.id = response.data[0].pk
+		console.log('user from whoami?', user, response)
+		setUser(user)
+	}
   
 	useEffect(()=> {
 	  whoAmI()
@@ -57,7 +57,7 @@ export default function App() {
 						path="/events/create"
 						element={<EventCreatePage />}
 					/>
-					<Route path="/groups" element={<GroupPage />} />
+					<Route path="/groups" element={<GroupPage user={user} />} />
 					<Route
 						path="/events/:eventId"
 						element={<EventDetailPage />}
