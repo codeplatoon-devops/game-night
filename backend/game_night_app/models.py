@@ -71,8 +71,8 @@ class EventGame(models.Model):
 # Not sure I interpreted the requirements for this model correctly?
 class EventUser(models.Model):
     # owner=models.ForeignKey(AppUser, on_delete=models.CASCADE)
-    attendee=models.ManyToManyField(AppUser, related_name="attendees") # through='User'?
-    # event=models.ManyToManyField(Event, related_name="events") # through='Event'?
+    attendee=models.ForeignKey(AppUser, on_delete = models.CASCADE, related_name="attendees")
+    event=models.ForeignKey(Event, on_delete = models.CASCADE, related_name="events")
 
     def __str__(self):
         return f"ID: {self.id}, Attendee: {self.attendee}"
