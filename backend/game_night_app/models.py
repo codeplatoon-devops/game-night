@@ -86,7 +86,7 @@ class Group(models.Model):
 
 class GroupList(models.Model):
     owner = models.OneToOneField(AppUser, default=None, on_delete = models.CASCADE, related_name='owner')
-    group = models.ManyToManyField(Group, null=True, related_name='Listgroups')
+    group = models.ManyToManyField(Group, blank=True, related_name='Listgroups')
     # not sure how to create a __str__ for this?
 
 class GroupRequest(models.Model):
