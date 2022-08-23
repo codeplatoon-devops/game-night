@@ -202,7 +202,8 @@ export const SignUpForm = () => {
 										name="username"
 										render={({ input, meta }) => (
 											<div className="field">
-												<span className="p-float-label">
+												<span className="p-float-label p-input-icon-right">
+												<i className="pi pi-user" />
 													<InputText
 														id="username"
 														{...input}

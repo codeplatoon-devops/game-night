@@ -88,7 +88,7 @@ export const LoginForm = () => {
 												render={({ input, meta }) => (
 													<div className="field">
 														<span className="p-float-label p-input-icon-right">
-															<i className="pi pi-envelope" />
+															<i className="pi pi-user" />
 															<InputText
 																id="username"
 																{...input}
@@ -123,12 +123,14 @@ export const LoginForm = () => {
 											/>
 											<Field
 												name="password"
+												className="password-field"
 												render={({ input, meta }) => (
 													<div className="field">
 														<span className="p-float-label">
 															<Password
 																id="password"
 																{...input}
+																feedback={false}
 																toggleMask
 																className={classNames(
 																	{
