@@ -8,6 +8,7 @@ import stream_chat
 import requests
 import os
 from dotenv import load_dotenv
+from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
 
 
 load_dotenv()
@@ -35,7 +36,7 @@ def create_chat_user_token(request):
 
 
     
-@api_view(['PUT'])
+@api_view(['POST'])
 def create_group_request(request):
     print('YOU ARE IN THE PUT REQUEST ON DJANGO FOR CREATE GROUP REQUESTS')
     user_email = request.user.email
@@ -83,9 +84,77 @@ def view_group_request(request):
         return JsonResponse({'success': "False", 'reason': "you don't have any group requests"})
 
 @api_view(['POST'])
+def create_event_request(request):
+    print('YOU ARE IN THE POST REQUEST ON DJANGO FOR CREATE EVENT REQUESTS')
+    user_email = request.user.email
+    friend_email = request.data['friend_email']
+    # could give the user the option to invite an entire group or send to specific individuals - the rest of the code assumes an individual, but I would think group invite would be nice as well.
+    # would need if we do group invite:::: group_code = request.data['group_code']
+    event_code = request.data['event_code']
+    print('USER EMAIL', user_email, 'FRIEND EMAIL', friend_email, 'event code', event_code)
+    user = AppUser.objects.get(email = user_email)
+    friend = AppUser.objects.get(email = friend_email)
+    event = Event.objects.get(code = code)
+    if event is not None:
+        if friend is not None:
+            try:
+                event_request = EventRequest(sender = user, receiver = friend, event = event)
+                event_request.full_clean
+                event_request.save()
+                print('YOUR NEW EVENT REQUEST IS', event_request)
+                return JsonResponse({'success': "True", 'action':'event request created in db'})
+            except Exception as e:
+                return JsonResponse({'success': "False", 'reason': f'something went wrong, {str(e)}'})
+        else:
+            return JsonResponse({'success': "False", 'reason': 'friends account doesnt exist'})
+    else:
+        return JsonResponse({'success': "False", 'reason': 'event doesnt exist'})
+
+@api_view(['GET'])
+def view_event_request(request):
+    print('YOU ARE IN THE GET REQUEST ON DJANGO FOR VIEW EVENT REQUESTS')
+    user_email = request.user.email
+    user = AppUser.objects.get(email = user_email)
+    # view any requests sent to the user
+    event_requests = EventRequest.objects.filter(receiver= user, is_active = True)
+    if event_requests:
+        list_of_event_requests=[]
+        for item in event_requests:
+            #sends back the emails of all pending event requests
+            sender = item.sender
+            list_of_event_requests.append(sender.email)
+        print('list of event_requests:', list_of_event_requests)
+        try:
+            return JsonResponse({'success': "True", 'event_requests': list_of_event_requests})
+        except Exception as e:
+            return JsonResponse({'success': "False", 'reason': f'something went wrong, {str(e)}'})
+    else:
+        return JsonResponse({'success': "False", 'reason': "you don't have any group requests"})
+
+@api_view(['POST'])
 def log_out(request):
     logout(request)
     return JsonResponse({'user logged out': True})
+
+@api_view(['PUT'])
+def log_in(request):
+    print('in django login, request is', request)
+    username= request.data['username']
+    password = request.data['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            try:
+                login(request._request, user)
+                print(f"{username} IS LOGGED IN!!!!!!!!!")
+                return JsonResponse({'success': "True", 'action': 'user logged in'}) 
+            except Exception as e:
+                return JsonResponse({'success': "False", 'reason': f'failed to login, {str(e)}'})
+        else:
+            return JsonResponse({'success': "False", 'reason': 'This account has been disabled, please sign-up again'})
+    else:
+        return JsonResponse({'success': "False", 'reason': "This account doesn't exist, please sign-up"})    
+
 
 @api_view(['GET'])
 def bga_games(request):
@@ -103,6 +172,46 @@ def bga_games(request):
     raw_response = requests.get(url, params=payload)
     json_response = raw_response.json()
     return JsonResponse(json_response)
+
+
+
+
+@api_view(['POST'])
+def sign_up(request):
+    print('IN DJANGO SIGN UP, REQUEST.DATA IS', request.data)
+    user_email=request.data['email']
+    username = request.data['username']
+    password = request.data['password']
+    first_name = request.data['firstname']
+    last_name = request.data['lastname']
+    print('IN DJANGO SIGN UP', user_email, username, first_name, last_name)
+    try:
+        all_users = AppUser.objects.all()
+        all_user_emails=[]
+        for user in all_users:
+            all_user_emails.append(user.email)
+        if user_email in all_user_emails:
+            return JsonResponse({'success': "False", 'reason': 'This email already exists, please log-in'})
+        else:
+            # https://docs.djangoproject.com/en/4.1/ref/contrib/auth/
+            newUser = AppUser.objects.create_user(username=username, password=password, email=user_email, last_name= last_name, first_name=first_name)
+            newUser.full_clean
+            newUser.save()
+            list= GroupList(owner = newUser)
+            list.full_clean
+            list.save()
+            print('new user is', newUser, 'new list is', list)
+            return JsonResponse({'success': "True", 'action': 'user signed up, list created'})
+    except Exception as e:
+        return JsonResponse({'success': "False", 'reason': str(e)})
+
+def whoami(request):
+    if request.user.is_authenticated:
+        print('user authenticated')
+        data = serializers.serialize("json", [request.user], fields=['email', 'username'])
+        return HttpResponse(data)
+    else:
+        return JsonResponse({'user': False})
 
 
 # Alisha comments:

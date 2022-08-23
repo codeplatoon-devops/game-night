@@ -7,6 +7,8 @@ import { Password } from "primereact/password";
 import { classNames } from "primereact/utils";
 import { Divider } from "primereact/divider";
 import "./LogInForm.css";
+import { Container, Row, Col } from "react-bootstrap";
+import axios from "axios";
 
 export const LoginForm = () => {
 	const [formData, setFormData] = useState({});
@@ -14,13 +16,14 @@ export const LoginForm = () => {
 
 	const validate = (data) => {
 		let errors = {};
-		if (!data.email) {
-			errors.email = "Email is required.";
-		} else if (
-			!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
-		) {
-			errors.email = "Invalid email address. E.g. example@email.com";
-		}
+		if (!data.username) {
+			errors.username = "Username is required.";
+		} 
+		// else if (
+			// !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
+		// ) {
+		// 	errors.email = "Invalid email address. E.g. example@email.com";
+		// }
 		if (!data.password) {
 			errors.password = "Password is required.";
 		}
@@ -28,11 +31,22 @@ export const LoginForm = () => {
 	};
 
 	const onSubmit = (data, form) => {
+		// do we need to set the formdata or just send it to the server? can we pass in event to prevent default?
 		setFormData(data);
-		// navigate to home on login
-		navigate("/");
-		// clear form
-		form.restart();
+		// event.preventDefault();
+		axios.put('/login',data).then((response) => {
+			console.log('YOU ARE IN THE REACT .THEN RESPONSE FROM LOGIN', response)
+			if (response.data.success==='False') {
+				window.alert(response.data.reason)
+			}
+			else {
+				
+				// navigate to home on login
+				navigate("/");
+				// clear form
+				form.restart();
+			}
+			})
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
@@ -44,110 +58,132 @@ export const LoginForm = () => {
 		);
 	};
 
-	const passwordHeader = <h6>Pick a password</h6>;
-	const passwordFooter = (
-		<React.Fragment>
-			<Divider />
-			<p className="mt-2">Suggestions</p>
-			<ul className="pl-2 ml-2 mt-0" style={{ lineHeight: "1.5" }}>
-				<li>At least one lowercase</li>
-				<li>At least one uppercase</li>
-				<li>At least one numeric</li>
-				<li>Minimum 8 characters</li>
-			</ul>
-		</React.Fragment>
-	);
+	const handleClick = () => {
+		navigate("/signup");
+	};
 
 	return (
-		<div className="form-login">
-			<div className="flex justify-content-center">
-				<div className="card">
-					<h2 className="text-center">Log in</h2>
-					<Form
-						onSubmit={onSubmit}
-						initialValues={{
-							email: "",
-							password: "",
-						}}
-						validate={validate}
-						render={({ handleSubmit }) => (
-							<form onSubmit={handleSubmit} className="p-fluid">
-								<Field
-									name="email"
-									render={({ input, meta }) => (
-										<div className="field">
-											<span className="p-float-label p-input-icon-right">
-												<i className="pi pi-envelope" />
-												<InputText
-													id="email"
-													{...input}
-													className={classNames({
-														"p-invalid":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												/>
-												<label
-													htmlFor="email"
-													className={classNames({
-														"p-error":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												>
-													Email*
-												</label>
-											</span>
-											{getFormErrorMessage(meta)}
-										</div>
+		<Container>
+			{/* <Col></Col> */}
+			<Col>
+				<Row>
+					<div className="form-login">
+						<div className="flex justify-content-center">
+							<div className="card card-login">
+								<h2 className="text-center">Log in</h2>
+								<Form
+									onSubmit={onSubmit}
+									initialValues={{
+										username: "",
+										password: "",
+									}}
+									validate={validate}
+									render={({ handleSubmit }) => (
+										<form
+											onSubmit={handleSubmit}
+											className="p-fluid"
+										>
+											<Field
+												name="username"
+												render={({ input, meta }) => (
+													<div className="field">
+														<span className="p-float-label p-input-icon-right">
+															<i className="pi pi-envelope" />
+															<InputText
+																id="username"
+																{...input}
+																className={classNames(
+																	{
+																		"p-invalid":
+																			isFormFieldValid(
+																				meta
+																			),
+																	}
+																)}
+															/>
+															<label
+																htmlFor="username"
+																className={classNames(
+																	{
+																		"p-error":
+																			isFormFieldValid(
+																				meta
+																			),
+																	}
+																)}
+															>
+																Username*
+															</label>
+														</span>
+														{getFormErrorMessage(
+															meta
+														)}
+													</div>
+												)}
+											/>
+											<Field
+												name="password"
+												render={({ input, meta }) => (
+													<div className="field">
+														<span className="p-float-label">
+															<Password
+																id="password"
+																{...input}
+																toggleMask
+																className={classNames(
+																	{
+																		"p-invalid":
+																			isFormFieldValid(
+																				meta
+																			),
+																	}
+																)}
+															/>
+															<label
+																htmlFor="password"
+																className={classNames(
+																	{
+																		"p-error":
+																			isFormFieldValid(
+																				meta
+																			),
+																	}
+																)}
+															>
+																Password*
+															</label>
+														</span>
+														{getFormErrorMessage(
+															meta
+														)}
+													</div>
+												)}
+											/>
+											<Button
+												type="submit"
+												label="Log In"
+												className="mt-2 btn-continue"
+											/>
+										</form>
 									)}
 								/>
-								<Field
-									name="password"
-									render={({ input, meta }) => (
-										<div className="field">
-											<span className="p-float-label">
-												<Password
-													id="password"
-													{...input}
-													toggleMask
-													className={classNames({
-														"p-invalid":
-															isFormFieldValid(
-																meta
-															),
-													})}
-													header={passwordHeader}
-													footer={passwordFooter}
-												/>
-												<label
-													htmlFor="password"
-													className={classNames({
-														"p-error":
-															isFormFieldValid(
-																meta
-															),
-													})}
-												>
-													Password*
-												</label>
-											</span>
-											{getFormErrorMessage(meta)}
-										</div>
-									)}
-								/>
+								<Divider
+									className="form-login-divider"
+									align="center"
+								>
+									Or
+								</Divider>
 								<Button
-									type="submit"
-									label="Continue"
-									className="mt-2 btn-continue"
+									onClick={handleClick}
+									className="text-center"
+									label="Sign Up"
 								/>
-							</form>
-						)}
-					/>
-				</div>
-			</div>
-		</div>
+							</div>
+						</div>
+					</div>
+				</Row>
+			</Col>
+			{/* <Col></Col> */}
+		</Container>
 	);
 };

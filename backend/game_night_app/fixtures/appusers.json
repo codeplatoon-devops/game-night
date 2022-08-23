@@ -8,7 +8,7 @@
             "username": "fred",
             "is_staff": "False",
             "is_active": "True",
-            "date_joined": "2022-08-08",
+            "date_joined": "2022-08-08T00:00:00+00:00",
             "email": "fred@email.com",
             "first_name": "Fred",
             "last_name": "Smith"
@@ -23,7 +23,7 @@
             "username": "bill",
             "is_staff": "False",
             "is_active": "True",
-            "date_joined": "2022-08-09",
+            "date_joined": "2022-08-09T00:00:00+00:00",
             "email": "bill@email.com",
             "first_name": "Bill",
             "last_name": "Jones"
@@ -38,10 +38,40 @@
             "username": "sally",
             "is_staff": "False",
             "is_active": "True",
-            "date_joined": "2022-08-10",
+            "date_joined": "2022-08-10T00:00:00+00:00",
             "email": "sally@email.com",
             "first_name": "Sally",
             "last_name": "Green"
+        }
+    },
+    {
+        "model": "game_night_app.AppUser",
+        "pk": 4,
+        "fields": {
+            "password": "password",
+            "is_superuser": "False",
+            "username": "jim",
+            "is_staff": "False",
+            "is_active": "True",
+            "date_joined": "2022-08-10T00:00:00+00:00",
+            "email": "jim@email.com",
+            "first_name": "Jim",
+            "last_name": "Jones"
+        }
+    },
+    {
+        "model": "game_night_app.AppUser",
+        "pk": 5,
+        "fields": {
+            "password": "password",
+            "is_superuser": "False",
+            "username": "john",
+            "is_staff": "False",
+            "is_active": "True",
+            "date_joined": "2022-08-10T00:00:00+00:00",
+            "email": "john@email.com",
+            "first_name": "John",
+            "last_name": "Doe"
         }
     }
 ]
