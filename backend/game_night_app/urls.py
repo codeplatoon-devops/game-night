@@ -9,6 +9,7 @@ urlpatterns = [
     path('eventrequest/view', views.view_event_request),
     path('logout', views.log_out),
     path('login', views.log_in),
+    path('signup', views.sign_up),
     path('games', views.bga_games),
 
 ]
