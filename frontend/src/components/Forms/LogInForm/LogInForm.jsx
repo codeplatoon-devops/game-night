@@ -8,12 +8,7 @@ import { classNames } from "primereact/utils";
 import { Divider } from "primereact/divider";
 import "./LogInForm.css";
 import { Container, Row, Col } from "react-bootstrap";
-<<<<<<< HEAD
 import axios from "axios";
-=======
-// regular axios gave me an error: https://stackoverflow.com/questions/65900822/import-axios-causes-problems-in-vue-v3-and-vite
-import axios from 'axios'
->>>>>>> main
 
 export const LoginForm = () => {
 	const [formData, setFormData] = useState({});
