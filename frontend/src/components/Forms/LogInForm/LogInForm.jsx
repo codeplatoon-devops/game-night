@@ -51,7 +51,7 @@ export const LoginForm = () => {
 
 	return (
 		<Container as={Row}>
-			<Col></Col>
+			{/* <Col></Col> */}
 			<Col xs={5}>
 				<Row>
 					<div className="form-login">

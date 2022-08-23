@@ -4,6 +4,7 @@
 .card {
 	padding: 2em;
 	margin: 2em;
+	width: 400px !important;
 }
 .field {
 	margin-top: 1.5em;
