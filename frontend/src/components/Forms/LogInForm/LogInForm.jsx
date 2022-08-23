@@ -29,11 +29,22 @@ export const LoginForm = () => {
 	};
 
 	const onSubmit = (data, form) => {
+		// do we need to set the formdata or just send it to the server? can we pass in event to prevent default?
 		setFormData(data);
-		// navigate to home on login
-		navigate("/");
-		// clear form
-		form.restart();
+		// event.preventDefault();
+		axios.post('/login',data).then((response) => {
+			console.log('YOU ARE IN THE REACT .THEN RESPONSE FROM LOGIN', response)
+			if (response.data.success==='False') {
+				window.alert(response.data.reason)
+			}
+			else {
+				
+				// navigate to home on login
+				navigate("/");
+				// clear form
+				form.restart();
+			}
+			})
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
