@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.send_the_homepage),
+    path('chattoken', views.create_chat_user_token),
     path('grouprequest/create', views.create_group_request),
     path('grouprequest/view', views.view_group_request),
     path('eventrequest/create', views.create_event_request),
@@ -12,5 +13,6 @@ urlpatterns = [
     path('signup', views.sign_up),
     path('whoami', views.whoami),
     path('games', views.bga_games),
+    path('streamapi', views.stream_api),
 
 ]

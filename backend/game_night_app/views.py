@@ -3,10 +3,13 @@ from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view
+# pip install stream-chat
+import stream_chat
 import requests
 import os
 from dotenv import load_dotenv
 from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
+
 
 load_dotenv()
 
@@ -16,6 +19,30 @@ load_dotenv()
 def send_the_homepage(request):
     theIndex = open('static/index.html').read()
     return HttpResponse(theIndex)
+
+@api_view(['GET'])
+def create_chat_user_token(request):
+    try:
+        user_email= request.user.email
+        user = AppUser.objects.get(email = user_email)
+        user_id= user.id
+        print('IN TOKEN ON DJANGO, user', user, 'user id', user_id)
+        server_client = stream_chat.StreamChat(api_key=os.environ['chatapikey'], api_secret=os.environ['secretchatkey'])
+        token = server_client.create_token(user_id)
+        print('IN CREATE CHAT USER TOKEN, TOKEN IS', token)
+        return JsonResponse({'succes':'true', 'token': token})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to create token, {str(e)}'})
+
+@api_view(['GET'])
+def stream_api(request):
+    api=os.environ['stream_key']
+    print('IN STREAM API REQUEST', api, 'type', type(api))
+    try:
+        return JsonResponse({'succes':'true', 'api': api})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to send key, {str(e)}'})
+
     
 @api_view(['POST'])
 def create_group_request(request):
@@ -115,14 +142,15 @@ def view_event_request(request):
 @api_view(['POST'])
 def log_out(request):
     logout(request)
+    print('USER IS LOGGED OUT')
     return JsonResponse({'user logged out': True})
 
 @api_view(['PUT'])
 def log_in(request):
-    print('in django login, request is', request)
     username= request.data['username']
     password = request.data['password']
     user = authenticate(username=username, password=password)
+    print('user is', user)
     if user is not None:
         if user.is_active:
             try:
@@ -153,6 +181,9 @@ def bga_games(request):
     raw_response = requests.get(url, params=payload)
     json_response = raw_response.json()
     return JsonResponse(json_response)
+
+
+
 
 @api_view(['POST'])
 def sign_up(request):
@@ -190,3 +221,10 @@ def whoami(request):
         return HttpResponse(data)
     else:
         return JsonResponse({'user': False})
+
+
+# Alisha comments:
+
+# source ~/VEnvirons/GameNight/bin/activate
+# pip install -r requirements.txt
+# http://127.0.0.1:8000/
