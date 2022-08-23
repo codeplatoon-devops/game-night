@@ -46,7 +46,7 @@ class Event(models.Model):
     private=models.BooleanField(default=False, blank=True, null=True, verbose_name="Private game") # or choice between 'public' and 'private'?
     address=models.ForeignKey(Address, on_delete=models.CASCADE, related_name='Addresses') 
     date_time=models.DateTimeField(blank=True, null=True, default=None, verbose_name="Game date and time")
-    all_daye=models.BooleanField(default=False, blank=True, null=True, verbose_name="All day")
+    all_day=models.BooleanField(default=False, blank=True, null=True, verbose_name="All day")
     about=models.TextField(blank=True, null=True, default=None, verbose_name="About")
 
     def __str__(self):
