@@ -46,7 +46,7 @@
     },
     {
         "model": "game_night_app.AppUser",
-        "pk": 3,
+        "pk": 4,
         "fields": {
             "password": "password",
             "is_superuser": "False",
@@ -61,7 +61,7 @@
     },
     {
         "model": "game_night_app.AppUser",
-        "pk": 3,
+        "pk": 5,
         "fields": {
             "password": "password",
             "is_superuser": "False",
@@ -141,6 +141,7 @@
             "private": "True",
             "address": 1,
             "date_time": "2022-08-12T11:44:59+00:00",
+            "all_day": "False",
             "about": "These are starter notes for event 1"
         }
     },
@@ -156,6 +157,7 @@
             "private": "False",
             "address": 2,
             "date_time": "2022-08-01T09:15:00+00:00",
+            "all_day": "False",
             "about": "These are starter notes for event 2"
         }
     },
@@ -171,6 +173,7 @@
             "private": "False",
             "address": 3,
             "date_time": "2022-08-20T19:15:00+00:00",
+            "all_day": "True",
             "about": "These are starter notes for event 3"
         }
     },
@@ -186,6 +189,7 @@
             "private": "True",
             "address": 4,
             "date_time": "2022-08-01T12:00:00+00:00",
+            "all_day": "False",
             "about": "These are starter notes for event 4"
         }
     },
@@ -201,6 +205,7 @@
             "private": "False",
             "address": 5,
             "date_time": "2022-08-15T15:15:15+00:00",
+            "all_day": "True",
             "about": "These are starter notes for event 5"
         }
     },
@@ -369,7 +374,9 @@
         "pk": 1,
         "fields": {
             "owner": 1,
-            "group": 1
+            "group": [
+                1
+            ]
         }
     },
     {
@@ -377,7 +384,9 @@
         "pk": 2,
         "fields": {
             "owner": 2,
-            "group": 2
+            "group": [
+                2
+            ]
         }
     },
     {
@@ -385,7 +394,9 @@
         "pk": 3,
         "fields": {
             "owner": 3,
-            "group": 3
+            "group": [
+                3
+            ]
         }
     },
     {
@@ -393,7 +404,9 @@
         "pk": 4,
         "fields": {
             "owner": 4,
-            "group": 4
+            "group": [
+                4
+            ]
         }
     },
     {
@@ -401,7 +414,9 @@
         "pk": 5,
         "fields": {
             "owner": 5,
-            "group": 5
+            "group": [
+                5
+            ]
         }
     },
     {

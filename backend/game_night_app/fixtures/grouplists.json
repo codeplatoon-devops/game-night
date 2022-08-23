@@ -4,7 +4,9 @@
         "pk": 1,
         "fields": {
             "owner": 1,
-            "group": 1
+            "group": [
+                1
+            ]
         }
     },
     {
@@ -12,7 +14,9 @@
         "pk": 2,
         "fields": {
             "owner": 2,
-            "group": 2
+            "group": [
+                2
+            ]
         }
     },
     {
@@ -20,7 +24,9 @@
         "pk": 3,
         "fields": {
             "owner": 3,
-            "group": 3
+            "group": [
+                3
+            ]
         }
     },
     {
@@ -28,7 +34,9 @@
         "pk": 4,
         "fields": {
             "owner": 4,
-            "group": 4
+            "group": [
+                4
+            ]
         }
     },
     {
@@ -36,7 +44,9 @@
         "pk": 5,
         "fields": {
             "owner": 5,
-            "group": 5
+            "group": [
+                5
+            ]
         }
     }
 ]

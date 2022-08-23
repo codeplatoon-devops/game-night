@@ -46,6 +46,7 @@ class Event(models.Model):
     private=models.BooleanField(default=False, blank=True, null=True, verbose_name="Private game") # or choice between 'public' and 'private'?
     address=models.ForeignKey(Address, on_delete=models.CASCADE, related_name='Addresses') 
     date_time=models.DateTimeField(blank=True, null=True, default=None, verbose_name="Game date and time")
+    all_day=models.BooleanField(default=False, blank=True, null=True, verbose_name="All day")
     about=models.TextField(blank=True, null=True, default=None, verbose_name="About")
 
     def __str__(self):
@@ -86,7 +87,7 @@ class Group(models.Model):
 
 class GroupList(models.Model):
     owner = models.OneToOneField(AppUser, default=None, on_delete = models.CASCADE, related_name='owner')
-    group = models.ManyToManyField(Group, null=True, related_name='Listgroups')
+    group = models.ManyToManyField(Group, blank=True, related_name='Listgroups')
     # not sure how to create a __str__ for this?
 
 class GroupRequest(models.Model):
