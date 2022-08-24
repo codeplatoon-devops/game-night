@@ -156,11 +156,11 @@ export default function GroupPage({user, token, stream}) {
 						</Row>
 					</Col>
 					<Col md={8}>
-						{groups || groupInformation
-						?
+						{/* {groups || groupInformation
+						? */}
 						<Chatroom user={user} token = {token} stream={stream} groupInformation={groupInformation}/>
-						: null
-						}
+						{/* : null
+						} */}
 					</Col>
 				</Row>
 			</Container>

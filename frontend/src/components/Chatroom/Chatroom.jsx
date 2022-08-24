@@ -19,35 +19,26 @@ function Chatroom ({user, token, stream, groupInformation}) {
     const sort = {last_message_at: -1}
 
     const createChannel = async () => {
-        // instead of this channel ID we probably want to put something like groupChat_<group_id> or eventChat_<event_id>
-        // const channelId = name.replace(/\s/g, "-").toLowerCase();
-        let channelId = "Chatroom"
-        let channelName= groupInformation[0]
-        channelName += 'Chatroom'
-        channelId+=groupInformation[1].toString()
-        console.log('channelID is', channelId, 'channel name is', channelName)
-
-
-        // let channel = client.channel('messaging', channelId, {
-        //     name: channelName,
-        //     image: 'https://picsum.photos/200',
-        //     // members:[client.user.id],
-        //     members:[user_id],
-        // })
-        // await channel.create()
-
-        // await channel.watch()
-        // setActiveChannel(channel)
-
-        const new_channel = chatClient.channel('messaging', channelId, {
-            // add as many custom fields as you'd like
-            image: 'https://picsum.photos/200',
-            // instead of name 
-            name: channelName,
-            members: [user_id]
-        })
-
-        await new_channel.watch()
+        if (client) {
+            let channelId = "Chatroom"
+            let channelName= groupInformation[0]
+            channelName += 'Chatroom'
+            channelId+=groupInformation[1].toString()
+            console.log('channelID is', channelId, 'channel name is', channelName)
+            const user_id= (user.id).toString()
+            // setActiveChannel(channel)
+    
+            const new_channel = client.channel('messaging', channelId, {
+                image: 'https://picsum.photos/200',
+                name: channelName,
+                members: [user_id]
+            })
+    
+            await new_channel.watch()
+        }
+        else {
+            setTimeout(createChannel, 3000)
+        }
     }
 
     useEffect(()=> {
@@ -62,24 +53,22 @@ function Chatroom ({user, token, stream, groupInformation}) {
             async function init() {
                 const user_id= (user.id).toString()
                 const chatClient = StreamChat.getInstance(stream)
-                //need to get this userToken from the backend
                 // https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
                 await chatClient.connectUser(user, token)
                 
-    
                 //shouldn't need all this channel specific stuff since have channel list
-                const first_channel = chatClient.channel('messaging', 'SiteChat', {
-                    // add as many custom fields as you'd like
-                    image: 'https://picsum.photos/200',
-                    // instead of name 
-                    name: 'Site-wide Chatroom',
-                    members: [user_id]
-                })
+                // const first_channel = chatClient.channel('messaging', 'SiteChat', {
+                //     // add as many custom fields as you'd like
+                //     image: 'https://picsum.photos/200',
+                //     // instead of name 
+                //     name: 'Site-wide Chatroom',
+                //     members: [user_id]
+                // })
     
                 // await channel.create()
                 // setChannel(channel)
                 // channel.addMembers(user_id)
-                await first_channel.watch()
+                // await first_channel.watch()
                 setClient(chatClient)
     
             }
