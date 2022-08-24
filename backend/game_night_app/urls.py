@@ -14,5 +14,6 @@ urlpatterns = [
     path('whoami', views.whoami),
     path('games', views.bga_games),
     path('streamapi', views.stream_api),
+    path('events/create', views.create_event),
 
 ]
