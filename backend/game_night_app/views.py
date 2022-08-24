@@ -1,19 +1,16 @@
+from audioop import add
 from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 # pip install stream-chat
 import stream_chat
+import random
 import requests
 import os
 from dotenv import load_dotenv
-from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
-import random
-from django.contrib.auth.decorators import login_required
-from django.forms.models import model_to_dict
-from .serializers import EventSerializer, EventListSerializer
+from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest, Address
 
 
 load_dotenv()
@@ -60,7 +57,6 @@ def create_group_request(request):
     user = AppUser.objects.get(email = user_email)
     friend = AppUser.objects.get(email = friend_email)
     group = Group.objects.get(code = code)
-    print('in group request user is', user, 'friend is', friend, 'group is', group)
     if group is not None:
         if friend is not None:
             try:
@@ -82,14 +78,13 @@ def view_group_request(request):
     user_email = request.user.email
     user = AppUser.objects.get(email = user_email)
     # view any requests sent to the user
-    group_requests = GroupRequest.objects.filter(receiver= user)
+    group_requests = GroupRequest.objects.filter(receiver= user, is_active = True)
     if group_requests:
         list_of_group_requests=[]
         for item in group_requests:
             #sends back the emails of all pending group requests
-            sender = AppUser.objects.get(id = item.sender_id)
-            group = Group.objects.get(id = item.group_id)
-            list_of_group_requests.append([sender.email, group.name])
+            sender = item.sender
+            list_of_group_requests.append(sender.email)
         print('list of group_requests:', list_of_group_requests)
         try:
             return JsonResponse({'success': "True", 'group_requests': list_of_group_requests})
@@ -131,7 +126,7 @@ def view_event_request(request):
     user_email = request.user.email
     user = AppUser.objects.get(email = user_email)
     # view any requests sent to the user
-    event_requests = EventRequest.objects.filter(receiver= user)
+    event_requests = EventRequest.objects.filter(receiver= user, is_active = True)
     if event_requests:
         list_of_event_requests=[]
         for item in event_requests:
@@ -228,127 +223,44 @@ def whoami(request):
         return HttpResponse(data)
     else:
         return JsonResponse({'user': False})
-
-@login_required
-@api_view(['GET'])
-def group_code(request):
-    all_groups = Group.objects.all()
-    all_codes = []
-    for group in all_groups:
-        all_codes.append(group.code)
-    code = str(random.randint(10001,99999999))
-    while code in all_codes:
-        code = str(random.randint(10001,99999999))
-    return JsonResponse({'success': 'True', 'group_code': code})
-
-@login_required
-@api_view(['POST'])
-def create_group(request):
-    new_group_name=request.data['name']
-    code = request.data['code']
-    user = AppUser.objects.get(email = request.user.email)
-    print('user here in create group', user)
-    try:
-        new_group = Group(name = new_group_name, code = code)
-        # I tried to have member = user in line above and got this error "'Direct assignment to the forward side of a many-to-many set is prohibited. Use member.set() instead.'"
-        new_group.full_clean()
-        new_group.save()
-        # print('new group is', new_group)
-        new_group.member.add(user)
-        new_group.save()
-        # print('new member now added', dir(new_group))
-        # this is adding it as game_night_app_group_member in the database
-        # adding the group to their group list
-        # I'm actually starting to think we don't need group list
-        # list = GroupList.objects.get(owner = user)
-        # list.group.add(new_group)
-        # list.save()
-        return JsonResponse({'success': "True", 'action': "group created"})
-    except Exception as e:
-        return JsonResponse({'success': "False", 'reason': str(e)})
-
-
-@login_required
-@api_view(['PUT'])
-# accepts a group request then deletes it
-def join_group(request):
-    user = AppUser.objects.get(email = request.user.email)
-    friend= AppUser.objects.get(email = request.data['friend_email'])
-    code = request.data['code']
-    list = GroupList.objects.get(owner = user)
-    all_groups = Group.objects.all()
-    all_codes = []
-    for group in all_groups:
-        all_codes.append(group.code)
-    if code in all_codes:
-        if friend != None:
-            try:
-                group = Group.objects.get(code= code)
-                group.member.add(user)
-                # not sure I have this right:
-                print('group members are', group.member.all())
-                # adding this group to their list:
-                list.group.add(group)
-                list.save()
-                # not sure I have this part right:
-                print('group has been added to list', group.listgroups)
-                # setting the group request to inactive:
-                group_request = GroupRequest.objects.get(sender = friend, receiver = user)
-                group_request.delete()
-                print('group request should now be deleted', group_request)
-                return JsonResponse({'success': "True", 'action': "group created"})
-            except Exception as e:
-                return JsonResponse({'success': "False", 'reason': str(e)})
-        else:
-            return JsonResponse({'success': False, 'reason': 'friends account no longer exists'})
-    else:
-        return JsonResponse({'success': "False", 'reason': 'this group code doesnt exist'})
-
-@login_required
-@api_view(['GET'])
-def view_groups(request):
-    user = AppUser.objects.get(email = request.user.email)
-    # groups = Group.objects.filter(member = user)
-    groups = user.members.all()
-    print('GROUPS HERE LINE 309', groups)
-    if len(groups)>0:
-        list_of_groups=[]
-        for group in groups:
-            list_of_groups.append(group.name)
-            print('group.name here', group.name)
-        print('list of groups line 314:', list_of_groups)
-        try:
-            return JsonResponse({'success': 'True', 'groups': list_of_groups})
-        except Exception as e:
-            return JsonResponse({'success': "False", 'reason': str(e)})
-    else:
-        return JsonResponse({'success': "False", 'reason': "you don't have any groups"})
+    
+@api_view(['POST'])   
+def create_event(request):  
+    if request.method == 'POST':
+        print('IN DJANGO EVENT CREATION, REQUEST.DATA IS', request.data)
+        
+        address_1 = request.data['addressLine1']
+        address_2 = request.data['addressLine2']
+        city = request.data['city']
+        state = request.data['state']
+        zip_code = request.data['zip']
+        new_address = Address(address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code)
+        new_address.full_clean()
+        new_address.save()
+        
+        name = request.data['event_name']
+        code = str(random.randint(10001, 99999999))
+        category = request.data['category']
+        max_attendees = request.data['attendees']
+        games = request.data['games']
+        private = request.data['private']
+        chat_creation = request.data['chatcreation']
+        all_day = request.data['allDay']
+        start_time = request.data['eventStart']
+        end_time = request.data['eventEnd']
+        description = request.data['description']
+        user = AppUser.objects.get(email = request.user.email)
+        
+        new_event = Event(owner=user, address=new_address, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
+        new_event.full_clean()
+        new_event.save()
+        return JsonResponse({'added event': True})
+        
+    return JsonResponse({'get event': True})
 
 
 # Alisha comments:
+
 # source ~/VEnvirons/GameNight/bin/activate
 # pip install -r requirements.txt
 # http://127.0.0.1:8000/
-
-@api_view(['GET'])
-def userevents(request):
-    if request.user.is_authenticated:
-        events = Event.objects.filter(owner=request.user.id)
-        data = serializers.serialize('json',events)
-        print(data)
-
-        return HttpResponse(data, content_type='application/json')
-    else:
-        return JsonResponse({'user': False})
-
-@api_view(['GET'])
-def allevents(request):
-    try:
-        events = Event.objects.all()
-        data = serializers.serialize('json', events)
-        print(data)
-        return HttpResponse(data, content_type='application/json')
-    except:
-        return Response('error fetching events')
-    
-
