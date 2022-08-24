@@ -308,7 +308,7 @@ def view_groups(request):
         except Exception as e:
             return JsonResponse({'success': "False", 'reason': str(e)})
     else:
-        return JsonResponse({'success': False, 'reason': "you don't have any groups"})
+        return JsonResponse({'success': "False", 'reason': "you don't have any groups"})
 
 
 # Alisha comments:
