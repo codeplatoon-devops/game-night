@@ -7,8 +7,8 @@ import { Container } from "react-bootstrap";
 
 export const PendingInvitesEvents = () => {
 	const [showMessage, setShowMessage] = useState(false);
-	const onClose = () => {
-		setShowMessage(false);
+	const detailsToggle = () => {
+		setShowMessage(!showMessage);
 	};
 	const invites = [
 		{
@@ -16,7 +16,11 @@ export const PendingInvitesEvents = () => {
 			category: "DnD",
 			location: "city state",
 			date: "24 Aug 2022",
-			details: <Button onClick={onClose}>laksfjwefoi</Button>,
+			details: (
+				<Button onClick={detailsToggle}>
+					{showMessage ? "Hide Details" : "Show Details"}
+				</Button>
+			),
 		},
 	];
 	// const dialogFooter = (
@@ -47,8 +51,7 @@ export const PendingInvitesEvents = () => {
 			</Dialog> */}
 			<DataTable value={invites}>
 				<Column field="eventName" header="Event Name" />
-				<Column field="category" header="Category" />
-				<Column field="details" header="Description" />
+				<Column field="details" header="Details" />
 			</DataTable>
 		</Container>
 	);
