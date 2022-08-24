@@ -1,10 +1,10 @@
-import GroupCreationForm from "../components/Forms/GroupCreationForm/GroupCreationForm";
+
+import { PendingInvitesEvents } from "../components/Tables/PendingInvitesEvents/PendingInvitesEvents";
 
 export default function AccountPage() {
 	return (
 		<div>
-			<h1>Account Page</h1>
-			<GroupCreationForm />
+			<PendingInvitesEvents />
 		</div>
 	);
 }
