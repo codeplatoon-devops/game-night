@@ -37,7 +37,7 @@ export default function GroupPage({user, token, stream}) {
 					"view groups response.data", response.data)
 				if (response.data.success == "True") {
 					let new_groups = response && response.data && response.data.groups
-					// setGroups(new_groups)
+					setGroups(new_groups)
 				}
 				else{
 				}
@@ -55,7 +55,10 @@ export default function GroupPage({user, token, stream}) {
 					window.alert(`Group created! Your group code has been assigned ${groupCode}`)
 					// CreateChannel(name, code)
 					setGroupInformation([name,code])
-					nav('/groups')
+					viewGroups()
+					// nav('/groups')
+					// window.location.reload()
+					// the reload is messing with the chatrooms
 				}
 				else {
 					window.alert(`${response.data.reason}`)
@@ -133,12 +136,12 @@ export default function GroupPage({user, token, stream}) {
 						? 
 						<div>
 						{groups.map((group) => (
-							<h4>{group.name}</h4>
+							<h4>{group}</h4>
 						))}
 						</div>
 						: null
 						}
-						<Button onClick={()=>createGroup("TestGroup1")}>Create Group</Button>
+						<Button onClick={()=>createGroup("TestGroup3")}>Create Group</Button>
 						<Button onClick={()=>createGroupRequest("jim@email.com")}>Create Group Request</Button>
 						<Row>
 							<Col>
