@@ -14,7 +14,6 @@ import EventPage from "./pages/EventPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
 import getCSRFToken from '../utils'
-// import {getToken} from '../api'
 
 import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
@@ -78,7 +77,7 @@ export default function App() {
 				{user ? <LoginNavBar /> : <LogoutNavBar />}
 				<div className="separator"></div>
 				<Routes>
-					<Route path="/" element={<HomePage />} />
+					<Route path="/" element={<HomePage user={user}/>} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/calendar" element={<CalendarPage data={userEvent}/>} />
