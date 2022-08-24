@@ -14,7 +14,7 @@ import EventPage from "./pages/EventPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
 import getCSRFToken from '../utils'
-import {getToken} from '../api'
+// import {getToken} from '../api'
 
 import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
@@ -31,6 +31,7 @@ export default function App() {
 	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
 	const [token, setToken] = useState(null)
 	const [stream, setStream] = useState(null)
+	const [userEvent, setUserEvent] = useState(null)
 	
 	const whoAmI = async () => {
 		const response = await axios.get('/whoami')
@@ -43,26 +44,31 @@ export default function App() {
 	useEffect(()=> {
 		axios.get("/chattoken")
 		.then((response) => {
-			console.log(
-				"gettoken response.data.token",
-				response.data.token,
-				"type",
-				typeof(response.data.token) 
-				)
+			// console.log(
+			// 	"gettoken response.data.token",
+			// 	response.data.token,
+			// 	"type",
+			// 	typeof(response.data.token) 
+			// 	)
 			let newtoken=response && response.data && response.data.token
 			setToken(newtoken)
 		});
 
 		axios.get("/streamapi").then((response) => {
-			console.log(
-				"getstream api response.data",
-				response.data.api,
-				"type",
-				typeof response.data.api
-			)
+			// console.log(
+			// 	"getstream api response.data",
+			// 	response.data.api,
+			// 	"type",
+			// 	typeof response.data.api
+			// )
 				let newStream = response.data.api
 				setStream(newStream)
-		})
+		});
+		
+		axios.get('/userevents').then((response) => {
+			console.log(response.data)
+			setUserEvent(response.data)
+		  })
 	  	whoAmI()
 	},[]) 
 
@@ -75,7 +81,7 @@ export default function App() {
 					<Route path="/" element={<HomePage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/calendar" element={<CalendarPage />} />
+					<Route path="/calendar" element={<CalendarPage data={userEvent}/>} />
 					<Route path="/account" element={<AccountPage />} />
 					<Route path="/events" element={<EventPage />} />
 					<Route

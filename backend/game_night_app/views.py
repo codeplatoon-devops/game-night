@@ -10,7 +10,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
-from .serializers import EventSerializer
+from .serializers import EventSerializer, EventListSerializer
 
 
 load_dotenv()
@@ -225,13 +225,24 @@ def whoami(request):
         return JsonResponse({'user': False})
 
 @api_view(['GET'])
-def calendar(request):
+def userevents(request):
     if request.user.is_authenticated:
-        events = Event.objects.get(owner=request.user.id)
-        data = EventSerializer(events)
+        events = Event.objects.filter(owner=request.user.id)
+        data = serializers.serialize('json',events)
         print(data)
-        return Response(data.data)
+
+        return HttpResponse(data, content_type='application/json')
     else:
         return JsonResponse({'user': False})
+
+@api_view(['GET'])
+def allevents(request):
+    try:
+        events = Event.objects.all()
+        data = serializers.serialize('json', events)
+        print(data)
+        return HttpResponse(data, content_type='application/json')
+    except:
+        return Response('error fetching events')
     
 
