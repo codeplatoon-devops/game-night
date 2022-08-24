@@ -3,6 +3,7 @@ from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
 # pip install stream-chat
 import stream_chat
 import requests
@@ -12,6 +13,7 @@ from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, G
 import random
 from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
+from .serializers import EventSerializer, EventListSerializer
 
 
 load_dotenv()
@@ -327,3 +329,26 @@ def view_groups(request):
 # source ~/VEnvirons/GameNight/bin/activate
 # pip install -r requirements.txt
 # http://127.0.0.1:8000/
+
+@api_view(['GET'])
+def userevents(request):
+    if request.user.is_authenticated:
+        events = Event.objects.filter(owner=request.user.id)
+        data = serializers.serialize('json',events)
+        print(data)
+
+        return HttpResponse(data, content_type='application/json')
+    else:
+        return JsonResponse({'user': False})
+
+@api_view(['GET'])
+def allevents(request):
+    try:
+        events = Event.objects.all()
+        data = serializers.serialize('json', events)
+        print(data)
+        return HttpResponse(data, content_type='application/json')
+    except:
+        return Response('error fetching events')
+    
+
