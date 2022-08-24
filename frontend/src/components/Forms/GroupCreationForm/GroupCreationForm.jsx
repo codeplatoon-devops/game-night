@@ -6,14 +6,18 @@ import { classNames } from "primereact/utils";
 import { Form } from "react-final-form";
 import { Row, Col, Container } from "react-bootstrap";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function GroupCreationForm() {
 	const [showMessage, setShowMessage] = useState(false);
-	const validate = (data) => {
+	const [groupName, setGroupName] = useState("");
+	const navigate = useNavigate();
+	const validate = () => {
 		let errors = {};
-		if (!data.groupname) {
+		if (!groupName) {
 			errors.groupname = "Event name is required.";
 		}
+		return errors;
 	};
 	const onSubmit = (form) => {
 		setShowMessage(true);
@@ -90,6 +94,15 @@ export default function GroupCreationForm() {
 															<InputText
 																id="groupname"
 																{...input}
+																value={
+																	groupName
+																}
+																onChange={(e) =>
+																	setGroupName(
+																		e.target
+																			.value
+																	)
+																}
 																className={classNames(
 																	{
 																		"p-invalid":
