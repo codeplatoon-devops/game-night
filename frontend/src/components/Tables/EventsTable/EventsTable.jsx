@@ -19,7 +19,7 @@ export const EventsTable = () => {
 			<Column field="category" header="Category" filter />
 			<Column field="description" header="Description" filter />
 			<Column field="location" header="Location" filter />
-			<Column field="date" header="Date" filter dataType="date" />
+			<Column field="date" header="Date" sortable dataType="date" />
 		</DataTable>
 	);
 };
