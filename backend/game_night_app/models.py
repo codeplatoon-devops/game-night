@@ -80,6 +80,7 @@ class EventUser(models.Model):
 class Group(models.Model):
     name=models.CharField(max_length=32, blank=False,default=None, unique=True, verbose_name="Name")
     code=models.CharField(max_length=8, blank=False, default=None, unique=True, verbose_name="Code")
+    # should really change related name to groups rather than members.
     member=models.ManyToManyField(AppUser, blank=True, related_name='members')
     
     def __str__(self):
