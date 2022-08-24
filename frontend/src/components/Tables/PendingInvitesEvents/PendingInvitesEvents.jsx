@@ -3,7 +3,8 @@ import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
+import "./PendingInvitesEvents.css";
 
 export const PendingInvitesEvents = () => {
 	const [showMessage, setShowMessage] = useState(false);
@@ -35,7 +36,7 @@ export const PendingInvitesEvents = () => {
 	// );
 
 	return (
-		<Container>
+		<Container as={Row} className="container-table-pending-invites">
 			{/* <Dialog
 				visible={showMessage}
 				onHide={() => setShowMessage(false)}
