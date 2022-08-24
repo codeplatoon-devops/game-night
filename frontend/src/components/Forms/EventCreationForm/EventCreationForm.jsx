@@ -392,9 +392,10 @@ export const EventCreationForm = () => {
 														/>
 														<label
 															htmlFor="chatcreation"
-															className="p-checkbox-label"
+															className="p-checkbox-label form-event-create-checkbox-label"
 														>
-															Create event chat
+															Create chatroom for
+															event
 														</label>
 													</div>
 												)}
@@ -419,7 +420,7 @@ export const EventCreationForm = () => {
 														/>
 														<label
 															htmlFor="allday"
-															className="p-checkbox-label"
+															className="p-checkbox-label form-event-create-checkbox-label"
 														>
 															All day
 														</label>
