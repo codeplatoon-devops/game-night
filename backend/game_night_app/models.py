@@ -45,9 +45,12 @@ class Event(models.Model):
     max_attendees=models.IntegerField(blank=True, null=True, default=None, verbose_name="Maximum attendees")
     private=models.BooleanField(default=False, blank=True, null=True, verbose_name="Private game") # or choice between 'public' and 'private'?
     address=models.ForeignKey(Address, on_delete=models.CASCADE, related_name='Addresses') 
-    date_time=models.DateTimeField(blank=True, null=True, default=None, verbose_name="Game date and time")
+    start_time=models.DateTimeField(blank=True, null=True, default=None, verbose_name="start date and time")
+    end_time=models.DateTimeField(blank=True, null=True, default=None, verbose_name="end date and time")
     all_day=models.BooleanField(default=False, blank=True, null=True, verbose_name="All day")
-    about=models.TextField(blank=True, null=True, default=None, verbose_name="About")
+    description=models.TextField(blank=True, null=True, default=None, verbose_name="desciption")
+    chat_creation=models.BooleanField(default=False, blank=True, null=True, verbose_name="Chat Creation")
+    games=models.JSONField(null=True, blank=True, default=None)
 
     def __str__(self):
         return f"ID: {self.id}, Name: {self.name}, Category: {self.category}, Address: {self.address}, DateTime: {self.date_time}, Private: {self.private}"

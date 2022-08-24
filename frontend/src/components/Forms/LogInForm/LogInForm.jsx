@@ -40,7 +40,7 @@ export const LoginForm = () => {
 				window.alert(response.data.reason)
 			}
 			else {
-				
+				window.location.reload();
 				// navigate to home on login
 				// nav('/')
 				window.location.reload()
