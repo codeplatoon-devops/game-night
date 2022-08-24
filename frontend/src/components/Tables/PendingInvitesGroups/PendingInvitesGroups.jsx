@@ -28,7 +28,8 @@ export const PendingInvitesGroups = () => {
 					{/* TODO: add accept logic */}
 					<Button
 						label="Accept"
-						className="p-button-text"
+						icon="pi pi-check"
+						className="p-button-outlined"
 						autoFocus
 						onClick={hideDetails}
 					/>
@@ -38,7 +39,8 @@ export const PendingInvitesGroups = () => {
 					{/* TODO: add decline login */}
 					<Button
 						label="Decline"
-						className="p-button-text"
+						icon="pi pi-times"
+						className="p-button-outlined"
 						onClick={hideDetails}
 					/>
 				</Col>
@@ -52,12 +54,12 @@ export const PendingInvitesGroups = () => {
 				visible={showMessage}
 				onHide={hideDetails}
 				showHeader={true}
+				header="Invite Details"
 				footer={dialogFooter}
 				breakpoints={{ "960px": "80vw" }}
 				style={{ width: "30vw" }}
 			>
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
-					<h5>Invite Details</h5>
 					<p style={{ lineHeight: 1.5 }}>Group info here</p>
 				</div>
 			</Dialog>
