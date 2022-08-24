@@ -7,6 +7,7 @@ import { Form } from "react-final-form";
 import { Row, Col, Container } from "react-bootstrap";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./GroupCreationForm.css";
 
 export default function GroupCreationForm() {
 	const [showMessage, setShowMessage] = useState(false);
