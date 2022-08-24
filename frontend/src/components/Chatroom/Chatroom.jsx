@@ -4,37 +4,10 @@ import { Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window
 import axios from 'axios'
 import './chatroom.css'
 import 'stream-chat-react/dist/css/index.css'
-// import * as dotenv from 'dotenv'
-// dotenv.config()
-// import express from 'express'
+// had to change this file: node_modules/stream-chat-react/dist/components/MessageInput/hooks/useEmojiIndex.js
 
-function Chatroom ({user}) {
+function Chatroom ({user, token, stream}) {
     
-    // const apiKey = REACT_APP_STREAM_API_KEY
-    // console.log('api key', process.env.REACT_APP_STREAM_API_KEY)
-    // console.log(process.env)
-    // require('dotenv').config()
-    // const apiKey = import.meta.env.VITE_STREAM_API_KEY
-    // console.log(import.meta.env.VITE_STREAM_API_KEY)
-    // console.log('process.env', process.env)
-    // const user = {
-    //     // we will get user from the database and it must include the user id for the chat use effect async function to work
-    //     id: 'john',
-    //     name: 'John',
-    //     image: 'https://getstream.imgix.net/images/random_svf/FS.png',
-    // }
-
-    const getStreamAPI = async function () {
-        const response = await axios.get('/streamapi')
-        console.log('getstream api response.data', response.data.api, 'type', typeof(response.data.api))
-        return response.data.api
-    }
-
-    const getToken = async function () {
-        const response = await axios.get('/chattoken')
-        console.log('gettoken response.data.token', response.data.token, 'type', typeof(response.data.token))
-        return response.data.token
-    }
     const [client, setClient] = useState(null)
     const [channel, setChannel] = useState(null)
 
@@ -45,36 +18,37 @@ function Chatroom ({user}) {
 
     useEffect(()=> {
         //this connects the client to the chat
-        // console.log('USER.ID', user.id)
-        // console.log('USER[ID]', user['id'])
+        if (token && user) {
 
-        async function init() {
-            // do i need to await getToken?
-            const userToken = getToken()
-            const chatClient = StreamChat.getInstance(getStreamAPI())
-            //need to get this userToken from the backend
-            // https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
-            await chatClient.connectUser(user, userToken)
-            
-
-            //shouldn't need all this channel specific stuff since have channel list
-            const channel = chatClient.channel('messaging', 'User1Chat', {
-                // add as many custom fields as you'd like
-                image: 'https://picsum.photos/200',
-                // instead of name 
-                name: 'User1Chat',
-                members: [user['id']]
-            })
-
-            // await channel.create()
-            setChannel(channel)
-            
-            await channel.watch()
-            setClient(chatClient)
-
+            console.log('token here', token, 'type', typeof(token))
+            async function init() {
+                const user_id= (user.id).toString()
+                console.log('USER ID IS HERE', user_id, 'type', typeof(user_id))
+                const chatClient = StreamChat.getInstance(stream)
+                //need to get this userToken from the backend
+                // https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
+                await chatClient.connectUser(user, token)
+                
+    
+                //shouldn't need all this channel specific stuff since have channel list
+                const channel = chatClient.channel('messaging', 'User1Chat', {
+                    // add as many custom fields as you'd like
+                    image: 'https://picsum.photos/200',
+                    // instead of name 
+                    name: 'User1Chat',
+                    members: [user_id]
+                })
+    
+                // await channel.create()
+                setChannel(channel)
+                // channel.addMembers(user_id)
+                await channel.watch()
+                setClient(chatClient)
+    
+            }
+            init()
+            return () => { if (client) client.disconnectUser()}
         }
-        init()
-        return () => { if (client) client.disconnectUser()}
     }, [])
 
     // if the channel or client hasn't been updated yet show a loading image

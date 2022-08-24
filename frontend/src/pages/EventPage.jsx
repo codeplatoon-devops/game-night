@@ -1,3 +1,5 @@
+import { EventsTable } from "../components/Tables/EventsTable/EventsTable";
+
 export default function EventPage() {
-	return <h1>Event Page</h1>;
+	return <EventsTable />;
 }

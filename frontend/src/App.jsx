@@ -14,6 +14,7 @@ import EventPage from "./pages/EventPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
 import getCSRFToken from '../utils'
+import {getToken} from '../api'
 
 import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
@@ -28,17 +29,41 @@ export default function App() {
 	axios.defaults.headers.common["X-CSRFToken"] = getCSRFToken();
 
 	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
-
+	const [token, setToken] = useState(null)
+	const [stream, setStream] = useState(null)
+	
 	const whoAmI = async () => {
 		const response = await axios.get('/whoami')
 		const user = response.data && response.data[0] && response.data[0].fields
-		user.id = response.data[0].pk
+		user.id = (response.data[0].pk).toString()
 		console.log('user from whoami?', user, response)
 		setUser(user)
 	}
-  
+	
 	useEffect(()=> {
-	  whoAmI()
+		axios.get("/chattoken")
+		.then((response) => {
+			console.log(
+				"gettoken response.data.token",
+				response.data.token,
+				"type",
+				typeof(response.data.token) 
+				)
+			let newtoken=response && response.data && response.data.token
+			setToken(newtoken)
+		});
+
+		axios.get("/streamapi").then((response) => {
+			console.log(
+				"getstream api response.data",
+				response.data.api,
+				"type",
+				typeof response.data.api
+			)
+				let newStream = response.data.api
+				setStream(newStream)
+		})
+	  	whoAmI()
 	},[]) 
 
 	return (
@@ -57,7 +82,7 @@ export default function App() {
 						path="/events/create"
 						element={<EventCreatePage />}
 					/>
-					<Route path="/groups" element={<GroupPage user={user} />} />
+					<Route path="/groups" element={<GroupPage user={user} token={token} stream= {stream}/>} />
 					<Route
 						path="/events/:eventId"
 						element={<EventDetailPage />}
