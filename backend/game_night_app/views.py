@@ -242,15 +242,22 @@ def create_group(request):
     new_group_name=request.data['name']
     code = request.data['code']
     user = AppUser.objects.get(email = request.user.email)
+    print('user here in create group', user)
     try:
-        new_group = Group(name = new_group_name, code = code, member = user)
+        new_group = Group(name = new_group_name, code = code)
+        # I tried to have member = user in line above and got this error "'Direct assignment to the forward side of a many-to-many set is prohibited. Use member.set() instead.'"
         new_group.full_clean()
         new_group.save()
-        print('new group is', new_group)
+        # print('new group is', new_group)
+        new_group.member.add(user)
+        new_group.save()
+        # print('new member now added', dir(new_group))
+        # this is adding it as game_night_app_group_member in the database
         # adding the group to their group list
-        list = GroupList.objects.get(onwer = user)
-        list.group.add(new_group)
-        list.save()
+        # I'm actually starting to think we don't need group list
+        # list = GroupList.objects.get(owner = user)
+        # list.group.add(new_group)
+        # list.save()
         return JsonResponse({'success': "True", 'action': "group created"})
     except Exception as e:
         return JsonResponse({'success': "False", 'reason': str(e)})
