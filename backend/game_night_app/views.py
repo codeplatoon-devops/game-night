@@ -9,6 +9,8 @@ import requests
 import os
 from dotenv import load_dotenv
 from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
+import random
+from django.contrib.auth.decorators import login_required
 
 
 load_dotenv()
@@ -222,9 +224,94 @@ def whoami(request):
     else:
         return JsonResponse({'user': False})
 
+@login_required
+@api_view(['GET'])
+def group_code(request):
+    all_groups = Group.objects.all()
+    all_codes = []
+    for group in all_groups:
+        all_codes.append(group.code)
+    code = str(random.randint(10001,99999999))
+    while code in all_codes:
+        code = str(random.randint(10001,99999999))
+    return JsonResponse({'success': 'True', 'group_code': code})
+
+@login_required
+@api_view(['POST'])
+def create_group(request):
+    new_group_name=request.data['name']
+    code = request.data['code']
+    user = AppUser.objects.get(email = request.user.email)
+    try:
+        new_group = Group(name = new_group_name, code = code, member = user)
+        new_group.full_clean()
+        new_group.save()
+        print('new group is', new_group)
+        # adding the group to their group list
+        list = GroupList.objects.get(onwer = user)
+        list.group.add(new_group)
+        list.save()
+        return JsonResponse({'success': "True", 'action': "group created"})
+    except Exception as e:
+        return JsonResponse({'success': "False", 'reason': str(e)})
+
+
+@login_required
+@api_view(['PUT'])
+# accepts a group request
+def join_group(request):
+    user = AppUser.objects.get(email = request.user.email)
+    friend= AppUser.objects.get(email = request.data['friend_email'])
+    code = request.data['code']
+    list = GroupList.objects.get(owner = user)
+    all_groups = Group.objects.all()
+    all_codes = []
+    for group in all_groups:
+        all_codes.append(group.code)
+    if code in all_codes:
+        if friend != None:
+            try:
+                group = Group.objects.get(code= code)
+                group.member.add(user)
+                # not sure I have this right:
+                print('group members are', group.member.all())
+                # adding this group to their list:
+                list.group.add(group)
+                list.save()
+                # not sure I have this part right:
+                print('group has been added to list', group.listgroups)
+                # setting the group request to inactive:
+                group_request = GroupRequest.objects.get(sender = friend, receiver = user)
+                group_request.is_active = False
+                group_request.save()
+                print('group request is active should now be false', group_request.is_active)
+                return JsonResponse({'success': "True", 'action': "group created"})
+            except Exception as e:
+                return JsonResponse({'success': "False", 'reason': str(e)})
+        else:
+            return JsonResponse({'success': False, 'reason': 'friends account no longer exists'})
+    else:
+        return JsonResponse({'success': "False", 'reason': 'this group code doesnt exist'})
+
+@login_required
+@api_view(['GET'])
+def view_groups(request):
+    user = AppUser.objects.get(email = request.user.email)
+    groups = Group.objects.filter(member = user)
+    if len(groups)>0:
+        list_of_groups=[]
+        for group in groups:
+            list_of_groups.append(group.name)
+        print('list of groups line 304:', list_of_groups)
+        try:
+            return JsonResponse({'success': 'True', 'groups': list_of_groups})
+        except Exception as e:
+            return JsonResponse({'success': "False", 'reason': str(e)})
+    else:
+        return JsonResponse({'success': False, 'reason': "you don't have any groups"})
+
 
 # Alisha comments:
-
 # source ~/VEnvirons/GameNight/bin/activate
 # pip install -r requirements.txt
 # http://127.0.0.1:8000/

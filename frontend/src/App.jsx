@@ -14,7 +14,6 @@ import EventPage from "./pages/EventPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
 import getCSRFToken from '../utils'
-import {getToken} from '../api'
 
 import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
