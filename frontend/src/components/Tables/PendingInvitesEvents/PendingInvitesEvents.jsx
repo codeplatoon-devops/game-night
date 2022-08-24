@@ -8,8 +8,11 @@ import "./PendingInvitesEvents.css";
 
 export const PendingInvitesEvents = () => {
 	const [showMessage, setShowMessage] = useState(false);
-	const detailsToggle = () => {
-		setShowMessage(!showMessage);
+	const showDetails = () => {
+		setShowMessage(true);
+	};
+	const hideDetails = () => {
+		setShowMessage(false);
 	};
 	const invites = [
 		{
@@ -17,29 +20,25 @@ export const PendingInvitesEvents = () => {
 			category: "DnD",
 			location: "city state",
 			date: "24 Aug 2022",
-			details: (
-				<Button onClick={detailsToggle}>
-					{showMessage ? "Hide Details" : "Show Details"}
-				</Button>
-			),
+			details: <Button onClick={showDetails}>Show Details</Button>,
 		},
 	];
-	// const dialogFooter = (
-	// 	<div className="flex justify-content-center">
-	// 		<Button
-	// 			label="OK"
-	// 			className="p-button-text"
-	// 			autoFocus
-	// 			onClick={setShowMessage(false)}
-	// 		/>
-	// 	</div>
-	// );
+	const dialogFooter = (
+		<div className="flex justify-content-center">
+			<Button
+				label="Hide Details"
+				className="p-button-text"
+				autoFocus
+				onClick={hideDetails}
+			/>
+		</div>
+	);
 
 	return (
 		<Container as={Row} className="container-table-pending-invites">
-			{/* <Dialog
+			<Dialog
 				visible={showMessage}
-				onHide={() => setShowMessage(false)}
+				onHide={hideDetails}
 				footer={dialogFooter}
 				showHeader={false}
 				breakpoints={{ "960px": "80vw" }}
@@ -49,7 +48,7 @@ export const PendingInvitesEvents = () => {
 					<h5>Invite Details</h5>
 					<p style={{ lineHeight: 1.5 }}>Event info here</p>
 				</div>
-			</Dialog> */}
+			</Dialog>
 			<DataTable value={invites}>
 				<Column field="eventName" header="Event Name" />
 				<Column field="details" header="Details" />
