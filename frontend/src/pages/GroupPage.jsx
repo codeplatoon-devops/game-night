@@ -6,13 +6,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
+// import CreateChannel from "../components/Chatroom/CreateChannel";
+// import { useChatContext } from "stream-chat-react"
 
 export default function GroupPage({user, token, stream}) {
-
+	
+	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate()
+	// const [image, setImage] = useState('https://picsum.photos/200')
 	const [groupCode, setGroupCode] = useState(null)
 	const [groups, setGroups] = useState(null)
 	const [groupInvitations,setGroupInvitations] = useState(null)
+	const [groupInformation,setGroupInformation] = useState(null)
 	// const [groupCreated, setGroupCreated] = useState(false)
 
 	const getGroupCode = function () {
@@ -41,12 +46,15 @@ export default function GroupPage({user, token, stream}) {
 	
 
 	const createGroup = function (name) {
-		axios.post("/group/create", {name: name, code:groupCode})
+		let code = groupCode
+		axios.post("/group/create", {name: name, code:code})
 			.then((response) => {
 				console.log(
 					"create group response.data", response.data)
 				if (response.data.success == "True") {
 					window.alert(`Group created! Your group code has been assigned ${groupCode}`)
+					// CreateChannel(name, code)
+					setGroupInformation([name,code])
 					nav('/groups')
 				}
 				else {
@@ -148,7 +156,11 @@ export default function GroupPage({user, token, stream}) {
 						</Row>
 					</Col>
 					<Col md={8}>
-						<Chatroom user={user} token = {token} stream={stream}/>
+						{groups || groupInformation
+						?
+						<Chatroom user={user} token = {token} stream={stream} groupInformation={groupInformation}/>
+						: null
+						}
 					</Col>
 				</Row>
 			</Container>
