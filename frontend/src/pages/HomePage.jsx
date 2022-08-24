@@ -7,7 +7,7 @@ import CardHome from "../components/Card/CardHome";
 import '../App.css'
 
 
-export default function HomePage() {
+export default function HomePage({user}) {
 	
 	return (
 		<div>
@@ -23,7 +23,9 @@ export default function HomePage() {
 				<CardHome />
 				<Row>
 					<Col>
-						<LoginForm />
+					{user ? 
+						null
+					: <LoginForm />}
 					</Col>
 				</Row>
 			</Col>
