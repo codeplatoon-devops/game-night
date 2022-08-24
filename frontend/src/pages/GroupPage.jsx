@@ -5,10 +5,15 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
 
 export default function GroupPage({user, token, stream}) {
+
+	const nav = useNavigate()
 	const [groupCode, setGroupCode] = useState(null)
 	const [groups, setGroups] = useState(null)
+	const [groupInvitations,setGroupInvitations] = useState(null)
+	// const [groupCreated, setGroupCreated] = useState(false)
 
 	const getGroupCode = function () {
 		axios.get("/group/code")
@@ -25,12 +30,12 @@ export default function GroupPage({user, token, stream}) {
 			.then((response) => {
 				console.log(
 					"view groups response.data", response.data)
-				// if (response.data.success == "True") {
-				// 	let new_groups = response && response.data && response.data.groups
-				// 	// setGroups(new_groups)
-				// }
-				// else{
-				// }
+				if (response.data.success == "True") {
+					let new_groups = response && response.data && response.data.groups
+					// setGroups(new_groups)
+				}
+				else{
+				}
 			});
 	}
 	
@@ -42,6 +47,7 @@ export default function GroupPage({user, token, stream}) {
 					"create group response.data", response.data)
 				if (response.data.success == "True") {
 					window.alert(`Group created! Your group code has been assigned ${groupCode}`)
+					nav('/groups')
 				}
 				else {
 					window.alert(`${response.data.reason}`)
@@ -50,8 +56,11 @@ export default function GroupPage({user, token, stream}) {
 			});
 	}
 
-	const createGroupRequest = function (friend_email, code) {
-		axios.post("/group/request/create", {friend_email: friend_email, code:code})
+	// const createGroupRequest = function (friend_email, code) {
+		// axios.post("/group/request/create", {friend_email: friend_email, code:code})
+		// just for test I'm putting in the group code because I know I'll be creating this group, but normally we would run the lines above
+		const createGroupRequest = function (friend_email) {
+		axios.post("/group/request/create", {friend_email: friend_email, group_code:groupCode})
 			.then((response) => {
 				console.log(
 					"create group request response.data", response.data)
@@ -62,6 +71,21 @@ export default function GroupPage({user, token, stream}) {
 					window.alert(`${response.data.reason}`)
 				}
 
+			});
+	}
+
+	const viewGroupInvitations = function () {
+		axios.get("/group/request/view")
+			.then((response) => {
+				console.log(
+					"view group invitations response.data", response.data)
+				if (response.data.success == "True") {
+					let new_invitations= response && response.data && response.data.group_requests
+					setGroupInvitations(new_invitations)
+				}
+				// else{
+				// 	console.log('')
+				// }
 			});
 	}
 
@@ -83,6 +107,7 @@ export default function GroupPage({user, token, stream}) {
 	useEffect(()=> {
 		getGroupCode()
 		viewGroups()
+		viewGroupInvitations()
 	},[]) 
 
 	// this part is just necessary for the create group form
@@ -106,9 +131,19 @@ export default function GroupPage({user, token, stream}) {
 						: null
 						}
 						<Button onClick={()=>createGroup("TestGroup1")}>Create Group</Button>
+						<Button onClick={()=>createGroupRequest("jim@email.com")}>Create Group Request</Button>
 						<Row>
 							<Col>
 								<h2> Pending Group invitations table</h2>
+								{groupInvitations
+									? 
+									<div>
+									{groupInvitations.map((invitation) => (
+										<h4>{invitation[0]} invited you to join the group {invitation[1]}</h4>
+									))}
+									</div>
+									: <h4> No pending invitations</h4>
+								}
 							</Col>
 						</Row>
 					</Col>

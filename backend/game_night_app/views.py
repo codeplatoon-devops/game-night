@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
 import random
 from django.contrib.auth.decorators import login_required
+from django.forms.models import model_to_dict
 
 
 load_dotenv()
@@ -57,6 +58,7 @@ def create_group_request(request):
     user = AppUser.objects.get(email = user_email)
     friend = AppUser.objects.get(email = friend_email)
     group = Group.objects.get(code = code)
+    print('in group request user is', user, 'friend is', friend, 'group is', group)
     if group is not None:
         if friend is not None:
             try:
@@ -78,13 +80,14 @@ def view_group_request(request):
     user_email = request.user.email
     user = AppUser.objects.get(email = user_email)
     # view any requests sent to the user
-    group_requests = GroupRequest.objects.filter(receiver= user, is_active = True)
+    group_requests = GroupRequest.objects.filter(receiver= user)
     if group_requests:
         list_of_group_requests=[]
         for item in group_requests:
             #sends back the emails of all pending group requests
-            sender = item.sender
-            list_of_group_requests.append(sender.email)
+            sender = AppUser.objects.get(id = item.sender_id)
+            group = Group.objects.get(id = item.group_id)
+            list_of_group_requests.append([sender.email, group.name])
         print('list of group_requests:', list_of_group_requests)
         try:
             return JsonResponse({'success': "True", 'group_requests': list_of_group_requests})
@@ -126,7 +129,7 @@ def view_event_request(request):
     user_email = request.user.email
     user = AppUser.objects.get(email = user_email)
     # view any requests sent to the user
-    event_requests = EventRequest.objects.filter(receiver= user, is_active = True)
+    event_requests = EventRequest.objects.filter(receiver= user)
     if event_requests:
         list_of_event_requests=[]
         for item in event_requests:
@@ -265,7 +268,7 @@ def create_group(request):
 
 @login_required
 @api_view(['PUT'])
-# accepts a group request
+# accepts a group request then deletes it
 def join_group(request):
     user = AppUser.objects.get(email = request.user.email)
     friend= AppUser.objects.get(email = request.data['friend_email'])
@@ -289,9 +292,8 @@ def join_group(request):
                 print('group has been added to list', group.listgroups)
                 # setting the group request to inactive:
                 group_request = GroupRequest.objects.get(sender = friend, receiver = user)
-                group_request.is_active = False
-                group_request.save()
-                print('group request is active should now be false', group_request.is_active)
+                group_request.delete()
+                print('group request should now be deleted', group_request)
                 return JsonResponse({'success': "True", 'action': "group created"})
             except Exception as e:
                 return JsonResponse({'success': "False", 'reason': str(e)})
@@ -304,12 +306,15 @@ def join_group(request):
 @api_view(['GET'])
 def view_groups(request):
     user = AppUser.objects.get(email = request.user.email)
-    groups = Group.objects.filter(member = user)
+    # groups = Group.objects.filter(member = user)
+    groups = user.members.all()
+    print('GROUPS HERE LINE 309', groups)
     if len(groups)>0:
         list_of_groups=[]
         for group in groups:
             list_of_groups.append(group.name)
-        print('list of groups line 304:', list_of_groups)
+            print('group.name here', group.name)
+        print('list of groups line 314:', list_of_groups)
         try:
             return JsonResponse({'success': 'True', 'groups': list_of_groups})
         except Exception as e:
