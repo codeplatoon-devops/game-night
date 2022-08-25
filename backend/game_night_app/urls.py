@@ -21,5 +21,6 @@ urlpatterns = [
     path('userevents', views.userevents),
     path('streamapi', views.stream_api),
     path('events/create', views.create_event),
+    path('userevents/table', views.user_events_table_data),
 
 ]
