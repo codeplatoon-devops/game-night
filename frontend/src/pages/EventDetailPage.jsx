@@ -1,3 +1,20 @@
-export default function EventDetailPage() {
-	return <h1>Event Detail Page</h1>;
+import { useEffect } from "react"
+
+
+export default function EventDetailPage({data}) {
+	useEffect(()=>{
+		console.log(data)
+	},[])
+
+
+	return (
+
+		<div>
+			<ul>
+				{data && <li>{data.fields.code}</li>}
+			</ul>
+		</div>
+
+
+	) 
 }

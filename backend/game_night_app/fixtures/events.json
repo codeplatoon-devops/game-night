@@ -10,9 +10,10 @@
             "max_attendees": 4,
             "private": "True",
             "address": 1,
-            "date_time": "2022-08-12T11:44:59+00:00",
+            "start_time": "2022-08-12T11:44:59+00:00",
+            "end_time": "2022-08-12T12:44:59+00:00",
             "all_day": "False",
-            "about": "These are starter notes for event 1"
+            "description": "These are starter notes for event 1"
         }
     },
     {
@@ -26,9 +27,10 @@
             "max_attendees": 2,
             "private": "False",
             "address": 2,
-            "date_time": "2022-08-01T09:15:00+00:00",
+            "start_time": "2022-08-01T09:15:00+00:00",
+            "end_time": "2022-08-01T10:15:00+00:00",
             "all_day": "False",
-            "about": "These are starter notes for event 2"
+            "description": "These are starter notes for event 2"
         }
     },
     {
@@ -42,9 +44,10 @@
             "max_attendees": 8,
             "private": "False",
             "address": 3,
-            "date_time": "2022-08-20T19:15:00+00:00",
+            "start_time": "2022-08-20T19:15:00+00:00",
+            "end_time": "2022-08-20T19:15:00+00:00",
             "all_day": "True",
-            "about": "These are starter notes for event 3"
+            "description": "These are starter notes for event 3"
         }
     },
     {
@@ -58,9 +61,10 @@
             "max_attendees": 5,
             "private": "True",
             "address": 4,
-            "date_time": "2022-08-01T12:00:00+00:00",
+            "start_time": "2022-08-01T07:00:00+00:00",
+            "end_time": "2022-08-01T08:00:00+00:00",
             "all_day": "False",
-            "about": "These are starter notes for event 4"
+            "description": "These are starter notes for event 4"
         }
     },
     {
@@ -74,9 +78,27 @@
             "max_attendees": 3,
             "private": "False",
             "address": 5,
-            "date_time": "2022-08-15T15:15:15+00:00",
+            "start_time": "2022-08-15T15:15:15+00:00",
+            "end_time": "2022-08-15T17:15:15+00:00",
             "all_day": "True",
-            "about": "These are starter notes for event 5"
+            "description": "These are starter notes for event 5"
+        }
+    },
+    {
+        "model": "game_night_app.Event",
+        "pk": 6,
+        "fields": {
+            "owner_id": 1,
+            "name": "Event 1",
+            "code": "81134530",
+            "category": "C1",
+            "max_attendees": 4,
+            "private": "True",
+            "address": 1,
+            "start_time": "2022-08-18T11:44:59+00:00",
+            "end_time": "2022-08-18T12:44:59+00:00",
+            "all_day": "False",
+            "description": "These are starter notes for event 1"
         }
     }
 ]
