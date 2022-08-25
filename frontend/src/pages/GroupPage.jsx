@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { PendingInvitesGroups } from "../components/Tables/PendingInvitesGroups/PendingInvitesGroups";
+import GroupsTable from "../components/Tables/GroupsTable/GroupsTable";
 // import CreateChannel from "../components/Chatroom/CreateChannel";
 // import { useChatContext } from "stream-chat-react"
 
@@ -130,18 +131,7 @@ export default function GroupPage({ user, token, stream }) {
 				<h1>Group Page</h1>
 				<Row>
 					<Col md={4}>
-						<h2> Groups table</h2>
-						{groups
-						? 
-						<div>
-						{groups.map((group) => (
-							<h4>{group}</h4>
-						))}
-						</div>
-						: null
-						}
-						<Button onClick={()=>createGroup("TestGroup3")}>Create Group</Button>
-						{/* sending invite to alisha */}
+						{/* sending invite to alisha 
 						<Button onClick={()=>createGroupRequest("alisha@gmail.com")}>Send Group Invite</Button>
 						<Row>
 							<Col>
@@ -159,6 +149,38 @@ export default function GroupPage({ user, token, stream }) {
 									</div>
 									: <h4> No pending invitations</h4>
 								}
+                */}
+
+						<GroupsTable groups={groups} />
+						{/* {groups ? (
+							<div>
+								{groups.map((group) => (
+									<h4>{group}</h4>
+								))}
+							</div>
+						) : null} */}
+						<Button onClick={() => createGroup("TestGroup3")}>
+							Create Group
+						</Button>
+						<Button
+							onClick={() => createGroupRequest("jim@email.com")}
+						>
+							Create Group Request
+						</Button>
+						<Row>
+							<Col>
+								{groupInvitations ? (
+									<PendingInvitesGroups
+										data={groupInvitations}
+									/>
+								) : (
+									<PendingInvitesGroups
+										data={null}
+										// join={user.email}
+										// need sender email, group name, group code
+									/>
+								)}
+
 							</Col>
 						</Row>
 					</Col>
