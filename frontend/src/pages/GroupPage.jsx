@@ -140,7 +140,7 @@ export default function GroupPage({ user, token, stream }) {
 						</div>
 						: null
 						}
-						<Button onClick={()=>createGroup("TestGroup3")}>Create Group</Button>
+						<Button onClick={()=>createGroup("TestGroup6")}>Create Group</Button>
 						{/* sending invite to alisha */}
 						<Button onClick={()=>createGroupRequest("alisha@gmail.com")}>Send Group Invite</Button>
 						<Row>

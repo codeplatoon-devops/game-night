@@ -109,7 +109,7 @@ def create_event_request(request):
     print('USER EMAIL', user_email, 'FRIEND EMAIL', friend_email, 'event code', event_code)
     user = AppUser.objects.get(email = user_email)
     friend = AppUser.objects.get(email = friend_email)
-    event = Event.objects.get(code = code)
+    event = Event.objects.get(code = event_code)
     if event is not None:
         if friend is not None:
             try:
