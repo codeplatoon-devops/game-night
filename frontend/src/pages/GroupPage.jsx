@@ -147,7 +147,13 @@ export default function GroupPage({ user, token, stream }) {
 						</Button>
 						<Row>
 							<Col>
-								<PendingInvitesGroups />
+								{groupInvitations ? (
+									<PendingInvitesGroups
+										data={groupInvitations}
+									/>
+								) : (
+									<PendingInvitesGroups data={null} />
+								)}
 								{/* {groupInvitations ? (
 									<div>
 										{groupInvitations.map((invitation) => (
