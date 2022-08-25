@@ -11,6 +11,7 @@ import CalendarPage from "./pages/CalendarPage";
 import AccountPage from "./pages/AccountPage";
 import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
+import AllEventsPage from "./pages/AllEventsPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
 import getCSRFToken from '../utils'
@@ -35,7 +36,8 @@ export default function App() {
 	const whoAmI = async () => {
 		const response = await axios.get('/whoami')
 		const user = response.data && response.data[0] && response.data[0].fields
-		user.id = (response.data[0].pk).toString()
+		// user.id = (response.data[0].pk).toString()
+		user.id = (response.data[0].fields.username).toString()
 		console.log('user from whoami?', user, response)
 		setUser(user)
 	}
@@ -76,6 +78,7 @@ export default function App() {
 					<Route path="/calendar" element={<CalendarPage data={userEvent}/>} />
 					<Route path="/account" element={<AccountPage />} />
 					<Route path="/events" element={<EventPage />} />
+          <Route path="/allevents" element={<AllEventsPage />} />
 					<Route
 						path="/events/create"
 						element={<EventCreatePage />}
