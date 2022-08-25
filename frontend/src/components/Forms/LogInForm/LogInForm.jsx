@@ -42,7 +42,8 @@ export const LoginForm = () => {
 			else {
 				window.location.reload();
 				// navigate to home on login
-				// navigate("/");
+				// nav('/')
+				window.location.reload()
 				// clear form
 				form.restart();
 			}

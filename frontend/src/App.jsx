@@ -43,13 +43,8 @@ export default function App() {
 	useEffect(()=> {
 		axios.get("/chattoken")
 		.then((response) => {
-			// console.log(
-			// 	"gettoken response.data.token",
-			// 	response.data.token,
-			// 	"type",
-			// 	typeof(response.data.token) 
-			// 	)
 			let newtoken=response && response.data && response.data.token
+			console.log('newtoken', newtoken)
 			setToken(newtoken)
 		});
 
@@ -57,15 +52,13 @@ export default function App() {
 			// console.log(
 			// 	"getstream api response.data",
 			// 	response.data.api,
-			// 	"type",
-			// 	typeof response.data.api
 			// )
 				let newStream = response.data.api
 				setStream(newStream)
 		});
 		
 		axios.get('/userevents').then((response) => {
-			console.log(response.data)
+			console.log('user events', response.data)
 			setUserEvent(response.data)
 		  })
 	  	whoAmI()
