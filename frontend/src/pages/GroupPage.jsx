@@ -44,27 +44,27 @@ export default function GroupPage({ user, token, stream }) {
 		});
 	};
 
-	const createGroup = function (name) {
-		let code = groupCode;
-		axios
-			.post("/group/create", { name: name, code: code })
-			.then((response) => {
-				console.log("create group response.data", response.data);
-				if (response.data.success == "True") {
-					window.alert(
-						`Group created! Your group code has been assigned ${groupCode}`
-					);
-					// CreateChannel(name, code)
-					setGroupInformation([name, code]);
-					viewGroups();
-					// nav('/groups')
-					// window.location.reload()
-					// the reload is messing with the chatrooms
-				} else {
-					window.alert(`${response.data.reason}`);
-				}
-			});
-	};
+	// const createGroup = function (name) {
+	// 	let code = groupCode;
+	// 	axios
+	// 		.post("/group/create", { name: name, code: code })
+	// 		.then((response) => {
+	// 			console.log("create group response.data", response.data);
+	// 			if (response.data.success == "True") {
+	// 				window.alert(
+	// 					`Group created! Your group code has been assigned ${groupCode}`
+	// 				);
+	// 				// CreateChannel(name, code)
+	// 				setGroupInformation([name, code]);
+	// 				viewGroups();
+	// 				// nav('/groups')
+	// 				// window.location.reload()
+	// 				// the reload is messing with the chatrooms
+	// 			} else {
+	// 				window.alert(`${response.data.reason}`);
+	// 			}
+	// 		});
+	// };
 
 	// const createGroupRequest = function (friend_email, code) {
 	// axios.post("/group/request/create", {friend_email: friend_email, code:code})
@@ -139,12 +139,6 @@ export default function GroupPage({ user, token, stream }) {
 							</div>
 						) : null}
 						<GroupCreationForm />
-						{/* <Button
-							label="Create Group"
-							onClick={() => createGroup("TestGroup3")}
-							icon="pi pi-plus"
-							style={{ margin: "15px" }}
-						/> */}
 						<Button
 							label="Create Group Request"
 							onClick={() => createGroupRequest("jim@email.com")}

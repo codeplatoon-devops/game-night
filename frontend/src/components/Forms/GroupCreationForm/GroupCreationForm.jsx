@@ -5,14 +5,17 @@ import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
 import { Form } from "react-final-form";
 import { Row, Col, Container } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./GroupCreationForm.css";
 
 export default function GroupCreationForm() {
 	const [showMessage, setShowMessage] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 	const [groupName, setGroupName] = useState("");
+	const [groupInformation, setGroupInformation] = useState(null);
+	const [groupCode, setGroupCode] = useState(null);
 	const navigate = useNavigate();
 	const validate = () => {
 		let errors = {};
@@ -23,6 +26,7 @@ export default function GroupCreationForm() {
 	};
 	const onSubmit = (form) => {
 		setShowForm(false);
+		createGroup(groupName);
 		setShowMessage(true);
 	};
 
@@ -30,7 +34,7 @@ export default function GroupCreationForm() {
 	// TODO: update redirect to group code when generated
 	const onAck = () => {
 		setShowMessage(false);
-		navigate("/groups/1");
+		// navigate("/groups/1");
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
@@ -52,6 +56,53 @@ export default function GroupCreationForm() {
 			/>
 		</div>
 	);
+
+	const createGroup = function (name) {
+		let code = groupCode;
+		axios
+			.post("/group/create", { name: name, code: code })
+			.then((response) => {
+				console.log("create group response.data", response.data);
+				if (response.data.success == "True") {
+					window.alert(
+						`Group created! Your group code has been assigned ${groupCode}`
+					);
+					// CreateChannel(name, code)
+					setGroupInformation([name, code]);
+					viewGroups();
+					// nav('/groups')
+					// window.location.reload()
+					// the reload is messing with the chatrooms
+				} else {
+					window.alert(`${response.data.reason}`);
+				}
+			});
+	};
+	const viewGroups = function () {
+		axios.get("/groups/view").then((response) => {
+			console.log("view groups response.data", response.data);
+			if (response.data.success == "True") {
+				let new_groups =
+					response && response.data && response.data.groups;
+				setGroups(new_groups);
+			} else {
+			}
+		});
+	};
+	const getGroupCode = function () {
+		axios.get("/group/code").then((response) => {
+			console.log(
+				"get group code response.data.group_code",
+				response.data.group_code
+			);
+			let code = response && response.data && response.data.group_code;
+			setGroupCode(code);
+		});
+	};
+	useEffect(() => {
+		getGroupCode();
+		viewGroups();
+	}, []);
 	return (
 		<Container>
 			<Button
