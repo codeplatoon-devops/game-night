@@ -9,7 +9,7 @@ import { Container, Col } from "react-bootstrap";
 import { Row as myRow } from "react-bootstrap";
 import "./PendingInvitesGroups.css";
 
-export const PendingInvitesGroups = () => {
+export const PendingInvitesGroups = (props) => {
 	const [showMessage, setShowMessage] = useState(false);
 	const showDetails = () => {
 		setShowMessage(true);
@@ -17,6 +17,14 @@ export const PendingInvitesGroups = () => {
 	const hideDetails = () => {
 		setShowMessage(false);
 	};
+	if (!props.data) {
+		console.log("no invites");
+	}
+	const noInvites = [
+		{
+			groupName: "None",
+		},
+	];
 	const invites = [
 		{
 			groupName: "group one",
@@ -75,7 +83,10 @@ export const PendingInvitesGroups = () => {
 					<p style={{ lineHeight: 1.5 }}>Group info here</p>
 				</div>
 			</Dialog>
-			<DataTable value={invites} headerColumnGroup={tableHeader}>
+			<DataTable
+				value={props.data ? invites : noInvites}
+				headerColumnGroup={tableHeader}
+			>
 				<Column field="groupName" />
 				<Column field="details" />
 			</DataTable>
