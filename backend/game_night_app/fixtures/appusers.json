@@ -3,7 +3,7 @@
         "model": "game_night_app.AppUser",
         "pk": 1,
         "fields": {
-            "password": "password",
+            "password": "pbkdf2_sha256$390000$vZGdb6jdM7DiLisKnjRuS3$FwKajqnVJgsi3mB3mtrtuef6cofEM4jJSxtslQY27Xc=",
             "is_superuser": "False",
             "username": "fred",
             "is_staff": "False",
@@ -18,7 +18,7 @@
         "model": "game_night_app.AppUser",
         "pk": 2,
         "fields": {
-            "password": "password",
+            "password": "pbkdf2_sha256$390000$8LgGIH4mCVeX1Jeh31sH7g$a1XgBHylyBQEu03GS8b1W6rr7SNRRQDvVizYw/y8nlc=",
             "is_superuser": "False",
             "username": "bill",
             "is_staff": "False",
@@ -33,7 +33,7 @@
         "model": "game_night_app.AppUser",
         "pk": 3,
         "fields": {
-            "password": "password",
+            "password": "pbkdf2_sha256$390000$ysntySVZuf8DFF5U6qkAUe$IUylwMj+IFjkj/r87u/f3d4LvJxrGr9udNi0sLyGMWU=",
             "is_superuser": "False",
             "username": "sally",
             "is_staff": "False",
@@ -48,7 +48,7 @@
         "model": "game_night_app.AppUser",
         "pk": 4,
         "fields": {
-            "password": "password",
+            "password": "pbkdf2_sha256$390000$8ydwbbp2NKKPt6T2JEMHi0$4y4hDrn/HuwzkHZZ+644fCzH8kO/bqL+l5BLYMct4PA=",
             "is_superuser": "False",
             "username": "jim",
             "is_staff": "False",
@@ -63,7 +63,7 @@
         "model": "game_night_app.AppUser",
         "pk": 5,
         "fields": {
-            "password": "password",
+            "password": "pbkdf2_sha256$390000$8AzoPQ0xpTEbi3dM9bPoro$EF0KgBaQXx3dewALp4MCjQ+9S4vkvBnZSilONspT3+0=",
             "is_superuser": "False",
             "username": "john",
             "is_staff": "False",
