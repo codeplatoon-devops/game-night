@@ -35,7 +35,8 @@ export default function App() {
 	const whoAmI = async () => {
 		const response = await axios.get('/whoami')
 		const user = response.data && response.data[0] && response.data[0].fields
-		user.id = (response.data[0].pk).toString()
+		// user.id = (response.data[0].pk).toString()
+		user.id = (response.data[0].fields.username).toString()
 		console.log('user from whoami?', user, response)
 		setUser(user)
 	}
