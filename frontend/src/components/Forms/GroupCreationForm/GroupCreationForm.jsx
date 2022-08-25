@@ -11,6 +11,7 @@ import "./GroupCreationForm.css";
 
 export default function GroupCreationForm() {
 	const [showMessage, setShowMessage] = useState(false);
+	const [showForm, setShowForm] = useState(false);
 	const [groupName, setGroupName] = useState("");
 	const navigate = useNavigate();
 	const validate = () => {
@@ -21,6 +22,7 @@ export default function GroupCreationForm() {
 		return errors;
 	};
 	const onSubmit = (form) => {
+		setShowForm(false);
 		setShowMessage(true);
 	};
 
@@ -52,6 +54,12 @@ export default function GroupCreationForm() {
 	);
 	return (
 		<Container>
+			<Button
+				label="Create Group"
+				onClick={() => setShowForm(true)}
+				icon="pi pi-plus"
+				style={{ margin: "15px" }}
+			/>
 			<Dialog
 				visible={showMessage}
 				onHide={() => setShowMessage(false)}
@@ -70,83 +78,81 @@ export default function GroupCreationForm() {
 					</p>
 				</div>
 			</Dialog>
-			<Col>
-				<Row>
-					<div className="form-group-create">
-						<div className="flex justify-content-center">
-							<div className="card card-group-create">
-								<h2 className="text-center">Create a Group</h2>
-								<Form
-									onSubmit={onSubmit}
-									initialValues={{
-										groupname: "",
-									}}
-									validate={validate}
-									render={({ handleSubmit }) => (
-										<form
-											onSubmit={handleSubmit}
-											className="p-fluid"
-										>
-											<Field
-												name="groupname"
-												render={({ input, meta }) => (
-													<div className="field">
-														<span className="p-float-label">
-															<InputText
-																id="groupname"
-																{...input}
-																value={
-																	groupName
+			<Dialog
+				visible={showForm}
+				onHide={() => setShowForm(false)}
+				showHeader={true}
+			>
+				<div className="form-group-create">
+					<div className="flex justify-content-center">
+						<div className="card card-group-create">
+							<h2 className="text-center">Create a Group</h2>
+							<Form
+								onSubmit={onSubmit}
+								initialValues={{
+									groupname: "",
+								}}
+								validate={validate}
+								render={({ handleSubmit }) => (
+									<form
+										onSubmit={handleSubmit}
+										className="p-fluid"
+									>
+										<Field
+											name="groupname"
+											render={({ input, meta }) => (
+												<div className="field">
+													<span className="p-float-label">
+														<InputText
+															id="groupname"
+															{...input}
+															value={groupName}
+															onChange={(e) =>
+																setGroupName(
+																	e.target
+																		.value
+																)
+															}
+															className={classNames(
+																{
+																	"p-invalid":
+																		isFormFieldValid(
+																			meta
+																		),
 																}
-																onChange={(e) =>
-																	setGroupName(
-																		e.target
-																			.value
-																	)
+															)}
+														/>
+														<label
+															htmlFor="username"
+															className={classNames(
+																{
+																	"p-error":
+																		isFormFieldValid(
+																			meta
+																		),
 																}
-																className={classNames(
-																	{
-																		"p-invalid":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															/>
-															<label
-																htmlFor="username"
-																className={classNames(
-																	{
-																		"p-error":
-																			isFormFieldValid(
-																				meta
-																			),
-																	}
-																)}
-															>
-																Group Name*
-															</label>
-														</span>
-														{getFormErrorMessage(
-															meta
-														)}
-													</div>
-												)}
-											/>
+															)}
+														>
+															Group Name*
+														</label>
+													</span>
+													{getFormErrorMessage(meta)}
+												</div>
+											)}
+										/>
 
-											<Button
-												type="submit"
-												label="Create Group"
-												className="mt-2 btn-continue"
-											/>
-										</form>
-									)}
-								/>
-							</div>
+										<Button
+											type="submit"
+											label="Create Group"
+											className="mt-2 btn-continue"
+										/>
+									</form>
+								)}
+							/>
 						</div>
 					</div>
-				</Row>
-			</Col>
+				</div>
+			</Dialog>
 		</Container>
 	);
 }

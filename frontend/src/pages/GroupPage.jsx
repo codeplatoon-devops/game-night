@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { PendingInvitesGroups } from "../components/Tables/PendingInvitesGroups/PendingInvitesGroups";
+import GroupCreationForm from "../components/Forms/GroupCreationForm/GroupCreationForm";
 // import CreateChannel from "../components/Chatroom/CreateChannel";
 // import { useChatContext } from "stream-chat-react"
 
@@ -137,12 +138,13 @@ export default function GroupPage({ user, token, stream }) {
 								))}
 							</div>
 						) : null}
-						<Button
+						<GroupCreationForm />
+						{/* <Button
 							label="Create Group"
 							onClick={() => createGroup("TestGroup3")}
 							icon="pi pi-plus"
 							style={{ margin: "15px" }}
-						/>
+						/> */}
 						<Button
 							label="Create Group Request"
 							onClick={() => createGroupRequest("jim@email.com")}
