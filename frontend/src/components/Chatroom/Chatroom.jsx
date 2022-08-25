@@ -68,6 +68,7 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                 members: [user_id]
             })
             console.log('joinchannel', join_channel)
+            await join_channel.addMembers([user_id])
             await join_channel.watch()
         }
         else {
