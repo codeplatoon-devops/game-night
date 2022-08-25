@@ -137,14 +137,18 @@ export default function GroupPage({ user, token, stream }) {
 								))}
 							</div>
 						) : null}
-						<Button onClick={() => createGroup("TestGroup3")}>
-							Create Group
-						</Button>
 						<Button
+							label="Create Group"
+							onClick={() => createGroup("TestGroup3")}
+							icon="pi pi-plus"
+							style={{ margin: "15px" }}
+						/>
+						<Button
+							label="Create Group Request"
 							onClick={() => createGroupRequest("jim@email.com")}
-						>
-							Create Group Request
-						</Button>
+							icon="pi pi-plus"
+							style={{ margin: "15px" }}
+						/>
 						<Row>
 							<Col>
 								{groupInvitations ? (
