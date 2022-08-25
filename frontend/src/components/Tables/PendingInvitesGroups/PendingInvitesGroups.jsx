@@ -38,7 +38,7 @@ export const PendingInvitesGroups = () => {
 			</Col>
 			<Col></Col>
 			<Col>
-				{/* TODO: add decline login */}
+				{/* TODO: add decline logic */}
 				<Button
 					label="Decline"
 					icon="pi pi-times"
