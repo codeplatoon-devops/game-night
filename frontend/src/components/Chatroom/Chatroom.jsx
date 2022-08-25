@@ -15,26 +15,24 @@ function Chatroom ({user, token, stream, groupInformation}) {
     // const [channel, setChannel] = useState(null)
 
     // filters only the channels that the user is a member of
-    console.log('user.id here line 18', user.id)
-    const filters = {type: 'messaging', members: {$in: [user.id]}}
+    const filters = {type: 'messaging', members: {$in: [userId]}}
     // puts the channel with the lattest message at the top
     const sort = {last_message_at: -1}
 
-    const createChannel = async () => {
+    const createGroupChannel = async () => {
         if (client) {
-            let channelId = "Chatroom"
+            let channelId = "GroupChatroom"
             let channelName= groupInformation[0]
-            channelName += 'Chatroom'
+            channelName += ' Chatroom'
             channelId+=groupInformation[1].toString()
-            console.log('user.id', user.id, 'channelID is', channelId, 'channel name is', channelName)
-            // const user_id= (user.id).toString()
+            console.log('userId', userId, 'channelID is', channelId, 'channel name is', channelName)
             // setActiveChannel(channel)
     
             const new_channel = client.channel('messaging', channelId, {
                 // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
                 image: 'https://picsum.photos/200',
                 name: channelName,
-                members: [user.id]
+                members: [userId]
             })
             console.log('new channel', new_channel)
     
@@ -46,16 +44,16 @@ function Chatroom ({user, token, stream, groupInformation}) {
     }
 
     useEffect(()=> {
-        createChannel()
+        createGroupChannel()
     },[groupInformation])
 
     useEffect(()=> {
         //this connects the client to the chat
         if (token && user) {
-            setUserId((user.id).toString())
+            setUserId((user.username).toString())
             console.log('token here', token, 'type', typeof(token))
             if (!client) {
-
+                let user_id = user.username
                 async function init() {
                     // const user_id= (user.id).toString()
                     const chatClient = StreamChat.getInstance(stream)
@@ -68,7 +66,8 @@ function Chatroom ({user, token, stream, groupInformation}) {
                         image: 'https://picsum.photos/200',
                         // instead of name 
                         name: 'Site-wide Chatroom3',
-                        members: [user.id]
+                        // members: [user.id]
+                        members: [user_id]
                     })
         
                     // await channel.create()
