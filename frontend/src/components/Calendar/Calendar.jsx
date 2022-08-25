@@ -36,7 +36,6 @@ export default function Calendar({data}) {
         }}
         events={ 
           data.map((event) => ({title: event.fields.name, start: event.fields.start_time, end: event.fields.end_time , allDay: event.fields.all_day, url: `/#/events/${event.fields.code}`}))
-          
         }
       />
     </div>
