@@ -10,10 +10,12 @@ export default function Calendar({data}) {
   // source of data-date confusion :(
   const handleDateClick = (date) => {
     let calendarApi = date.view.calendar
-
-    calendarApi.changeView('timeGridDay', date.dateStr)
-
-
+    console.log(date)
+    if (date.view.type === 'dayGridMonth'){
+      calendarApi.changeView('timeGridDay', date.dateStr)
+    } else {
+      calendarApi.changeView('dayGridMonth',date.dateStr)
+    }
     }
   
 
