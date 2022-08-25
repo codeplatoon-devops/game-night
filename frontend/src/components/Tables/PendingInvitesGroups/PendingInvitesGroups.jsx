@@ -17,6 +17,7 @@ export const PendingInvitesGroups = (props) => {
 	const hideDetails = () => {
 		setShowMessage(false);
 	};
+
 	let invites = [];
 	if (props.data) {
 		for (let invitation of props.data) {
