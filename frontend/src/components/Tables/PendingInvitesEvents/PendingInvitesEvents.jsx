@@ -3,10 +3,11 @@ import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
+import { ColumnGroup } from "primereact/columngroup";
 import { Container, Row, Col } from "react-bootstrap";
 import "./PendingInvitesEvents.css";
 
-export const PendingInvitesEvents = () => {
+export const PendingInvitesEvents = (props) => {
 	const [showMessage, setShowMessage] = useState(false);
 	const showDetails = () => {
 		setShowMessage(true);
@@ -14,15 +15,32 @@ export const PendingInvitesEvents = () => {
 	const hideDetails = () => {
 		setShowMessage(false);
 	};
-	const invites = [
+	let invites = [];
+	if (props.data) {
+		for (let invitation of props.data) {
+			// console.log("invitation in props.data: ", invitation);
+			let tempInvite = {
+				eventName: invitation,
+				details: <Button onClick={showDetails}>Show Details</Button>,
+			};
+
+			invites.push(tempInvite);
+		}
+	}
+	const noInvites = [
 		{
-			eventName: "session zero",
-			category: "DnD",
-			location: "city state",
-			date: "24 Aug 2022",
-			details: <Button onClick={showDetails}>Show Details</Button>,
+			eventName: "None",
 		},
 	];
+	// const invites = [
+	// 	{
+	// 		eventName: "session zero",
+	// 		category: "DnD",
+	// 		location: "city state",
+	// 		date: "24 Aug 2022",
+	// 		details: <Button onClick={showDetails}>Show Details</Button>,
+	// 	},
+	// ];
 	const dialogFooter = (
 		<div className="flex justify-content-center">
 			<Row>
@@ -49,7 +67,13 @@ export const PendingInvitesEvents = () => {
 			</Row>
 		</div>
 	);
-
+	const tableHeader = (
+		<ColumnGroup>
+			<Row>
+				<Column header="Pending Event Invitations" colSpan={2} />
+			</Row>
+		</ColumnGroup>
+	);
 	return (
 		<Container as={Row} className="container-table-pending-invites">
 			<Dialog
@@ -65,10 +89,10 @@ export const PendingInvitesEvents = () => {
 					<p style={{ lineHeight: 1.5 }}>Event info here</p>
 				</div>
 			</Dialog>
-			<h4>Event Invitations</h4>
-			<DataTable value={invites}>
-				<Column field="eventName" header="Event Name" />
-				<Column field="details" header="Details" />
+			{/* TODO: decide whether we want 'no results found' or 'None' */}
+			<DataTable value={invites} headerColumnGroup={tableHeader}>
+				<Column field="eventName" />
+				<Column field="details" />
 			</DataTable>
 		</Container>
 	);
