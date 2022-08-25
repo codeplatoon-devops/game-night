@@ -14,6 +14,7 @@ import { Checkbox } from "primereact/checkbox";
 import { Chips } from "primereact/chips";
 import "./EventCreationForm.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const EventCreationForm = () => {
 	const [showMessage, setShowMessage] = useState(false); // for submission dialog
@@ -133,7 +134,29 @@ export const EventCreationForm = () => {
 	};
 
 	const onSubmit = (form) => {
-		setShowMessage(true);
+		setShowMessage(false);
+		// let attendees = document.getElementById('maxattendees').value
+		// console.log('attendees', attendees)
+		
+		axios.post('/events/create', {
+			event_name: eventName,
+			category: category,
+			games: games,
+			private: isPrivate,
+			attendees: 2, //need to change this
+			chatcreation: createChat,
+			allDay: isAllDay,
+			eventStart: eventStartDate,
+			eventEnd: eventEndDate,
+			description: description,
+			addressLine1: aLineOne,
+			addressLine2: aLineTwo,
+			city: city,
+			state: state,
+			zip: zip
+		})
+		.then((response) => {console.log('response', response)})
+		.catch((error) => {console.log('ERROR', error)})
 	};
 
 	// hardcoded to event '1' for now

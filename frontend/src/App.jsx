@@ -70,7 +70,7 @@ export default function App() {
 				{user ? <LoginNavBar /> : <LogoutNavBar />}
 				<div className="separator"></div>
 				<Routes>
-					<Route path="/" element={<HomePage />} />
+					<Route path="/" element={<HomePage user={user}/>} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/calendar" element={<CalendarPage data={userEvent}/>} />

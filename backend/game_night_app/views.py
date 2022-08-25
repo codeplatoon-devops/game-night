@@ -1,19 +1,17 @@
+from audioop import add
 from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-# pip install stream-chat
+ # pip install stream-chat
 import stream_chat
+import random
 import requests
 import os
 from dotenv import load_dotenv
-from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
-import random
-from django.contrib.auth.decorators import login_required
-from django.forms.models import model_to_dict
-from .serializers import EventSerializer, EventListSerializer
+from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest, Address
 
 
 load_dotenv()
@@ -60,7 +58,6 @@ def create_group_request(request):
     user = AppUser.objects.get(email = user_email)
     friend = AppUser.objects.get(email = friend_email)
     group = Group.objects.get(code = code)
-    print('in group request user is', user, 'friend is', friend, 'group is', group)
     if group is not None:
         if friend is not None:
             try:
@@ -82,14 +79,13 @@ def view_group_request(request):
     user_email = request.user.email
     user = AppUser.objects.get(email = user_email)
     # view any requests sent to the user
-    group_requests = GroupRequest.objects.filter(receiver= user)
+    group_requests = GroupRequest.objects.filter(receiver= user, is_active = True)
     if group_requests:
         list_of_group_requests=[]
         for item in group_requests:
             #sends back the emails of all pending group requests
-            sender = AppUser.objects.get(id = item.sender_id)
-            group = Group.objects.get(id = item.group_id)
-            list_of_group_requests.append([sender.email, group.name])
+            sender = item.sender
+            list_of_group_requests.append(sender.email)
         print('list of group_requests:', list_of_group_requests)
         try:
             return JsonResponse({'success': "True", 'group_requests': list_of_group_requests})
@@ -131,7 +127,7 @@ def view_event_request(request):
     user_email = request.user.email
     user = AppUser.objects.get(email = user_email)
     # view any requests sent to the user
-    event_requests = EventRequest.objects.filter(receiver= user)
+    event_requests = EventRequest.objects.filter(receiver= user, is_active = True)
     if event_requests:
         list_of_event_requests=[]
         for item in event_requests:
@@ -228,6 +224,7 @@ def whoami(request):
         return HttpResponse(data)
     else:
         return JsonResponse({'user': False})
+<<<<<<< HEAD
 
 @login_required
 @api_view(['GET'])
@@ -325,6 +322,39 @@ def view_groups(request):
         return JsonResponse({'success': "False", 'reason': "you don't have any groups"})
 
 
+@api_view(['POST'])   
+def create_event(request):  
+    if request.method == 'POST':
+        print('IN DJANGO EVENT CREATION, REQUEST.DATA IS', request.data)
+        
+        address_1 = request.data['addressLine1']
+        address_2 = request.data['addressLine2']
+        city = request.data['city']
+        state = request.data['state']
+        zip_code = request.data['zip']
+        new_address = Address(address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code)
+        new_address.full_clean()
+        new_address.save()
+        
+        name = request.data['event_name']
+        code = str(random.randint(10001, 99999999))
+        category = request.data['category']
+        max_attendees = request.data['attendees']
+        games = request.data['games']
+        private = request.data['private']
+        chat_creation = request.data['chatcreation']
+        all_day = request.data['allDay']
+        start_time = request.data['eventStart']
+        end_time = request.data['eventEnd']
+        description = request.data['description']
+        user = AppUser.objects.get(email = request.user.email)
+        
+        new_event = Event(owner=user, address=new_address, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
+        new_event.full_clean()
+        new_event.save()
+        return JsonResponse({'added event': True})
+        
+    return JsonResponse({'get event': True})
 
 
 @api_view(['GET'])
@@ -333,7 +363,7 @@ def userevents(request):
         events = Event.objects.filter(owner=request.user.id)
         data = serializers.serialize('json',events)
         print(data)
-
+ 
         return HttpResponse(data, content_type='application/json')
     else:
         return JsonResponse({'user': False})
@@ -347,9 +377,9 @@ def allevents(request):
         return HttpResponse(data, content_type='application/json')
     except:
         return Response('error fetching events')
-    
+
 # Alisha comments:
+
 # source ~/VEnvirons/GameNight/bin/activate
 # pip install -r requirements.txt
 # http://127.0.0.1:8000/
-
