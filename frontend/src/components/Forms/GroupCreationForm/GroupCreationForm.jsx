@@ -35,6 +35,11 @@ export default function GroupCreationForm() {
 	// TODO: update redirect to group code when generated
 	const onAck = () => {
 		setShowMessage(false);
+		setGroupCode(null);
+		setGroupName("");
+		setGroupInformation(null);
+		// can't reload or it will freeze
+		// window.location.reload();
 		// navigate("/groups/1");
 	};
 
@@ -59,6 +64,7 @@ export default function GroupCreationForm() {
 	);
 
 	const createGroup = function (name) {
+		getGroupCode();
 		let code = groupCode;
 		axios
 			.post("/group/create", { name: name, code: code })
@@ -72,7 +78,7 @@ export default function GroupCreationForm() {
 					// CreateChannel(name, code)
 					setGroupInformation([name, code]);
 					viewGroups();
-					// nav('/groups')
+					// // nav('/groups')
 					// window.location.reload()
 					// the reload is messing with the chatrooms
 				} else {
@@ -131,8 +137,7 @@ export default function GroupCreationForm() {
 							<h5>Group Creation Successful!</h5>
 							<p style={{ lineHeight: 1.5 }}>
 								Your group has been saved under the code{" "}
-								{groupCode}. Please proceed to the next page for
-								more details.
+								{groupCode}.
 							</p>
 						</div>
 					) : (
