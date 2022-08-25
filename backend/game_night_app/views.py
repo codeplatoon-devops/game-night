@@ -4,7 +4,8 @@ from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view
-# pip install stream-chat
+from rest_framework.response import Response
+ # pip install stream-chat
 import stream_chat
 import random
 import requests
@@ -257,6 +258,27 @@ def create_event(request):
         return JsonResponse({'added event': True})
         
     return JsonResponse({'get event': True})
+
+@api_view(['GET'])
+def userevents(request):
+    if request.user.is_authenticated:
+        events = Event.objects.filter(owner=request.user.id)
+        data = serializers.serialize('json',events)
+        print(data)
+ 
+        return HttpResponse(data, content_type='application/json')
+    else:
+        return JsonResponse({'user': False})
+
+@api_view(['GET'])
+def allevents(request):
+    try:
+        events = Event.objects.all()
+        data = serializers.serialize('json', events)
+        print(data)
+        return HttpResponse(data, content_type='application/json')
+    except:
+        return Response('error fetching events')
 
 
 # Alisha comments:
