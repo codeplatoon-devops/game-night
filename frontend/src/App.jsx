@@ -11,6 +11,7 @@ import CalendarPage from "./pages/CalendarPage";
 import AccountPage from "./pages/AccountPage";
 import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
+import AllEventsPage from "./pages/AllEventsPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
 import getCSRFToken from '../utils'
@@ -77,6 +78,7 @@ export default function App() {
 					<Route path="/calendar" element={<CalendarPage data={userEvent}/>} />
 					<Route path="/account" element={<AccountPage />} />
 					<Route path="/events" element={<EventPage />} />
+          <Route path="/allevents" element={<AllEventsPage />} />
 					<Route
 						path="/events/create"
 						element={<EventCreatePage />}

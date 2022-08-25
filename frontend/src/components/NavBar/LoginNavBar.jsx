@@ -3,6 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
@@ -41,10 +42,14 @@ export default function LoginNavBar() {
                             <Nav.Link href="#/calendar">Calendar</Nav.Link>
                         </Col>
                         <Col>
-                            <Nav.Link href="#/events">Search Events</Nav.Link>
+                            <Nav.Link href="#/groups">Your Groups</Nav.Link>
                         </Col>
                         <Col>
-                            <Nav.Link href="#/groups">Your Groups</Nav.Link>
+                        <NavDropdown title="Events" id="basic-nav-dropdown">
+                            <NavDropdown.Item href="#/events">Your Events</NavDropdown.Item>
+                            <NavDropdown.Item href="#/allevents">Search Events</NavDropdown.Item>
+                            <NavDropdown.Item href="#/events/create">Create Event</NavDropdown.Item>
+                        </NavDropdown>
                         </Col>
                         <Col>
                             <Nav.Link onClick={logout}>Logout</Nav.Link>
