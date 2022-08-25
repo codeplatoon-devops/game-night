@@ -17,19 +17,21 @@ export const PendingInvitesGroups = (props) => {
 	const hideDetails = () => {
 		setShowMessage(false);
 	};
-	if (!props.data) {
-		console.log("no invites");
+	let invites = [];
+	if (props.data) {
+		for (let invitation of props.data) {
+			// console.log("invitation in props.data: ", invitation);
+			let tempInvite = {
+				groupName: invitation,
+				details: <Button onClick={showDetails}>Show Details</Button>,
+			};
+
+			invites.push(tempInvite);
+		}
 	}
 	const noInvites = [
 		{
 			groupName: "None",
-		},
-	];
-	const invites = [
-		{
-			groupName: "group one",
-			members: "whoever",
-			details: <Button onClick={showDetails}>Show Details</Button>,
 		},
 	];
 	const dialogFooter = (

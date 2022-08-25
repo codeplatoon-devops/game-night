@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
+import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { PendingInvitesGroups } from "../components/Tables/PendingInvitesGroups/PendingInvitesGroups";
 // import CreateChannel from "../components/Chatroom/CreateChannel";
