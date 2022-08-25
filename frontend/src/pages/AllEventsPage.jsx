@@ -1,7 +1,7 @@
-
+import { AllEventsTable } from "../components/Tables/EventsTable/AllEventsTable";
 
 export default function EventPage() {
 	return (
-        <h1>All Events</h1>
+        <AllEventsTable />
     );
 }
