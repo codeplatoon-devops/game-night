@@ -83,7 +83,7 @@ export default function App() {
 					<Route path="/groups" element={<GroupPage user={user} token={token} stream= {stream}/>} />
 					<Route
 						path="/events/:eventId"
-						element={<EventDetailPage data={userEvent}/>}
+						element={<EventDetailPage />}
 					/>
 				</Routes>
 			</Router>
