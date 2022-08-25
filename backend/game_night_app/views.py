@@ -325,10 +325,7 @@ def view_groups(request):
         return JsonResponse({'success': "False", 'reason': "you don't have any groups"})
 
 
-# Alisha comments:
-# source ~/VEnvirons/GameNight/bin/activate
-# pip install -r requirements.txt
-# http://127.0.0.1:8000/
+
 
 @api_view(['GET'])
 def userevents(request):
@@ -351,4 +348,8 @@ def allevents(request):
     except:
         return Response('error fetching events')
     
+# Alisha comments:
+# source ~/VEnvirons/GameNight/bin/activate
+# pip install -r requirements.txt
+# http://127.0.0.1:8000/
 
