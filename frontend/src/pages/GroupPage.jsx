@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { PendingInvitesGroups } from "../components/Tables/PendingInvitesGroups/PendingInvitesGroups";
+import GroupsTable from "../components/Tables/GroupsTable/GroupsTable";
 // import CreateChannel from "../components/Chatroom/CreateChannel";
 // import { useChatContext } from "stream-chat-react"
 
@@ -129,14 +130,14 @@ export default function GroupPage({ user, token, stream }) {
 				<h1>Group Page</h1>
 				<Row>
 					<Col md={4}>
-						<h2> Groups table</h2>
-						{groups ? (
+						<GroupsTable groups={groups} />
+						{/* {groups ? (
 							<div>
 								{groups.map((group) => (
 									<h4>{group}</h4>
 								))}
 							</div>
-						) : null}
+						) : null} */}
 						<Button onClick={() => createGroup("TestGroup3")}>
 							Create Group
 						</Button>
@@ -152,20 +153,12 @@ export default function GroupPage({ user, token, stream }) {
 										data={groupInvitations}
 									/>
 								) : (
-									<PendingInvitesGroups data={null} />
+									<PendingInvitesGroups
+										data={null}
+										// join={user.email}
+										// need sender email, group name, group code
+									/>
 								)}
-								{/* {groupInvitations ? (
-									<div>
-										{groupInvitations.map((invitation) => (
-											<h4>
-												{invitation[0]} invited you to
-												join the group {invitation[1]}
-											</h4>
-										))}
-									</div>
-								) : (
-									<h4> No pending invitations</h4>
-								)} */}
 							</Col>
 						</Row>
 					</Col>
