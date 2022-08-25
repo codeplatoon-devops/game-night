@@ -3,7 +3,10 @@ import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
-import { Container, Row, Col } from "react-bootstrap";
+import { ColumnGroup } from "primereact/columngroup";
+import { Row } from "primereact/row";
+import { Container, Col } from "react-bootstrap";
+import { Row as myRow } from "react-bootstrap";
 import "./PendingInvitesGroups.css";
 
 export const PendingInvitesGroups = () => {
@@ -22,34 +25,43 @@ export const PendingInvitesGroups = () => {
 		},
 	];
 	const dialogFooter = (
-		<div className="flex justify-content-center">
+		<Container as={myRow} className="flex justify-content-center">
+			<Col>
+				{/* TODO: add accept logic */}
+				<Button
+					label="Accept"
+					icon="pi pi-check"
+					className="p-button-outlined"
+					autoFocus
+					onClick={hideDetails}
+				/>
+			</Col>
+			<Col></Col>
+			<Col>
+				{/* TODO: add decline login */}
+				<Button
+					label="Decline"
+					icon="pi pi-times"
+					className="p-button-outlined"
+					onClick={hideDetails}
+				/>
+			</Col>
+		</Container>
+	);
+
+	const tableHeader = (
+		<ColumnGroup>
 			<Row>
-				<Col>
-					{/* TODO: add accept logic */}
-					<Button
-						label="Accept"
-						icon="pi pi-check"
-						className="p-button-outlined"
-						autoFocus
-						onClick={hideDetails}
-					/>
-				</Col>
-				<Col></Col>
-				<Col>
-					{/* TODO: add decline login */}
-					<Button
-						label="Decline"
-						icon="pi pi-times"
-						className="p-button-outlined"
-						onClick={hideDetails}
-					/>
-				</Col>
+				<Column header="Pending Group Invitations" colSpan={2} />
 			</Row>
-		</div>
+		</ColumnGroup>
 	);
 
 	return (
-		<Container as={Row} className="container-table-pending-invites-groups">
+		<Container
+			as={myRow}
+			className="container-table-pending-invites-groups"
+		>
 			<Dialog
 				visible={showMessage}
 				onHide={hideDetails}
@@ -63,10 +75,9 @@ export const PendingInvitesGroups = () => {
 					<p style={{ lineHeight: 1.5 }}>Group info here</p>
 				</div>
 			</Dialog>
-			<h4>Group Invitations</h4>
-			<DataTable value={invites}>
-				<Column field="groupName" header="Group Name" />
-				<Column field="details" header="Details" />
+			<DataTable value={invites} headerColumnGroup={tableHeader}>
+				<Column field="groupName" />
+				<Column field="details" />
 			</DataTable>
 		</Container>
 	);
