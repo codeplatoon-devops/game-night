@@ -4,49 +4,82 @@ import { Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window
 import axios from 'axios'
 import './chatroom.css'
 import 'stream-chat-react/dist/css/index.css'
+import { useChatContext } from "stream-chat-react"
 // had to change this file: node_modules/stream-chat-react/dist/components/MessageInput/hooks/useEmojiIndex.js
 
-function Chatroom ({user, token, stream}) {
+function Chatroom ({user, token, stream, groupInformation}) {
     
     const [client, setClient] = useState(null)
-    const [channel, setChannel] = useState(null)
+    const [userId, setUserId] = useState(null)
+    // const {activeChannel} = useChatContext()
+    // const [channel, setChannel] = useState(null)
 
     // filters only the channels that the user is a member of
+    console.log('user.id here line 18', user.id)
     const filters = {type: 'messaging', members: {$in: [user.id]}}
     // puts the channel with the lattest message at the top
     const sort = {last_message_at: -1}
 
+    const createChannel = async () => {
+        if (client) {
+            let channelId = "Chatroom"
+            let channelName= groupInformation[0]
+            channelName += 'Chatroom'
+            channelId+=groupInformation[1].toString()
+            console.log('user.id', user.id, 'channelID is', channelId, 'channel name is', channelName)
+            // const user_id= (user.id).toString()
+            // setActiveChannel(channel)
+    
+            const new_channel = client.channel('messaging', channelId, {
+                // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
+                image: 'https://picsum.photos/200',
+                name: channelName,
+                members: [user.id]
+            })
+            console.log('new channel', new_channel)
+    
+            await new_channel.watch()
+        }
+        else {
+            setTimeout(createChannel, 3000)
+        }
+    }
+
+    useEffect(()=> {
+        createChannel()
+    },[groupInformation])
+
     useEffect(()=> {
         //this connects the client to the chat
         if (token && user) {
-
+            setUserId((user.id).toString())
             console.log('token here', token, 'type', typeof(token))
-            async function init() {
-                const user_id= (user.id).toString()
-                console.log('USER ID IS HERE', user_id, 'type', typeof(user_id))
-                const chatClient = StreamChat.getInstance(stream)
-                //need to get this userToken from the backend
-                // https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
-                await chatClient.connectUser(user, token)
-                
-    
-                //shouldn't need all this channel specific stuff since have channel list
-                const channel = chatClient.channel('messaging', 'User1Chat', {
-                    // add as many custom fields as you'd like
-                    image: 'https://picsum.photos/200',
-                    // instead of name 
-                    name: 'User1Chat',
-                    members: [user_id]
-                })
-    
-                // await channel.create()
-                setChannel(channel)
-                // channel.addMembers(user_id)
-                await channel.watch()
-                setClient(chatClient)
-    
+            if (!client) {
+
+                async function init() {
+                    // const user_id= (user.id).toString()
+                    const chatClient = StreamChat.getInstance(stream)
+                    // https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
+                    await chatClient.connectUser(user, token)
+                    
+                    // shouldn't need all this channel specific stuff since have channel list
+                    const first_channel = chatClient.channel('messaging', 'SiteChat-3', {
+                        // add as many custom fields as you'd like
+                        image: 'https://picsum.photos/200',
+                        // instead of name 
+                        name: 'Site-wide Chatroom3',
+                        members: [user.id]
+                    })
+        
+                    // await channel.create()
+                    // setChannel(channel)
+                    // channel.addMembers(user_id)
+                    await first_channel.watch()
+                    setClient(chatClient)
+        
+                }
+                init()
             }
-            init()
             return () => { if (client) client.disconnectUser()}
         }
     }, [])
@@ -57,11 +90,11 @@ function Chatroom ({user, token, stream}) {
 
     return (
         <Chat client = {client} theme = "messaging light">
-        {/* <ChannelList 
+        <ChannelList 
         filters ={filters}
-        sort = {sort}/>     */}
+        sort = {sort}/>    
         {/* ChannelList will get all the channels so don't need next line */}
-            <Channel channel = {channel}>
+            <Channel>
                 <Window>
                     <ChannelHeader />
                     <MessageList />
