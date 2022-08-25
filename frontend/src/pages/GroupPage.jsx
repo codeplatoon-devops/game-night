@@ -100,8 +100,8 @@ export default function GroupPage({user, token, stream}) {
 			});
 	}
 
-	const joinGroup = function (email) {
-		axios.post("/group/join", {friend_email: email, code:groupCode})
+	const joinGroup = function (email, code) {
+		axios.post("/group/join", {friend_email: email, code:code})
 			.then((response) => {
 				console.log(
 					"join group response.data", response.data)
@@ -142,7 +142,7 @@ export default function GroupPage({user, token, stream}) {
 						: null
 						}
 						<Button onClick={()=>createGroup("TestGroup3")}>Create Group</Button>
-						<Button onClick={()=>createGroupRequest("jim@email.com")}>Create Group Request</Button>
+						<Button onClick={()=>createGroupRequest("jim@email.com")}>Send Group Invite</Button>
 						<Row>
 							<Col>
 								<h2> Pending Group invitations table</h2>
@@ -150,7 +150,10 @@ export default function GroupPage({user, token, stream}) {
 									? 
 									<div>
 									{groupInvitations.map((invitation) => (
-										<h4>{invitation[0]} invited you to join the group {invitation[1]}</h4>
+										<div>
+											<h4>{invitation[0]} invited you to join the group {invitation[1]}</h4>
+											<Button onClick={()=>joinGroup("jim@email.com")}>Join Group</Button>
+										</div>
 									))}
 									</div>
 									: <h4> No pending invitations</h4>
