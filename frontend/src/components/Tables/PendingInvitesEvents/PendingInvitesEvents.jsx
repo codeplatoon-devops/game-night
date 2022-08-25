@@ -3,7 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "./PendingInvitesEvents.css";
 
 export const PendingInvitesEvents = () => {
@@ -25,12 +25,28 @@ export const PendingInvitesEvents = () => {
 	];
 	const dialogFooter = (
 		<div className="flex justify-content-center">
-			<Button
-				label="Hide Details"
-				className="p-button-text"
-				autoFocus
-				onClick={hideDetails}
-			/>
+			<Row>
+				<Col>
+					{/* TODO: add accept logic */}
+					<Button
+						label="Accept"
+						icon="pi pi-check"
+						className="p-button-outlined"
+						autoFocus
+						onClick={hideDetails}
+					/>
+				</Col>
+				<Col></Col>
+				<Col>
+					{/* TODO: add decline login */}
+					<Button
+						label="Decline"
+						icon="pi pi-times"
+						className="p-button-outlined"
+						onClick={hideDetails}
+					/>
+				</Col>
+			</Row>
 		</div>
 	);
 
@@ -39,16 +55,17 @@ export const PendingInvitesEvents = () => {
 			<Dialog
 				visible={showMessage}
 				onHide={hideDetails}
+				showHeader={true}
+				header="Invite Details"
 				footer={dialogFooter}
-				showHeader={false}
 				breakpoints={{ "960px": "80vw" }}
 				style={{ width: "30vw" }}
 			>
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
-					<h5>Invite Details</h5>
 					<p style={{ lineHeight: 1.5 }}>Event info here</p>
 				</div>
 			</Dialog>
+			<h4>Event Invitations</h4>
 			<DataTable value={invites}>
 				<Column field="eventName" header="Event Name" />
 				<Column field="details" header="Details" />
