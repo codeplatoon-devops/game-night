@@ -17,6 +17,7 @@ export default function GroupCreationForm() {
 	const [groupInformation, setGroupInformation] = useState(null);
 	const [groupCode, setGroupCode] = useState(null);
 	const navigate = useNavigate();
+	let creationError = "";
 	const validate = () => {
 		let errors = {};
 		if (!groupName) {
@@ -27,7 +28,7 @@ export default function GroupCreationForm() {
 	const onSubmit = (form) => {
 		setShowForm(false);
 		createGroup(groupName);
-		setShowMessage(true);
+		// setShowMessage(true);
 	};
 
 	// hardcoded to group '1' for now
@@ -64,9 +65,10 @@ export default function GroupCreationForm() {
 			.then((response) => {
 				console.log("create group response.data", response.data);
 				if (response.data.success == "True") {
-					window.alert(
-						`Group created! Your group code has been assigned ${groupCode}`
-					);
+					setShowMessage(true);
+					// window.alert(
+					// 	`Group created! Your group code has been assigned ${groupCode}`
+					// );
 					// CreateChannel(name, code)
 					setGroupInformation([name, code]);
 					viewGroups();
@@ -74,7 +76,9 @@ export default function GroupCreationForm() {
 					// window.location.reload()
 					// the reload is messing with the chatrooms
 				} else {
-					window.alert(`${response.data.reason}`);
+					creationError = response.data.reason;
+					setShowMessage(true);
+					// window.alert(`${response.data.reason}`);
 				}
 			});
 	};
@@ -122,11 +126,21 @@ export default function GroupCreationForm() {
 			>
 				{/* TODO: get group code for dialog message */}
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
-					<h5>Group Creation Successful!</h5>
-					<p style={{ lineHeight: 1.5 }}>
-						Your group has been saved under the code [group code].
-						Please proceed to the next page for more details.
-					</p>
+					{groupCode ? (
+						<div>
+							<h5>Group Creation Successful!</h5>
+							<p style={{ lineHeight: 1.5 }}>
+								Your group has been saved under the code{" "}
+								{groupCode}. Please proceed to the next page for
+								more details.
+							</p>
+						</div>
+					) : (
+						<div>
+							<h5>Something went wrong here . . . </h5>
+							<p style={{ lineHeight: 1.5 }}>{creationError}</p>
+						</div>
+					)}
 				</div>
 			</Dialog>
 			<Dialog
