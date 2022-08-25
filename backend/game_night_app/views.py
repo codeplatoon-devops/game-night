@@ -12,6 +12,8 @@ import requests
 import os
 from dotenv import load_dotenv
 from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest, Address
+from django.forms.models import model_to_dict
+from django.contrib.auth.decorators import login_required
 
 
 load_dotenv()
@@ -79,7 +81,7 @@ def view_group_request(request):
     user_email = request.user.email
     user = AppUser.objects.get(email = user_email)
     # view any requests sent to the user
-    group_requests = GroupRequest.objects.filter(receiver= user, is_active = True)
+    group_requests = GroupRequest.objects.filter(receiver= user)
     if group_requests:
         list_of_group_requests=[]
         for item in group_requests:
@@ -127,7 +129,7 @@ def view_event_request(request):
     user_email = request.user.email
     user = AppUser.objects.get(email = user_email)
     # view any requests sent to the user
-    event_requests = EventRequest.objects.filter(receiver= user, is_active = True)
+    event_requests = EventRequest.objects.filter(receiver= user)
     if event_requests:
         list_of_event_requests=[]
         for item in event_requests:
@@ -224,7 +226,6 @@ def whoami(request):
         return HttpResponse(data)
     else:
         return JsonResponse({'user': False})
-<<<<<<< HEAD
 
 @login_required
 @api_view(['GET'])
