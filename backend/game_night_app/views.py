@@ -30,8 +30,9 @@ def create_chat_user_token(request):
     try:
         user_email= request.user.email
         user = AppUser.objects.get(email = user_email)
-        user_id= str(user.id)
-        print('IN TOKEN ON DJANGO, user', user, 'user id', user_id)
+        # user_id= str(user.id)
+        user_id= str(user.username)
+        print('IN TOKEN ON DJANGO, user', user, 'user_id', user_id, 'type user id', type(user_id))
         server_client = stream_chat.StreamChat(api_key=os.environ['chatapikey'], api_secret=os.environ['secretchatkey'])
         token = server_client.create_token(user_id)
         print('IN CREATE CHAT USER TOKEN, TOKEN IS', token)
@@ -87,7 +88,8 @@ def view_group_request(request):
         for item in group_requests:
             #sends back the emails of all pending group requests
             sender = item.sender
-            list_of_group_requests.append(sender.email)
+            group = item.group 
+            list_of_group_requests.append([sender.email, group.name, group.code])
         print('list of group_requests:', list_of_group_requests)
         try:
             return JsonResponse({'success': "True", 'group_requests': list_of_group_requests})
@@ -107,7 +109,7 @@ def create_event_request(request):
     print('USER EMAIL', user_email, 'FRIEND EMAIL', friend_email, 'event code', event_code)
     user = AppUser.objects.get(email = user_email)
     friend = AppUser.objects.get(email = friend_email)
-    event = Event.objects.get(code = code)
+    event = Event.objects.get(code = event_code)
     if event is not None:
         if friend is not None:
             try:
@@ -273,7 +275,7 @@ def join_group(request):
     user = AppUser.objects.get(email = request.user.email)
     friend= AppUser.objects.get(email = request.data['friend_email'])
     code = request.data['code']
-    list = GroupList.objects.get(owner = user)
+    # list = GroupList.objects.get(owner = user)
     all_groups = Group.objects.all()
     all_codes = []
     for group in all_groups:
@@ -286,12 +288,10 @@ def join_group(request):
                 # not sure I have this right:
                 print('group members are', group.member.all())
                 # adding this group to their list:
-                list.group.add(group)
-                list.save()
-                # not sure I have this part right:
-                print('group has been added to list', group.listgroups)
-                # setting the group request to inactive:
-                group_request = GroupRequest.objects.get(sender = friend, receiver = user)
+                # list.group.add(group)
+                # list.save()
+                # deleting the group request
+                group_request = GroupRequest.objects.get(sender = friend, receiver = user, group = group)
                 group_request.delete()
                 print('group request should now be deleted', group_request)
                 return JsonResponse({'success': "True", 'action': "group created"})

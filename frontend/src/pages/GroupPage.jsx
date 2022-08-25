@@ -7,6 +7,8 @@ import Col from "react-bootstrap/Col";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { PendingInvitesGroups } from "../components/Tables/PendingInvitesGroups/PendingInvitesGroups";
+import GroupCreationForm from "../components/Forms/GroupCreationForm/GroupCreationForm";
+import GroupsTable from "../components/Tables/GroupsTable/GroupsTable";
 // import CreateChannel from "../components/Chatroom/CreateChannel";
 // import { useChatContext } from "stream-chat-react"
 
@@ -15,9 +17,10 @@ export default function GroupPage({ user, token, stream }) {
 	const nav = useNavigate();
 	// const [image, setImage] = useState('https://picsum.photos/200')
 	const [groupCode, setGroupCode] = useState(null);
+	const [createGroupInformation, setCreateGroupInformation] = useState(null);
+	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
 	const [groups, setGroups] = useState(null);
 	const [groupInvitations, setGroupInvitations] = useState(null);
-	const [groupInformation, setGroupInformation] = useState(null);
 	// const [groupCreated, setGroupCreated] = useState(false)
 
 	const getGroupCode = function () {
@@ -43,27 +46,27 @@ export default function GroupPage({ user, token, stream }) {
 		});
 	};
 
-	const createGroup = function (name) {
-		let code = groupCode;
-		axios
-			.post("/group/create", { name: name, code: code })
-			.then((response) => {
-				console.log("create group response.data", response.data);
-				if (response.data.success == "True") {
-					window.alert(
-						`Group created! Your group code has been assigned ${groupCode}`
-					);
-					// CreateChannel(name, code)
-					setGroupInformation([name, code]);
-					viewGroups();
-					// nav('/groups')
-					// window.location.reload()
-					// the reload is messing with the chatrooms
-				} else {
-					window.alert(`${response.data.reason}`);
-				}
-			});
-	};
+	// const createGroup = function (name) {
+	// 	let code = groupCode;
+	// 	axios
+	// 		.post("/group/create", { name: name, code: code })
+	// 		.then((response) => {
+	// 			console.log("create group response.data", response.data);
+	// 			if (response.data.success == "True") {
+	// 				window.alert(
+	// 					`Group created! Your group code has been assigned ${groupCode}`
+	// 				);
+	// 				// CreateChannel(name, code)
+	// 				setGroupInformation([name, code]);
+	// 				viewGroups();
+	// 				// nav('/groups')
+	// 				// window.location.reload()
+	// 				// the reload is messing with the chatrooms
+	// 			} else {
+	// 				window.alert(`${response.data.reason}`);
+	// 			}
+	// 		});
+	// };
 
 	// const createGroupRequest = function (friend_email, code) {
 	// axios.post("/group/request/create", {friend_email: friend_email, code:code})
@@ -101,12 +104,14 @@ export default function GroupPage({ user, token, stream }) {
 		});
 	};
 
-	const joinGroup = function (email, code) {
-		axios.post("/group/join", {friend_email: email, code:code})
+	const joinGroup = function (email, name, code) {
+		axios
+			.put("/group/join", { friend_email: email, code: code })
 			.then((response) => {
 				console.log("join group response.data", response.data);
 				if (response.data.success == "True") {
 					window.alert("Group joined!");
+					setJoinGroupInformation([name, code]);
 				} else {
 					window.alert(`${response.data.reason}`);
 				}
@@ -128,22 +133,22 @@ export default function GroupPage({ user, token, stream }) {
 				<h1>Group Page</h1>
 				<Row>
 					<Col md={4}>
-						<h2> Groups table</h2>
-						{groups ? (
+						<GroupsTable groups={groups} />
+						{/* {groups ? (
 							<div>
 								{groups.map((group) => (
 									<h4>{group}</h4>
 								))}
 							</div>
-						) : null}
-						<Button onClick={() => createGroup("TestGroup3")}>
-							Create Group
-						</Button>
+                                ) : null*/}
+						{/* Group creation */}
+						<GroupCreationForm />
 						<Button
-							onClick={() => createGroupRequest("jim@email.com")}
-						>
-							Create Group Request
-						</Button>
+							label="Create Group Request"
+							onClick={() => createGroupRequest("alisha@gmail.com")}
+							icon="pi pi-plus"
+							style={{ margin: "15px" }}
+						/>
 						<Row>
 							<Col>
 								{groupInvitations ? (
@@ -151,9 +156,12 @@ export default function GroupPage({ user, token, stream }) {
 										data={groupInvitations}
 									/>
 								) : (
-									<PendingInvitesGroups data={null} />
+									<PendingInvitesGroups
+										data={null}
+										// join={user.email}
+										// need sender email, group name, group code
+									/>
 								)}
-							
 							</Col>
 						</Row>
 					</Col>
@@ -164,7 +172,8 @@ export default function GroupPage({ user, token, stream }) {
 							user={user}
 							token={token}
 							stream={stream}
-							groupInformation={groupInformation}
+							createGroupInformation={createGroupInformation}
+							joinGroupInformation={joinGroupInformation}
 						/>
 						{/* : null
 						} */}
