@@ -359,7 +359,19 @@ def userevents(request):
     if request.user.is_authenticated:
         events = Event.objects.filter(owner=request.user.id)
         data = serializers.serialize('json',events)
-        print(data)
+        # print(data)
+ 
+        return HttpResponse(data, content_type='application/json')
+    else:
+        return JsonResponse({'user': False})
+@api_view(['GET'])
+def userevents_byid(request,id):
+    if request.user.is_authenticated:
+        code = str(id)
+        if len(code) < 8:
+            code = code.rjust(8,'0')
+        events = Event.objects.filter(owner = request.user.id).filter(code=code)
+        data = serializers.serialize('json',events)
  
         return HttpResponse(data, content_type='application/json')
     else:
@@ -379,7 +391,7 @@ def allevents(request):
     try:
         events = Event.objects.all()
         data = serializers.serialize('json', events)
-        print(data)
+        # print(data)
         return HttpResponse(data, content_type='application/json')
     except:
         return Response('error fetching events')
