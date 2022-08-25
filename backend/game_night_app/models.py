@@ -27,15 +27,6 @@ class AppUser(AbstractUser):
 # do we want to use from localflavor.models import USStateField or just a 2-character CharField?
 # do we also want to use localflavor.us.models.USZipCodeField?
 # allow any other fields to be null/blank?
-class Address(models.Model):
-    address_1 = models.CharField(max_length=128, verbose_name="Address")
-    address_2 = models.CharField( max_length=128, blank=True, null=True, default=None, verbose_name="Address cont'd")
-    city = models.CharField(max_length=64, verbose_name="City")
-    state = models.CharField(max_length=2, verbose_name="State")
-    zip_code = models.CharField(max_length=5, verbose_name="Zip code")
-
-    def __str__(self):
-        return f"ID: {self.id}, Address: {self.address_1}, {self.address_2}, City: {self.city}, State: {self.state}, Zip code: {self.zip_code}"
 
 class Event(models.Model):
     owner=models.ForeignKey(AppUser, default=None, on_delete=models.CASCADE)
@@ -43,17 +34,21 @@ class Event(models.Model):
     code=models.CharField(max_length=8,blank=True, null=True, default=None, verbose_name="Code")
     category=models.CharField(max_length=16, verbose_name="Category")
     max_attendees=models.IntegerField(blank=True, null=True, default=None, verbose_name="Maximum attendees")
-    private=models.BooleanField(default=False, blank=True, null=True, verbose_name="Private game") # or choice between 'public' and 'private'?
-    address=models.ForeignKey(Address, on_delete=models.CASCADE, related_name='Addresses') 
+    private=models.BooleanField(default=False, blank=True, null=True, verbose_name="Private game") # or choice between 'public' and 'private'? 
     start_time=models.DateTimeField(blank=True, null=True, default=None, verbose_name="start date and time")
     end_time=models.DateTimeField(blank=True, null=True, default=None, verbose_name="end date and time")
     all_day=models.BooleanField(default=False, blank=True, null=True, verbose_name="All day")
     description=models.TextField(blank=True, null=True, default=None, verbose_name="desciption")
     chat_creation=models.BooleanField(default=False, blank=True, null=True, verbose_name="Chat Creation")
     games=models.JSONField(null=True, blank=True, default=None)
+    address_1 = models.CharField(max_length=128, verbose_name="Address")
+    address_2 = models.CharField( max_length=128, blank=True, null=True, default=None, verbose_name="Address cont'd")
+    city = models.CharField(max_length=64, verbose_name="City")
+    state = models.CharField(max_length=2, verbose_name="State")
+    zip_code = models.CharField(max_length=5, verbose_name="Zip code")
 
     def __str__(self):
-        return f"ID: {self.id}, Name: {self.name}, Category: {self.category}, Address: {self.address}, DateTime: {self.date_time}, Private: {self.private}"
+        return f"ID: {self.id}, Name: {self.name}, Category: {self.category}, Private: {self.private}"
 
 # class Game(models.Model):
 #     title=models.CharField(max_length=32, blank=False, unique=True, verbose_name="Title")
