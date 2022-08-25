@@ -1,14 +1,17 @@
+from audioop import add
 from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view
-# pip install stream-chat
+from rest_framework.response import Response
+ # pip install stream-chat
 import stream_chat
+import random
 import requests
 import os
 from dotenv import load_dotenv
-from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
+from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest, Address
 
 
 load_dotenv()
@@ -25,7 +28,7 @@ def create_chat_user_token(request):
     try:
         user_email= request.user.email
         user = AppUser.objects.get(email = user_email)
-        user_id= user.id
+        user_id= str(user.id)
         print('IN TOKEN ON DJANGO, user', user, 'user id', user_id)
         server_client = stream_chat.StreamChat(api_key=os.environ['chatapikey'], api_secret=os.environ['secretchatkey'])
         token = server_client.create_token(user_id)
@@ -221,6 +224,61 @@ def whoami(request):
         return HttpResponse(data)
     else:
         return JsonResponse({'user': False})
+    
+@api_view(['POST'])   
+def create_event(request):  
+    if request.method == 'POST':
+        print('IN DJANGO EVENT CREATION, REQUEST.DATA IS', request.data)
+        
+        address_1 = request.data['addressLine1']
+        address_2 = request.data['addressLine2']
+        city = request.data['city']
+        state = request.data['state']
+        zip_code = request.data['zip']
+        new_address = Address(address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code)
+        new_address.full_clean()
+        new_address.save()
+        
+        name = request.data['event_name']
+        code = str(random.randint(10001, 99999999))
+        category = request.data['category']
+        max_attendees = request.data['attendees']
+        games = request.data['games']
+        private = request.data['private']
+        chat_creation = request.data['chatcreation']
+        all_day = request.data['allDay']
+        start_time = request.data['eventStart']
+        end_time = request.data['eventEnd']
+        description = request.data['description']
+        user = AppUser.objects.get(email = request.user.email)
+        
+        new_event = Event(owner=user, address=new_address, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
+        new_event.full_clean()
+        new_event.save()
+        return JsonResponse({'added event': True})
+        
+    return JsonResponse({'get event': True})
+
+@api_view(['GET'])
+def userevents(request):
+    if request.user.is_authenticated:
+        events = Event.objects.filter(owner=request.user.id)
+        data = serializers.serialize('json',events)
+        print(data)
+ 
+        return HttpResponse(data, content_type='application/json')
+    else:
+        return JsonResponse({'user': False})
+
+@api_view(['GET'])
+def allevents(request):
+    try:
+        events = Event.objects.all()
+        data = serializers.serialize('json', events)
+        print(data)
+        return HttpResponse(data, content_type='application/json')
+    except:
+        return Response('error fetching events')
 
 
 # Alisha comments:

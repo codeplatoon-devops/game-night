@@ -1,37 +1,25 @@
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
+import FullCalendar, { ViewApi } from '@fullcalendar/react'
+import dayGridPlugin, { DayGridView } from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import "./Calendar.css"
 
-export default function Calendar() {
-  
-  /*****************************************************************************
-  *    Ideally, we would request user's event info from database and create    *
-  *    a list of dictionaries with required info such as title, date, etc.     *
-  *    possible ex:                                                            *
-  *                                                                            *
-  *    const [myEvents, setMyEvents] = useState(null)                          *
-  *                                                                            *
-  *    useEffect(() => {                                                       *
-  *      axios.get('/myEvents').then((response) => {                           *
-  *        setMyEvents(response)                                               *
-  *      })                                                                    *
-  *    }, [])                                                                  *
-  *****************************************************************************/
 
+export default function Calendar({data}) {
+  
+  // source of data-date confusion :(
   const handleDateClick = (date) => {
-    // When a date field is clicked
-    // add logic here
-    // ideally we would change the calendar to that day's view
-    console.log(date.dateStr)
-  }
+    let calendarApi = date.view.calendar
+
+    calendarApi.changeView('timeGridDay', date.dateStr)
+
+
+    }
+  
 
   const handleEventClick = (event) => {
-    // When an event is clicked
-    // add logic here
-    // ideally we could navigate to that event's page
-    console.log(event.event._def.title)
+
+    console.log(event.event._def)
   }
 
   return(
@@ -46,13 +34,10 @@ export default function Calendar() {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         }}
-        events={[
-          // Dummy data
-          // ideally, we would be able to pull user's events from the db and pass that into this field
-          {title: 'Group Projects Due', date: '2022-08-30T13:00:00'},
-          {title: 'Group Project Presentations', start: '2022-09-01T09:00:00', end: '2022-09-02T15:30:00'},
-          {title: 'Graduation Day!', date: '2022-09-02', allDay:true}
-        ]}
+        events={ 
+          data.map((event) => ({title: event.fields.name, start: event.fields.start_time, end: event.fields.end_time , allDay: event.fields.all_day, url: `/#/events/${event.fields.code}`}))
+          
+        }
       />
     </div>
   )

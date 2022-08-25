@@ -28,17 +28,40 @@ export default function App() {
 	axios.defaults.headers.common["X-CSRFToken"] = getCSRFToken();
 
 	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
-
+	const [token, setToken] = useState(null)
+	const [stream, setStream] = useState(null)
+	const [userEvent, setUserEvent] = useState(null)
+	
 	const whoAmI = async () => {
 		const response = await axios.get('/whoami')
 		const user = response.data && response.data[0] && response.data[0].fields
-		user.id = response.data[0].pk
+		user.id = (response.data[0].pk).toString()
 		console.log('user from whoami?', user, response)
 		setUser(user)
 	}
-  
+	
 	useEffect(()=> {
-	  whoAmI()
+		axios.get("/chattoken")
+		.then((response) => {
+			let newtoken=response && response.data && response.data.token
+			console.log('newtoken', newtoken)
+			setToken(newtoken)
+		});
+
+		axios.get("/streamapi").then((response) => {
+			// console.log(
+			// 	"getstream api response.data",
+			// 	response.data.api,
+			// )
+				let newStream = response.data.api
+				setStream(newStream)
+		});
+		
+		axios.get('/userevents').then((response) => {
+			console.log('user events', response.data)
+			setUserEvent(response.data)
+		  })
+	  	whoAmI()
 	},[]) 
 
 	return (
@@ -47,17 +70,17 @@ export default function App() {
 				{user ? <LoginNavBar /> : <LogoutNavBar />}
 				<div className="separator"></div>
 				<Routes>
-					<Route path="/" element={<HomePage />} />
+					<Route path="/" element={<HomePage user={user}/>} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/calendar" element={<CalendarPage />} />
+					<Route path="/calendar" element={<CalendarPage data={userEvent}/>} />
 					<Route path="/account" element={<AccountPage />} />
 					<Route path="/events" element={<EventPage />} />
 					<Route
 						path="/events/create"
 						element={<EventCreatePage />}
 					/>
-					<Route path="/groups" element={<GroupPage user={user} />} />
+					<Route path="/groups" element={<GroupPage user={user} token={token} stream= {stream}/>} />
 					<Route
 						path="/events/:eventId"
 						element={<EventDetailPage />}
