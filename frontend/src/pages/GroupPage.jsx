@@ -15,10 +15,11 @@ export default function GroupPage({ user, token, stream }) {
 	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate();
 	// const [image, setImage] = useState('https://picsum.photos/200')
-	const [groupCode, setGroupCode] = useState(null);
-	const [groups, setGroups] = useState(null);
-	const [groupInvitations, setGroupInvitations] = useState(null);
-	const [groupInformation, setGroupInformation] = useState(null);
+	const [groupCode, setGroupCode] = useState(null)
+	const [createGroupInformation,setCreateGroupInformation] = useState(null)
+	const [joinGroupInformation,setJoinGroupInformation] = useState(null)
+	const [groups, setGroups] = useState(null)
+	const [groupInvitations,setGroupInvitations] = useState(null)
 	// const [groupCreated, setGroupCreated] = useState(false)
 
 	const getGroupCode = function () {
@@ -55,8 +56,8 @@ export default function GroupPage({ user, token, stream }) {
 						`Group created! Your group code has been assigned ${groupCode}`
 					);
 					// CreateChannel(name, code)
-					setGroupInformation([name, code]);
-					viewGroups();
+					setCreateGroupInformation([name,code])
+					viewGroups()
 					// nav('/groups')
 					// window.location.reload()
 					// the reload is messing with the chatrooms
@@ -102,13 +103,13 @@ export default function GroupPage({ user, token, stream }) {
 		});
 	};
 
-	const joinGroup = function (email) {
-		axios
-			.post("/group/join", { friend_email: email, code: groupCode })
+	const joinGroup = function (email, name, code) {
+		axios.put("/group/join", {friend_email: email, code:code})
 			.then((response) => {
 				console.log("join group response.data", response.data);
 				if (response.data.success == "True") {
-					window.alert("Group joined!");
+					window.alert('Group joined!')
+					setJoinGroupInformation([name,code])
 				} else {
 					window.alert(`${response.data.reason}`);
 				}
@@ -130,6 +131,26 @@ export default function GroupPage({ user, token, stream }) {
 				<h1>Group Page</h1>
 				<Row>
 					<Col md={4}>
+						{/* sending invite to alisha 
+						<Button onClick={()=>createGroupRequest("alisha@gmail.com")}>Send Group Invite</Button>
+						<Row>
+							<Col>
+								<h2> Pending Group invitations table</h2>
+								{groupInvitations
+									? 
+									<div>
+									{groupInvitations.map((invitation) => (
+										<div>
+											<h4>{invitation[0]} invited you to join the group {invitation[1]}</h4>
+											{/* accepting invite from kydnall */}
+											<Button onClick={()=>joinGroup("kyndall@email.com", invitation[1], invitation[2])}>Join Group</Button>
+										</div>
+									))}
+									</div>
+									: <h4> No pending invitations</h4>
+								}
+                */}
+
 						<GroupsTable groups={groups} />
 						{/* {groups ? (
 							<div>
@@ -159,18 +180,14 @@ export default function GroupPage({ user, token, stream }) {
 										// need sender email, group name, group code
 									/>
 								)}
+
 							</Col>
 						</Row>
 					</Col>
 					<Col md={8}>
 						{/* {groups || groupInformation
 						? */}
-						<Chatroom
-							user={user}
-							token={token}
-							stream={stream}
-							groupInformation={groupInformation}
-						/>
+						<Chatroom user={user} token = {token} stream={stream} createGroupInformation={createGroupInformation} joinGroupInformation={joinGroupInformation}/>
 						{/* : null
 						} */}
 					</Col>
