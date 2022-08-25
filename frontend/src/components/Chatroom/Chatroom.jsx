@@ -11,6 +11,8 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
     
     const [client, setClient] = useState(null)
     const [userId, setUserId] = useState(null)
+    const [image, setImage] = useState('https://picsum.photos/200')
+
     // const {activeChannel} = useChatContext()
     // const [channel, setChannel] = useState(null)
 
@@ -30,7 +32,7 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
             let user_id = user.id.toString()
             const new_channel = client.channel('messaging', channelId, {
                 // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
-                image: 'https://picsum.photos/200',
+                image: image,
                 name: channelName,
                 members: [user_id]
             })
@@ -59,10 +61,18 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
             channelId+=joinGroupInformation[1].toString()
             console.log('userId', userId, 'type', typeof(userId), 'channelID is', channelId, 'channel name is', channelName)
             let user_id = user.id.toString()
-            const response = await client.queryChannels();
-            const filteredChannel = response.filter((c)=> c.name === channelName);
-            filteredChannel.addMembers([user_id])
-            await new_channel.watch()
+            // const response = await client.queryChannels();
+            // const filteredChannel = response.filter((c)=> c.name === channelName);
+            // filteredChannel.addMembers([user_id])
+            // await new_channel.watch()
+            const join_channel = client.channel('messaging', channelId, {
+                // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
+                image: 'https://picsum.photos/200',
+                name: channelName,
+                members: [user_id]
+            })
+    
+            await join_channel.watch()
         }
         else {
             setTimeout(joinGroupChannel, 3000)
@@ -85,11 +95,11 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                     
                     // shouldn't need all this channel specific stuff since have channel list
                     // 10 is for kyndall, 11 for alisha
-                    const first_channel = chatClient.channel('messaging', 'SiteChat-10', {
+                    const first_channel = chatClient.channel('messaging', 'SiteChat-11', {
                         // add as many custom fields as you'd like
                         image: 'https://picsum.photos/200',
                         // instead of name 
-                        name: 'Site-wide Chatroom10',
+                        name: 'Site-wide Chatroom11',
                         // members: [user.id]
                         members: [user_id]
                     })
