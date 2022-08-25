@@ -30,7 +30,7 @@ export default function App() {
 	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
 	const [token, setToken] = useState(null)
 	const [stream, setStream] = useState(null)
-	const [userEvent, setUserEvent] = useState(null)
+	const [userEvent, setUserEvent] = useState([])
 	
 	const whoAmI = async () => {
 		const response = await axios.get('/whoami')

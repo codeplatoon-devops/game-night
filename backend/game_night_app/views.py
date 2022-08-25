@@ -11,7 +11,7 @@ import random
 import requests
 import os
 from dotenv import load_dotenv
-from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest, Address
+from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 
@@ -328,15 +328,6 @@ def create_event(request):
     if request.method == 'POST':
         print('IN DJANGO EVENT CREATION, REQUEST.DATA IS', request.data)
         
-        address_1 = request.data['addressLine1']
-        address_2 = request.data['addressLine2']
-        city = request.data['city']
-        state = request.data['state']
-        zip_code = request.data['zip']
-        new_address = Address(address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code)
-        new_address.full_clean()
-        new_address.save()
-        
         name = request.data['event_name']
         code = str(random.randint(10001, 99999999))
         category = request.data['category']
@@ -348,9 +339,14 @@ def create_event(request):
         start_time = request.data['eventStart']
         end_time = request.data['eventEnd']
         description = request.data['description']
+        address_1 = request.data['addressLine1']
+        address_2 = request.data['addressLine2']
+        city = request.data['city']
+        state = request.data['state']
+        zip_code = request.data['zip']
         user = AppUser.objects.get(email = request.user.email)
         
-        new_event = Event(owner=user, address=new_address, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
+        new_event = Event(owner=user, address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
         new_event.full_clean()
         new_event.save()
         return JsonResponse({'added event': True})
@@ -365,6 +361,15 @@ def userevents(request):
         data = serializers.serialize('json',events)
         print(data)
  
+        return HttpResponse(data, content_type='application/json')
+    else:
+        return JsonResponse({'user': False})
+    
+@api_view(['GET'])
+def user_events_table_data(request):
+    if request.user.is_authenticated:
+        events = Event.objects.filter(owner = request.user.id)
+        data = serializers.serialize('json', events, fields=['name', 'category', 'description', 'address_1', 'start_time'])
         return HttpResponse(data, content_type='application/json')
     else:
         return JsonResponse({'user': False})
