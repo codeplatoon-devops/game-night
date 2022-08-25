@@ -133,26 +133,6 @@ export default function GroupPage({ user, token, stream }) {
 				<h1>Group Page</h1>
 				<Row>
 					<Col md={4}>
-						{/* sending invite to alisha 
-						<Button onClick={()=>createGroupRequest("alisha@gmail.com")}>Send Group Invite</Button>
-						<Row>
-							<Col>
-								<h2> Pending Group invitations table</h2>
-								{groupInvitations
-									? 
-									<div>
-									{groupInvitations.map((invitation) => (
-										<div>
-											<h4>{invitation[0]} invited you to join the group {invitation[1]}</h4>
-											
-											<Button onClick={()=>joinGroup("kyndall@email.com", invitation[1], invitation[2])}>Join Group</Button>
-										</div>
-									))}
-									</div>
-									: <h4> No pending invitations</h4>
-								}
-                */}
-
 						<GroupsTable groups={groups} />
 						{/* {groups ? (
 							<div>
@@ -165,7 +145,7 @@ export default function GroupPage({ user, token, stream }) {
 						<GroupCreationForm />
 						<Button
 							label="Create Group Request"
-							onClick={() => createGroupRequest("jim@email.com")}
+							onClick={() => createGroupRequest("alisha@gmail.com")}
 							icon="pi pi-plus"
 							style={{ margin: "15px" }}
 						/>

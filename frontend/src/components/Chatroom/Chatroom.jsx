@@ -10,12 +10,15 @@ import { useChatContext } from "stream-chat-react"
 function Chatroom ({user, token, stream, createGroupInformation, joinGroupInformation}) {
     
     const [client, setClient] = useState(null)
-    const [userId, setUserId] = useState(null)
+    // const [userId, setUserId] = useState(null)
+    // const [image, setImage] = useState('https://picsum.photos/200')
+
     // const {activeChannel} = useChatContext()
     // const [channel, setChannel] = useState(null)
 
     // filters only the channels that the user is a member of
-    const filters = {type: 'messaging', members: {$in: [user.id]}}
+    const user_id = user.id.toString()
+    const filters = {type: 'messaging', members: {$in: [user_id]}}
     // puts the channel with the lattest message at the top
     const sort = {last_message_at: -1}
 
@@ -25,12 +28,11 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
             let channelName= createGroupInformation[0]
             channelName += ' Chatroom'
             channelId+=createGroupInformation[1].toString()
-            console.log('userId', userId, 'type', typeof(userId), 'channelID is', channelId, 'channel name is', channelName)
             // setActiveChannel(channel)
-            let user_id = user.id.toString()
+            console.log('user_id', user_id, 'type', typeof(user_id), 'channelID is', channelId, 'channel name is', channelName)
             const new_channel = client.channel('messaging', channelId, {
                 // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
-                image: 'https://picsum.photos/200',
+                image: "https://picsum.photos/200",
                 name: channelName,
                 members: [user_id]
             })
@@ -57,12 +59,21 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
             let channelName= joinGroupInformation[0]
             channelName += ' Chatroom'
             channelId+=joinGroupInformation[1].toString()
-            console.log('userId', userId, 'type', typeof(userId), 'channelID is', channelId, 'channel name is', channelName)
-            let user_id = user.id.toString()
-            const response = await client.queryChannels();
-            const filteredChannel = response.filter((c)=> c.name === channelName);
-            filteredChannel.addMembers([user_id])
-            await new_channel.watch()
+            // setActiveChannel(channel)
+            console.log('user_id', user_id, 'type', typeof(user_id), 'channelID is', channelId, 'channel name is', channelName)
+            // const response = await client.queryChannels();
+            // const filteredChannel = response.filter((c)=> c.name === channelName);
+            // filteredChannel.addMembers([user_id])
+            // await new_channel.watch()
+            const join_channel = client.channel('messaging', channelId, {
+                // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
+                image: 'https://picsum.photos/200',
+                name: channelName,
+                members: [user_id]
+            })
+            console.log('joinchannel', join_channel)
+    
+            await join_channel.watch()
         }
         else {
             setTimeout(joinGroupChannel, 3000)
@@ -85,14 +96,21 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                     
                     // shouldn't need all this channel specific stuff since have channel list
                     // 10 is for kyndall, 11 for alisha
-                    const first_channel = chatClient.channel('messaging', 'SiteChat-10', {
+                    const first_channel = chatClient.channel('messaging', 'SiteChat-11', {
                         // add as many custom fields as you'd like
                         image: 'https://picsum.photos/200',
                         // instead of name 
-                        name: 'Site-wide Chatroom10',
+                        name: 'Site-wide Chatroom11',
                         // members: [user.id]
                         members: [user_id]
                     })
+
+                    // const site_channel = chatClient.channel('messaging', 'SiteChatroom', {
+                    //     image: 'https://picsum.photos/200',
+                    //     name: 'GameNight All-Members Chatroom',
+                    //     members: [user_id]
+                    // })
+                    // await site_channel.watch()
         
                     // await channel.create()
                     // setChannel(channel)
