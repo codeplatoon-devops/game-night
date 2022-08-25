@@ -1,11 +1,7 @@
-import { PendingInvitesEvents } from "../components/Tables/PendingInvitesEvents/PendingInvitesEvents";
-import { PendingInvitesGroups } from "../components/Tables/PendingInvitesGroups/PendingInvitesGroups";
-
 export default function AccountPage() {
 	return (
 		<div>
-			<PendingInvitesEvents />
-			<PendingInvitesGroups />
+			<h1>Account page</h1>
 		</div>
 	);
 }
