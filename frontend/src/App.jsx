@@ -1,20 +1,19 @@
-import "primereact/resources/themes/saga-purple/theme.css";
+import "primereact/resources/themes/vela-green/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import CalendarPage from "./pages/CalendarPage";
 import AccountPage from "./pages/AccountPage";
 import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
 import AllEventsPage from "./pages/AllEventsPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
-import getCSRFToken from '../utils'
+import getCSRFToken from "../utils";
 
 import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
@@ -29,25 +28,25 @@ export default function App() {
 	axios.defaults.headers.common["X-CSRFToken"] = getCSRFToken();
 
 	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
-	const [token, setToken] = useState(null)
-	const [stream, setStream] = useState(null)
-	const [userEvent, setUserEvent] = useState([])
-	
+	const [token, setToken] = useState(null);
+	const [stream, setStream] = useState(null);
+	const [userEvent, setUserEvent] = useState([]);
+
 	const whoAmI = async () => {
-		const response = await axios.get('/whoami')
-		const user = response.data && response.data[0] && response.data[0].fields
+		const response = await axios.get("/whoami");
+		const user =
+			response.data && response.data[0] && response.data[0].fields;
 		// user.id = (response.data[0].pk).toString()
-		user.id = (response.data[0].fields.username).toString()
-		console.log('user from whoami?', user, response)
-		setUser(user)
-	}
-	
-	useEffect(()=> {
-		axios.get("/chattoken")
-		.then((response) => {
-			let newtoken=response && response.data && response.data.token
-			console.log('newtoken', newtoken)
-			setToken(newtoken)
+		user.id = response.data[0].fields.username.toString();
+		console.log("user from whoami?", user, response);
+		setUser(user);
+	};
+
+	useEffect(() => {
+		axios.get("/chattoken").then((response) => {
+			let newtoken = response && response.data && response.data.token;
+			console.log("newtoken", newtoken);
+			setToken(newtoken);
 		});
 
 		axios.get("/streamapi").then((response) => {
@@ -55,16 +54,16 @@ export default function App() {
 			// 	"getstream api response.data",
 			// 	response.data.api,
 			// )
-				let newStream = response.data.api
-				setStream(newStream)
+			let newStream = response.data.api;
+			setStream(newStream);
 		});
-		
-		axios.get('/userevents').then((response) => {
-			console.log('user events', response.data)
-			setUserEvent(response.data)
-		  })
-	  	whoAmI()
-	},[]) 
+
+		axios.get("/userevents").then((response) => {
+			console.log("user events", response.data);
+			setUserEvent(response.data);
+		});
+		whoAmI();
+	}, []);
 
 	return (
 		<div className="App">
@@ -72,18 +71,26 @@ export default function App() {
 				{user ? <LoginNavBar /> : <LogoutNavBar />}
 				<div className="separator"></div>
 				<Routes>
-					<Route path="/" element={<HomePage user={user}/>} />
+					<Route path="/" element={<HomePage user={user} />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/calendar" element={<CalendarPage data={userEvent}/>} />
 					<Route path="/account" element={<AccountPage />} />
-					<Route path="/events" element={<EventPage />} />
-          <Route path="/allevents" element={<AllEventsPage />} />
+					<Route path="/events" element={<EventPage data={userEvent}/>} />
+					<Route path="/allevents" element={<AllEventsPage />} />
 					<Route
 						path="/events/create"
 						element={<EventCreatePage />}
 					/>
-					<Route path="/groups" element={<GroupPage user={user} token={token} stream= {stream}/>} />
+					<Route
+						path="/groups"
+						element={
+							<GroupPage
+								user={user}
+								token={token}
+								stream={stream}
+							/>
+						}
+					/>
 					<Route
 						path="/events/:eventId"
 						element={<EventDetailPage />}
