@@ -8,14 +8,40 @@ import { Row } from "primereact/row";
 import { Container, Col } from "react-bootstrap";
 import { Row as myRow } from "react-bootstrap";
 import "./PendingInvitesGroups.css";
+import axios from "axios";
 
 export const PendingInvitesGroups = (props) => {
 	const [showMessage, setShowMessage] = useState(false);
-	const showDetails = () => {
+	const [groupDetails, setGroupDetails] = useState(null);
+	const [invitationDetails, setInvitationDetails] = useState([]);
+
+	const showDetails = (invitationInfo) => {
+		setGroupDetails(
+			invitationInfo[0] +
+				" invited you to join " +
+				invitationInfo[1] +
+				"!"
+		);
+		setInvitationDetails(invitationInfo);
+		console.log("group detail info: ", groupDetails);
 		setShowMessage(true);
 	};
 	const hideDetails = () => {
 		setShowMessage(false);
+	};
+	const joinGroup = function (email, name, code) {
+		axios
+			.put("/group/join", { friend_email: email, code: code })
+			.then((response) => {
+				hideDetails();
+				console.log("join group response.data", response.data);
+				if (response.data.success == "True") {
+					window.alert("Group joined!");
+					setJoinGroupInformation([name, code]);
+				} else {
+					window.alert(`${response.data.reason}`);
+				}
+			});
 	};
 
 	let invites = [];
@@ -23,8 +49,13 @@ export const PendingInvitesGroups = (props) => {
 		for (let invitation of props.data) {
 			// console.log("invitation in props.data: ", invitation);
 			let tempInvite = {
-				groupName: invitation,
-				details: <Button onClick={showDetails}>Show Details</Button>,
+				groupName: invitation[1],
+				details: (
+					<Button onClick={() => showDetails(invitation)}>
+						Show Details
+					</Button>
+				),
+				invitation: invitation,
 			};
 
 			invites.push(tempInvite);
@@ -44,7 +75,11 @@ export const PendingInvitesGroups = (props) => {
 					icon="pi pi-check"
 					className="p-button-outlined"
 					autoFocus
-					onClick={hideDetails}
+					onClick={joinGroup(
+						invitationDetails[0],
+						invitationDetails[1],
+						invitationDetails[2]
+					)}
 				/>
 			</Col>
 			<Col></Col>
@@ -83,7 +118,7 @@ export const PendingInvitesGroups = (props) => {
 				style={{ width: "30vw" }}
 			>
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
-					<p style={{ lineHeight: 1.5 }}>Group info here</p>
+					<p style={{ lineHeight: 1.5 }}>{groupDetails}</p>
 				</div>
 			</Dialog>
 			<DataTable

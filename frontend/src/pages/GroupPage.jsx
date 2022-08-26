@@ -46,28 +46,6 @@ export default function GroupPage({ user, token, stream }) {
 		});
 	};
 
-	// const createGroup = function (name) {
-	// 	let code = groupCode;
-	// 	axios
-	// 		.post("/group/create", { name: name, code: code })
-	// 		.then((response) => {
-	// 			console.log("create group response.data", response.data);
-	// 			if (response.data.success == "True") {
-	// 				window.alert(
-	// 					`Group created! Your group code has been assigned ${groupCode}`
-	// 				);
-	// 				// CreateChannel(name, code)
-	// 				setGroupInformation([name, code]);
-	// 				viewGroups();
-	// 				// nav('/groups')
-	// 				// window.location.reload()
-	// 				// the reload is messing with the chatrooms
-	// 			} else {
-	// 				window.alert(`${response.data.reason}`);
-	// 			}
-	// 		});
-	// };
-
 	// const createGroupRequest = function (friend_email, code) {
 	// axios.post("/group/request/create", {friend_email: friend_email, code:code})
 	// just for test I'm putting in the group code because I know I'll be creating this group, but normally we would run the lines above
@@ -134,18 +112,13 @@ export default function GroupPage({ user, token, stream }) {
 				<Row>
 					<Col md={4}>
 						<GroupsTable groups={groups} />
-						{/* {groups ? (
-							<div>
-								{groups.map((group) => (
-									<h4>{group}</h4>
-								))}
-							</div>
-                                ) : null*/}
 						{/* Group creation */}
 						<GroupCreationForm />
 						<Button
 							label="Create Group Request"
-							onClick={() => createGroupRequest("alisha@gmail.com")}
+							onClick={() =>
+								createGroupRequest("alisha@gmail.com")
+							}
 							icon="pi pi-plus"
 							style={{ margin: "15px" }}
 						/>
