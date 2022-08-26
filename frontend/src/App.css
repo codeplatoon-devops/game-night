@@ -1,3 +1,8 @@
+@font-face {
+	font-family: Short Stack;
+	src: url('./assets/Font/ShortStack-Regular.ttf');
+}
+
 #root {
 	width: 100%;
 	text-align: center;
@@ -17,4 +22,7 @@ body,
 
 img {
 	max-width: 100%;
+}
+.ssfont {
+	font-family: Short Stack;
 }
