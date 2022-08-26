@@ -1,7 +1,7 @@
 import { Card } from 'primereact/card';
 // import { Image } from 'primereact/image';
 import './CardHome.css';
-import homeImage from "/Users/alishahome/Documents/Software_Engineering/Code_Platoon/Assessments/Group_Project/game-night/frontend/src/assets/Images/board_games.svg"
+import homeImage from "../../assets/Images/board_games.svg"
 
 export default function CardHome() {
 

@@ -14,7 +14,7 @@ export const PendingInvitesGroups = (props) => {
 	const [showMessage, setShowMessage] = useState(false);
 	const [groupDetails, setGroupDetails] = useState(null);
 	const [invitationDetails, setInvitationDetails] = useState([]);
-
+	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
 	const showDetails = (invitationInfo) => {
 		setGroupDetails(
 			invitationInfo[0] +
@@ -75,11 +75,13 @@ export const PendingInvitesGroups = (props) => {
 					icon="pi pi-check"
 					className="p-button-outlined"
 					autoFocus
-					onClick={joinGroup(
-						invitationDetails[0],
-						invitationDetails[1],
-						invitationDetails[2]
-					)}
+					onClick={() =>
+						joinGroup(
+							invitationDetails[0],
+							invitationDetails[1],
+							invitationDetails[2]
+						)
+					}
 				/>
 			</Col>
 			<Col></Col>
