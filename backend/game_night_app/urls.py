@@ -17,11 +17,15 @@ urlpatterns = [
     path('signup', views.sign_up),
     path('whoami', views.whoami),
     path('games', views.bga_games),
+    # all events in the database
     path('events', views.allevents),
+    # gives all events for a specific user, has necessary information for calendar (all information)
     path('userevents', views.userevents),
+    # gives information for one specific event based on event code
     path('userevents/<int:id>', views.userevents_byid),
     path('streamapi', views.stream_api),
     path('events/create', views.create_event),
+    # user events -- has only the necessary information for event table
     path('userevents/table', views.user_events_table_data),
 
 ]

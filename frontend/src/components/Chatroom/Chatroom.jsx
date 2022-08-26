@@ -98,12 +98,12 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                     // await site_channel.watch()
                     setClient(chatClient)
                     // shouldn't need all this channel specific stuff since have channel list
-                    // 10 is for kyndall, 11 for alisha
-                    const first_channel = chatClient.channel('messaging', 'SiteChat-11', {
+                    // 1 is for kyndall, 2 for alisha
+                    const first_channel = chatClient.channel('messaging', 'SiteChat-1', {
                         // add as many custom fields as you'd like
                         image: 'https://picsum.photos/200',
                         // instead of name 
-                        name: 'Site-wide Chatroom11',
+                        name: 'Site-wide Chatroom1',
                         // members: [user.id]
                         members: [user_id]
                     })
@@ -125,7 +125,7 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
     if (!client) return <LoadingIndicator />
 
     return (
-        <Chat client = {client} theme = "messaging light">
+        <Chat client = {client} theme = "messaging dark">
         <ChannelList 
         filters ={filters}
         sort = {sort}/>    
