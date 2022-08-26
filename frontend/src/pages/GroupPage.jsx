@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { PendingInvitesGroups } from "../components/Tables/PendingInvitesGroups/PendingInvitesGroups";
 import GroupCreationForm from "../components/Forms/GroupCreationForm/GroupCreationForm";
 import GroupsTable from "../components/Tables/GroupsTable/GroupsTable";
+import GroupRequestForm from "../components/Forms/GroupRequestForm/GroupRequestForm";
 // import CreateChannel from "../components/Chatroom/CreateChannel";
 // import { useChatContext } from "stream-chat-react"
 
@@ -49,24 +50,6 @@ export default function GroupPage({ user, token, stream }) {
 	// const createGroupRequest = function (friend_email, code) {
 	// axios.post("/group/request/create", {friend_email: friend_email, code:code})
 	// just for test I'm putting in the group code because I know I'll be creating this group, but normally we would run the lines above
-	const createGroupRequest = function (friend_email) {
-		axios
-			.post("/group/request/create", {
-				friend_email: friend_email,
-				group_code: groupCode,
-			})
-			.then((response) => {
-				console.log(
-					"create group request response.data",
-					response.data
-				);
-				if (response.data.success == "True") {
-					window.alert("Group invitation sent!");
-				} else {
-					window.alert(`${response.data.reason}`);
-				}
-			});
-	};
 
 	const viewGroupInvitations = function () {
 		axios.get("/group/request/view").then((response) => {
@@ -80,20 +63,6 @@ export default function GroupPage({ user, token, stream }) {
 			// 	console.log('')
 			// }
 		});
-	};
-
-	const joinGroup = function (email, name, code) {
-		axios
-			.put("/group/join", { friend_email: email, code: code })
-			.then((response) => {
-				console.log("join group response.data", response.data);
-				if (response.data.success == "True") {
-					window.alert("Group joined!");
-					setJoinGroupInformation([name, code]);
-				} else {
-					window.alert(`${response.data.reason}`);
-				}
-			});
 	};
 
 	useEffect(() => {
@@ -114,14 +83,8 @@ export default function GroupPage({ user, token, stream }) {
 						<GroupsTable groups={groups} />
 						{/* Group creation */}
 						<GroupCreationForm />
-						<Button
-							label="Create Group Request"
-							onClick={() =>
-								createGroupRequest("alisha@gmail.com")
-							}
-							icon="pi pi-plus"
-							style={{ margin: "15px" }}
-						/>
+						{/* Group invite */}
+						<GroupRequestForm />
 						<Row>
 							<Col>
 								{groupInvitations ? (
