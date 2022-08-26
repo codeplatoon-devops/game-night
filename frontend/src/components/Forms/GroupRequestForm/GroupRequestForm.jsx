@@ -152,6 +152,7 @@ export default function GroupRequestForm() {
 								type="submit"
 								label="Send Group Invitation"
 								className="mt-2 btn-continue"
+								onClick={handleSubmit}
 							/>
 						</>
 					)}
