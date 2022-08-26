@@ -6,12 +6,30 @@ import { useState } from "react";
 import { Form, Field } from "react-final-form";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
+import { Dropdown } from "primereact/dropdown";
+import GroupsTable from "../../Tables/GroupsTable/GroupsTable";
 
-export default function GroupRequestForm() {
+export default function GroupRequestForm(props) {
 	const [showInviteForm, setShowInviteForm] = useState(false);
 	const [friendEmail, setFriendEmail] = useState(null);
 	const [groupCode, setGroupCode] = useState("76072927");
 	const [groupName, setGroupName] = useState(null);
+
+	let groups = [];
+	if (props.groups) {
+		for (let group of props.groups) {
+			let tempGroup = {
+				label: group,
+			};
+
+			groups.push(tempGroup);
+		}
+	} else {
+		groups = {
+			label: "None",
+			value: null,
+		};
+	}
 
 	const handleSubmit = () => {
 		console.log("submit");
@@ -21,7 +39,7 @@ export default function GroupRequestForm() {
 	const validate = () => {
 		let errors = {};
 		if (!friendEmail) {
-			errors.friendemail = "Friend email is required.";
+			errors.friendemail = "Friend's email is required.";
 		} else if (
 			!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(friendEmail)
 		) {
@@ -70,6 +88,8 @@ export default function GroupRequestForm() {
 				style={{ margin: "15px" }}
 			/>
 			<Dialog
+				className="form-group-invite"
+				header="Create Group Invitation"
 				visible={showInviteForm}
 				onHide={() => setShowInviteForm(false)}
 			>
@@ -87,18 +107,14 @@ export default function GroupRequestForm() {
 								render={({ input, meta }) => (
 									<div className="field">
 										<span className="p-float-label">
-											<InputText
-												id="groupname"
-												{...input}
+											<Dropdown
+												placeholder="Select Group"
 												autoFocus
 												value={groupName}
+												options={groups}
 												onChange={(e) =>
-													setGroupName(e.target.value)
+													setGroupName(e.value)
 												}
-												className={classNames({
-													"p-invalid":
-														isFormFieldValid(meta),
-												})}
 											/>
 											<label
 												htmlFor="groupname"
@@ -140,7 +156,7 @@ export default function GroupRequestForm() {
 														isFormFieldValid(meta),
 												})}
 											>
-												Friend email*
+												Friend's email*
 											</label>
 										</span>
 										{getFormErrorMessage(meta)}

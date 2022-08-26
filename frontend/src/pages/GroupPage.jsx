@@ -84,7 +84,7 @@ export default function GroupPage({ user, token, stream }) {
 						{/* Group creation */}
 						<GroupCreationForm />
 						{/* Group invite */}
-						<GroupRequestForm />
+						<GroupRequestForm groups={groups} />
 						<Row>
 							<Col>
 								{groupInvitations ? (
