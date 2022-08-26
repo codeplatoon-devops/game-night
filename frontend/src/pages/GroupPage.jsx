@@ -13,7 +13,7 @@ import GroupRequestForm from "../components/Forms/GroupRequestForm/GroupRequestF
 // import CreateChannel from "../components/Chatroom/CreateChannel";
 // import { useChatContext } from "stream-chat-react"
 
-export default function GroupPage({ user, token, stream }) {
+export default function GroupPage({ user, token, stream, whoAmI}) {
 	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate();
 	// const [image, setImage] = useState('https://picsum.photos/200')
@@ -69,6 +69,7 @@ export default function GroupPage({ user, token, stream }) {
 		getGroupCode();
 		viewGroups();
 		viewGroupInvitations();
+		whoAmI()
 	}, []);
 
 	// this part is just necessary for the create group form
@@ -110,6 +111,7 @@ export default function GroupPage({ user, token, stream }) {
 							stream={stream}
 							createGroupInformation={createGroupInformation}
 							joinGroupInformation={joinGroupInformation}
+							whoAmI={whoAmI}
 						/>
 						{/* : null
 						} */}

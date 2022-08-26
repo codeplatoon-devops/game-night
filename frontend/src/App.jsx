@@ -80,7 +80,8 @@ export default function App() {
 							user={user}
 							token={token}
 							stream={stream}
-							setUser={setUser}/>} />
+							setUser={setUser}
+							whoAmI={whoAmI}/>} />
 					<Route path="/events" element={<EventPage data={userEvent}/>} />
 					<Route path="/allevents" element={<AllEventsPage />} />
 					<Route
@@ -94,6 +95,7 @@ export default function App() {
 								user={user}
 								token={token}
 								stream={stream}
+								whoAmI={whoAmI}
 							/>
 						}
 					/>

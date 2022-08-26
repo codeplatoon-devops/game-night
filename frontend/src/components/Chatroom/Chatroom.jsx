@@ -7,7 +7,7 @@ import 'stream-chat-react/dist/css/index.css'
 // import { useChatContext } from "stream-chat-react"
 // had to change this file: node_modules/stream-chat-react/dist/components/MessageInput/hooks/useEmojiIndex.js
 
-function Chatroom ({user, token, stream, createGroupInformation, joinGroupInformation}) {
+function Chatroom ({user, token, stream, createGroupInformation, joinGroupInformation, whoAmI}) {
     
     const [client, setClient] = useState(null)
     const [userId, setUserId] = useState(null)
@@ -17,6 +17,10 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
     const filters = {type: 'messaging', members: {$in: [user_id]}}
     // puts the channel with the lattest message at the top
     const sort = {last_message_at: -1}
+
+    useEffect(() => {
+		whoAmI()
+	}, []);
 
     const createGroupChannel = async () => {
         if (client) {
@@ -99,11 +103,11 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                     setClient(chatClient)
                     // shouldn't need all this channel specific stuff since have channel list
                     // 1 is for kyndall, 2 for alisha
-                    const first_channel = chatClient.channel('messaging', 'SiteChat-5', {
+                    const first_channel = chatClient.channel('messaging', 'UserTwoChat', {
                         // add as many custom fields as you'd like
                         image: 'https://picsum.photos/200',
                         // instead of name 
-                        name: 'Site-wide Chatroom5',
+                        name: 'Site-wide Chatroom2',
                         // members: [user.id]
                         members: [user_id]
                     })

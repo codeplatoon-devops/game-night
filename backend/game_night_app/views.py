@@ -63,7 +63,7 @@ def create_group_request(request):
     friend = AppUser.objects.get(email = friend_email)
     group = Group.objects.get(code = code)
     if group is not None:
-        if friend is not None:
+        if friend:
             try:
                 group_request = GroupRequest(sender = user, receiver = friend, group = group)
                 group_request.full_clean
