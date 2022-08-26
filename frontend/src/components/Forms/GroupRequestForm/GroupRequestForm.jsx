@@ -101,14 +101,16 @@ export default function GroupRequestForm(props) {
 					}}
 					validate={validate}
 					render={({ handleSubmit }) => (
-						<>
+						<div className="form-group-invite-div">
 							<Field
+								className="field-group-request"
 								name="groupname"
 								render={({ input, meta }) => (
 									<div className="field">
 										<span className="p-float-label">
 											<Dropdown
 												placeholder="Select Group"
+												{...input}
 												autoFocus
 												value={groupName}
 												options={groups}
@@ -131,6 +133,7 @@ export default function GroupRequestForm(props) {
 								)}
 							/>
 							<Field
+								className="field-group-request"
 								name="friendemail"
 								render={({ input, meta }) => (
 									<div className="field">
@@ -170,7 +173,7 @@ export default function GroupRequestForm(props) {
 								className="mt-2 btn-continue"
 								onClick={handleSubmit}
 							/>
-						</>
+						</div>
 					)}
 				/>
 			</Dialog>
