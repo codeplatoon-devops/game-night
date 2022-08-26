@@ -19,6 +19,7 @@ urlpatterns = [
     path('games', views.bga_games),
     path('events', views.allevents),
     path('userevents', views.userevents),
+    path('userevents/<int:id>', views.userevents_byid),
     path('streamapi', views.stream_api),
     path('events/create', views.create_event),
     path('userevents/table', views.user_events_table_data),

@@ -155,7 +155,7 @@ export default function GroupCreationForm() {
 			>
 				<div className="form-group-create">
 					<div className="flex justify-content-center">
-						<div className="card card-group-create">
+						<div className="card-group-create">
 							<h2 className="text-center">Create a Group</h2>
 							<Form
 								onSubmit={onSubmit}

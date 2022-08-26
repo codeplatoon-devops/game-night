@@ -14,7 +14,6 @@ export const AllEventsTable = () => {
 		axios
 		.get('/events')
 		.then((response) => {
-			console.log('EVENTS RESPONSE', response.data);
 			let data = []
 			for(let item in response.data) {
                 //only show public events
@@ -32,17 +31,33 @@ export const AllEventsTable = () => {
         return rowData.address_1 + " " + rowData.address_2;
     }
 
+    function convertUTCDateToLocalDate(date) {
+        var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+    
+        var offset = date.getTimezoneOffset() / 60;
+        var hours = date.getHours();
+    
+        newDate.setHours(hours - offset);
+    
+        return newDate;   
+    }
+
+    const timeBodyTemplate = (rowData) => {
+        let date = convertUTCDateToLocalDate(new Date(rowData.start_time))
+        return date.toLocaleString();
+    }
+
 
 	return (
 		<DataTable value={event} paginator rows={15} filterDisplay="menu">
 			<Column field="name" header="Event Name" filter />
 			<Column field="category" header="Category" filter />
-			<Column field="description" header="Description" filter />
+			{/* <Column field="description" header="Description" filter /> */}
             <Column body={addressBodyTemplate} header="Address" filter />
             <Column field="city" header="City" filter />
             <Column field="state" header="State" filter />
             <Column field="zip_code" header="Zip" filter />
-			<Column field="start_time" header="Date" sortable dataType="date" />
+			<Column body={timeBodyTemplate} header="Date" sortable dataType="date" />
 		</DataTable>
 	);
 };
