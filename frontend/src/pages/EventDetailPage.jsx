@@ -1,3 +1,5 @@
+import {EventDetails} from '../components/EventDetails/EventDetail'
+
 export default function EventDetailPage() {
-	return <h1>Event Detail Page</h1>;
+	return  <EventDetails />;
 }
