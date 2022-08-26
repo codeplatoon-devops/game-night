@@ -17,7 +17,6 @@ export default function GroupCreationForm() {
 	const [groupInformation, setGroupInformation] = useState(null);
 	const [groupCode, setGroupCode] = useState(null);
 	const [groups, setGroups] = useState(null);
-	const navigate = useNavigate();
 	let creationError = "";
 	const validate = () => {
 		let errors = {};
@@ -26,22 +25,28 @@ export default function GroupCreationForm() {
 		}
 		return errors;
 	};
-	const onSubmit = (form) => {
+	const handleSubmit = (form) => {
 		setShowForm(false);
-		createGroup(groupName);
+		createGroup();
 		// setShowMessage(true);
 	};
-
+	const viewGroups = function () {
+		axios.get("/groups/view").then((response) => {
+			console.log("view groups response.data", response.data);
+			if (response.data.success == "True") {
+				let new_groups =
+					response && response.data && response.data.groups;
+				setGroups(new_groups);
+			} else {
+			}
+		});
+	};
 	// hardcoded to group '1' for now
 	// TODO: update redirect to group code when generated
 	const onAck = () => {
 		setShowMessage(false);
-		setGroupCode(null);
 		setGroupName("");
 		setGroupInformation(null);
-		// can't reload or it will freeze
-		// window.location.reload();
-		// navigate("/groups/1");
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
@@ -64,11 +69,10 @@ export default function GroupCreationForm() {
 		</div>
 	);
 
-	const createGroup = function (name) {
+	const createGroup = function () {
 		getGroupCode();
-		let code = groupCode;
 		axios
-			.post("/group/create", { name: name, code: code })
+			.post("/group/create", { name: groupName, code: groupCode })
 			.then((response) => {
 				console.log("create group response.data", response.data);
 				if (response.data.success == "True") {
@@ -77,11 +81,9 @@ export default function GroupCreationForm() {
 					// 	`Group created! Your group code has been assigned ${groupCode}`
 					// );
 					// CreateChannel(name, code)
-					setGroupInformation([name, code]);
+					setGroupInformation([groupName, groupCode]);
 					viewGroups();
-					// // nav('/groups')
-					// window.location.reload()
-					// the reload is messing with the chatrooms
+					// reload or nav to groups here
 				} else {
 					creationError = response.data.reason;
 					setShowMessage(true);
@@ -99,9 +101,9 @@ export default function GroupCreationForm() {
 			setGroupCode(code);
 		});
 	};
-	// useEffect(() => {
-	// 	getGroupCode();
-	// }, []);
+	useEffect(() => {
+		getGroupCode();
+	}, []);
 	return (
 		<Container>
 			<Button
@@ -147,7 +149,7 @@ export default function GroupCreationForm() {
 						<div className="card-group-create">
 							<h2 className="text-center">Create a Group</h2>
 							<Form
-								onSubmit={onSubmit}
+								onSubmit={handleSubmit}
 								initialValues={{
 									groupname: "",
 								}}
