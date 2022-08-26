@@ -39,9 +39,6 @@ export default function LoginNavBar() {
                             <Nav.Link href="#/">Home</Nav.Link>
                         </Col>
                         <Col>
-                            <Nav.Link href="#/calendar">Calendar</Nav.Link>
-                        </Col>
-                        <Col>
                             <Nav.Link href="#/groups">Your Groups</Nav.Link>
                         </Col>
                         <Col>
