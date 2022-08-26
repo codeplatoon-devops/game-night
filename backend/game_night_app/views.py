@@ -32,10 +32,10 @@ def create_chat_user_token(request):
         user = AppUser.objects.get(email = user_email)
         # user_id= str(user.id)
         user_id= str(user.username)
-        print('IN TOKEN ON DJANGO, user', user, 'user_id', user_id, 'type user id', type(user_id))
+        # print('IN TOKEN ON DJANGO, user', user, 'user_id', user_id, 'type user id', type(user_id))
         server_client = stream_chat.StreamChat(api_key=os.environ['chatapikey'], api_secret=os.environ['secretchatkey'])
         token = server_client.create_token(user_id)
-        print('IN CREATE CHAT USER TOKEN, TOKEN IS', token)
+        # print('IN CREATE CHAT USER TOKEN, TOKEN IS', token)
         return JsonResponse({'succes':'true', 'token': token})
     except Exception as e:
         return JsonResponse({'success': "false", 'reason': f'failed to create token, {str(e)}'})
@@ -43,7 +43,7 @@ def create_chat_user_token(request):
 @api_view(['GET'])
 def stream_api(request):
     api=os.environ['stream_key']
-    print('IN STREAM API REQUEST', api, 'type', type(api))
+    # print('IN STREAM API REQUEST', api, 'type', type(api))
     try:
         return JsonResponse({'succes':'true', 'api': api})
     except Exception as e:
