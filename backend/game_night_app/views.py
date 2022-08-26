@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
  # pip install stream-chat
 import stream_chat
+import json
 import random
 import requests
 import os
@@ -221,11 +222,24 @@ def sign_up(request):
     except Exception as e:
         return JsonResponse({'success': "False", 'reason': str(e)})
 
+@api_view(['GET', 'PUT', 'DELETE'])
 def whoami(request):
+    print('WHO AM I RAN')
     if request.user.is_authenticated:
         print('user authenticated')
-        data = serializers.serialize("json", [request.user], fields=['email', 'username'])
-        return HttpResponse(data)
+        if request.method == "PUT":
+            print('WHO AM I PUT REQUEST RAN')
+            body = json.loads(request.body)
+            request.user.email = body['email']
+            request.user.username = body['username']
+            request.user.save()
+            return JsonResponse({'updated user info': True})
+        elif request.method == 'DELETE':
+            request.user.delete()
+            return JsonResponse({'deleted user': True})
+        else:
+            data = serializers.serialize("json", [request.user], fields=['email', 'username'])
+            return HttpResponse(data)
     else:
         return JsonResponse({'user': False})
 
