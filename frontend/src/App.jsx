@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import CalendarPage from "./pages/CalendarPage";
 import AccountPage from "./pages/AccountPage";
 import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
@@ -75,12 +74,8 @@ export default function App() {
 					<Route path="/" element={<HomePage user={user} />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
-					<Route
-						path="/calendar"
-						element={<CalendarPage data={userEvent} />}
-					/>
 					<Route path="/account" element={<AccountPage />} />
-					<Route path="/events" element={<EventPage />} />
+					<Route path="/events" element={<EventPage data={userEvent}/>} />
 					<Route path="/allevents" element={<AllEventsPage />} />
 					<Route
 						path="/events/create"
