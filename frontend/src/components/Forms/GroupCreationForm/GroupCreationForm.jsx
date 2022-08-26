@@ -21,7 +21,7 @@ export default function GroupCreationForm() {
 	const validate = () => {
 		let errors = {};
 		if (!groupName) {
-			errors.groupname = "Event name is required.";
+			errors.groupname = "Group name is required.";
 		}
 		return errors;
 	};
@@ -193,7 +193,7 @@ export default function GroupCreationForm() {
 															)}
 														/>
 														<label
-															htmlFor="username"
+															htmlFor="groupname"
 															className={classNames(
 																{
 																	"p-error":
