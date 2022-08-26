@@ -26,3 +26,8 @@ img {
 .ssfont {
 	font-family: Short Stack;
 }
+
+.center-page {
+	display: flex;
+	justify-content: center;
+}

@@ -49,7 +49,10 @@ export default function LoginNavBar() {
                         </NavDropdown>
                         </Col>
                         <Col>
-                            <Nav.Link onClick={logout}>Logout</Nav.Link>
+                            <NavDropdown title="Account" id="basic-nav-dropdown">
+                                <NavDropdown.Item href="#/account">Account Details</NavDropdown.Item>
+                                <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                            </NavDropdown>
                         </Col>
                     </Row>
                 </Container>
