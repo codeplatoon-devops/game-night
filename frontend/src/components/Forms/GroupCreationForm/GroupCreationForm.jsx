@@ -16,6 +16,7 @@ export default function GroupCreationForm() {
 	const [groupName, setGroupName] = useState("");
 	const [groupInformation, setGroupInformation] = useState(null);
 	const [groupCode, setGroupCode] = useState(null);
+	const [groups, setGroups] = useState(null);
 	const navigate = useNavigate();
 	let creationError = "";
 	const validate = () => {
@@ -88,17 +89,6 @@ export default function GroupCreationForm() {
 				}
 			});
 	};
-	const viewGroups = function () {
-		axios.get("/groups/view").then((response) => {
-			console.log("view groups response.data", response.data);
-			if (response.data.success == "True") {
-				let new_groups =
-					response && response.data && response.data.groups;
-				setGroups(new_groups);
-			} else {
-			}
-		});
-	};
 	const getGroupCode = function () {
 		axios.get("/group/code").then((response) => {
 			console.log(
@@ -109,10 +99,9 @@ export default function GroupCreationForm() {
 			setGroupCode(code);
 		});
 	};
-	useEffect(() => {
-		getGroupCode();
-		viewGroups();
-	}, []);
+	// useEffect(() => {
+	// 	getGroupCode();
+	// }, []);
 	return (
 		<Container>
 			<Button
