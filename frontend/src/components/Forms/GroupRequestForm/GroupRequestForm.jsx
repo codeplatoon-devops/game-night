@@ -33,15 +33,20 @@ export default function GroupRequestForm(props) {
 		};
 	}
 
-	const getTheCode =function (value) {
+	const getTheCode = function (value) {
 		for (let group of props.groups) {
 			// console.log('group[0], name:', group[0], name)
-			if (group[0]==value.label) {
-				console.log('group name here', group[0], 'group code here', group[1])
-				setGroupCode(group[1])
+			if (group[0] == value.label) {
+				console.log(
+					"group name here",
+					group[0],
+					"group code here",
+					group[1]
+				);
+				setGroupCode(group[1]);
 			}
 		}
-	}
+	};
 
 	const handleSubmit = () => {
 		console.log("submit");
@@ -74,7 +79,6 @@ export default function GroupRequestForm(props) {
 
 	const createGroupRequest = function (friend_email) {
 		if (groupCode) {
-
 			axios
 				.post("/group/request/create", {
 					friend_email: friend_email,
@@ -129,10 +133,10 @@ export default function GroupRequestForm(props) {
 												autoFocus
 												value={groupName}
 												options={groups}
-												onChange={(e) =>
-													{setGroupName(e.value);
+												onChange={(e) => {
+													setGroupName(e.value);
 													getTheCode(e.value);
-													}}
+												}}
 											/>
 											<label
 												htmlFor="groupname"
