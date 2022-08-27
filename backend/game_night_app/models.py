@@ -98,8 +98,8 @@ class GroupRequest(models.Model):
     def __str__(self):
         return f"ID: {self.id}, Group: {self.group}, Sender: {self.sender}, Receiver: {self.receiver}"
 
-    class Meta:
-        unique_together = (('sender', 'receiver'))
+    # class Meta:
+    #     unique_together = (('sender', 'receiver'))
 
 class EventRequest(models.Model):
     sender = models.ForeignKey(AppUser, on_delete = models.CASCADE, related_name='Eventsender')

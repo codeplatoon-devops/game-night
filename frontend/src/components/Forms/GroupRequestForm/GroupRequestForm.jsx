@@ -10,16 +10,18 @@ import { Dropdown } from "primereact/dropdown";
 import GroupsTable from "../../Tables/GroupsTable/GroupsTable";
 
 export default function GroupRequestForm(props) {
+	// props = groups
 	const [showInviteForm, setShowInviteForm] = useState(false);
 	const [friendEmail, setFriendEmail] = useState(null);
-	const [groupCode, setGroupCode] = useState("76072927");
+	const [groupCode, setGroupCode] = useState(null);
 	const [groupName, setGroupName] = useState(null);
 
 	let groups = [];
 	if (props.groups) {
 		for (let group of props.groups) {
+			// console.log('group here line 22 group request form', group)
 			let tempGroup = {
-				label: group,
+				label: group[0],
 			};
 
 			groups.push(tempGroup);
@@ -29,6 +31,16 @@ export default function GroupRequestForm(props) {
 			label: "None",
 			value: null,
 		};
+	}
+
+	const getTheCode =function (value) {
+		for (let group of props.groups) {
+			// console.log('group[0], name:', group[0], name)
+			if (group[0]==value.label) {
+				console.log('group name here', group[0], 'group code here', group[1])
+				setGroupCode(group[1])
+			}
+		}
 	}
 
 	const handleSubmit = () => {
@@ -61,22 +73,25 @@ export default function GroupRequestForm(props) {
 	};
 
 	const createGroupRequest = function (friend_email) {
-		axios
-			.post("/group/request/create", {
-				friend_email: friend_email,
-				group_code: groupCode,
-			})
-			.then((response) => {
-				console.log(
-					"create group request response.data",
-					response.data
-				);
-				if (response.data.success == "True") {
-					window.alert("Group invitation sent!");
-				} else {
-					window.alert(`${response.data.reason}`);
-				}
-			});
+		if (groupCode) {
+
+			axios
+				.post("/group/request/create", {
+					friend_email: friend_email,
+					group_code: groupCode,
+				})
+				.then((response) => {
+					console.log(
+						"create group request response.data",
+						response.data
+					);
+					if (response.data.success == "True") {
+						window.alert("Group invitation sent!");
+					} else {
+						window.alert(`${response.data.reason}`);
+					}
+				});
+		}
 	};
 
 	return (
@@ -114,13 +129,17 @@ export default function GroupRequestForm(props) {
 												value={groupName}
 												options={groups}
 												onChange={(e) =>
-													setGroupName(e.value)
+													{setGroupName(e.value);
+													getTheCode(e.value);
+													}}
+
 												}
 												className={classNames({
 													"p-invalid":
 														isFormFieldValid(meta),
 													"form-group-invite-field": true,
 												})}
+
 											/>
 											<label
 												htmlFor="groupname"

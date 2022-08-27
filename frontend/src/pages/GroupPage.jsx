@@ -13,11 +13,11 @@ import GroupRequestForm from "../components/Forms/GroupRequestForm/GroupRequestF
 // import CreateChannel from "../components/Chatroom/CreateChannel";
 // import { useChatContext } from "stream-chat-react"
 
-export default function GroupPage({ user, token, stream }) {
+export default function GroupPage({ user, token, stream, whoAmI}) {
 	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate();
 	// const [image, setImage] = useState('https://picsum.photos/200')
-	const [groupCode, setGroupCode] = useState(null);
+	// const [groupCode, setGroupCode] = useState(null);
 	const [createGroupInformation, setCreateGroupInformation] = useState(null);
 	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
 	const [groups, setGroups] = useState(null);
@@ -25,16 +25,16 @@ export default function GroupPage({ user, token, stream }) {
 	const [showChat, setShowChat] = useState(false)
 	// const [groupCreated, setGroupCreated] = useState(false)
 
-	const getGroupCode = function () {
-		axios.get("/group/code").then((response) => {
-			console.log(
-				"get group code response.data.group_code",
-				response.data.group_code
-			);
-			let code = response && response.data && response.data.group_code;
-			setGroupCode(code);
-		});
-	};
+	// const getGroupCode = function () {
+	// 	axios.get("/group/code").then((response) => {
+	// 		console.log(
+	// 			"get group code response.data.group_code",
+	// 			response.data.group_code
+	// 		);
+	// 		let code = response && response.data && response.data.group_code;
+	// 		setGroupCode(code);
+	// 	});
+	// };
 
 	const viewGroups = function () {
 		axios.get("/groups/view").then((response) => {
@@ -67,17 +67,20 @@ export default function GroupPage({ user, token, stream }) {
 	};
 
 	useEffect(() => {
-		getGroupCode();
 		viewGroups();
 		viewGroupInvitations();
+
+		whoAmI()
+
 		setTimeout(() => {
 			setShowChat(true)
 			console.log("TIMEOUT")
 		}, 300)
+
 	}, []);
 
 	// this part is just necessary for the create group form
-	if (!groupCode) {
+	if (!user) {
 		return <h3>Loading</h3>;
 	} else {
 		return (
@@ -87,7 +90,7 @@ export default function GroupPage({ user, token, stream }) {
 					<Col md={4}>
 						<GroupsTable groups={groups} />
 						{/* Group creation */}
-						<GroupCreationForm />
+						<GroupCreationForm viewGroups={viewGroups} setCreateGroupInformation= {setCreateGroupInformation}/>
 						{/* Group invite */}
 						<GroupRequestForm groups={groups} />
 						<Row>
@@ -95,6 +98,7 @@ export default function GroupPage({ user, token, stream }) {
 								{groupInvitations ? (
 									<PendingInvitesGroups
 										data={groupInvitations}
+										setJoinGroupInformation={setJoinGroupInformation}
 									/>
 								) : (
 									<PendingInvitesGroups
@@ -116,7 +120,11 @@ export default function GroupPage({ user, token, stream }) {
 							stream={stream}
 							createGroupInformation={createGroupInformation}
 							joinGroupInformation={joinGroupInformation}
+
+							whoAmI={whoAmI}
+
 						/> }
+
 						{/* : null
 						} */}
 					</Col>

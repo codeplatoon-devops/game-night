@@ -3,6 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import logo from '../../assets/Images/logo.png'
 
 import "./NavBar.css"
 
@@ -14,15 +15,17 @@ export default function LogoutNavBar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="m-auto width-100">
           <Container>
-          <Row>
-            <Col>
-              <Nav.Link href="#/">Home</Nav.Link>
+          <Row style={{'font-size': '20px'}}>
+            <Col style={{'margin-top': '10px'}}>
+              <Nav.Link className="blue-font" href="#/">Home</Nav.Link>
             </Col>
             <Col>
-              <Navbar.Brand href="#/">[logo here]</Navbar.Brand>
+              <Navbar.Brand href="#/">
+                <img src={logo} alt="logo" width="300px"></img>
+              </Navbar.Brand>
             </Col>
-            <Col>
-              <Nav.Link href="#/events">Search Events</Nav.Link>
+            <Col style={{'margin-top': '10px'}}>
+              <Nav.Link className="blue-font" href="#/allevents">Search Events</Nav.Link>
             </Col>
           </Row>
           </Container>

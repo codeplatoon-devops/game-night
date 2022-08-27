@@ -1,14 +1,20 @@
-import React, { Component, useEffect, useState } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import React, { useEffect, useState } from "react";
+import { ListBox } from 'primereact/listbox';
+import { useNavigate } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import axios from "axios";
 import './EventsTable.css'
 
 
 export const EventsTable = () => {
 
-	const [event, setEvent] = useState(null)
+	let navigate = useNavigate();
 
+	const [events, setEvents] = useState(null);
+	const [selectedEvent, setSelectedEvent] = useState(null);
+	const [activeIndex, setActiveIndex] = useState(null);
 
 	useEffect(() => {
 		axios
@@ -18,7 +24,7 @@ export const EventsTable = () => {
 			for(let item in response.data) {
 				data.push(response.data[item].fields)
 			}
-			setEvent(data)
+			setEvents(data)
 			
 		})
 		.catch((error) => {console.log('ERROR', error);})
@@ -35,18 +41,40 @@ export const EventsTable = () => {
         return newDate;   
     }
 
-    const timeBodyTemplate = (rowData) => {
-        let date = convertUTCDateToLocalDate(new Date(rowData.start_time))
-        return date.toLocaleString();
-    }
+	const eventsTemplate = (option) => {
+
+		let date = convertUTCDateToLocalDate(new Date(option.start_time))
+		let dateStr = date.toLocaleString()
+		return (
+            <Container>
+				<Row>
+					<Col>
+						<div>{option.name}</div>
+					</Col>
+					<Col>
+						<div>{option.category}</div>
+					</Col>
+					<Col>
+						<div>{dateStr}</div>
+					</Col>
+				</Row>
+			</Container>
+        );
+	}
+
+	const handleChange = (event) => {
+		navigate(`/events/${event.value.code}`)
+	}
 
 	return (
-		<DataTable value={event} paginator rows={15} filterDisplay="menu">
-			<Column field="name" header="Event Name" filter />
-			<Column field="category" header="Category" filter />
-			{/* <Column field="description" header="Description" filter />
-			<Column field="address_1" header="Location" filter /> */}
-			<Column body={timeBodyTemplate} header="Date" sortable dataType="date" />
-		</DataTable>
+		<ListBox 
+		value={selectedEvent} 
+		options={events} 
+		onChange={handleChange} 
+		optionLabel="name" 
+		style={{ width: '30rem' }} 
+		itemTemplate={eventsTemplate}
+		listStyle={{ maxHeight: '250px' }}
+		/>
 	);
 };

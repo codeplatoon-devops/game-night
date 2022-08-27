@@ -34,10 +34,10 @@ def create_chat_user_token(request):
         user = AppUser.objects.get(email = user_email)
         # user_id= str(user.id)
         user_id= str(user.username)
-        print('IN TOKEN ON DJANGO, user', user, 'user_id', user_id, 'type user id', type(user_id))
+        # print('IN TOKEN ON DJANGO, user', user, 'user_id', user_id, 'type user id', type(user_id))
         server_client = stream_chat.StreamChat(api_key=os.environ['chatapikey'], api_secret=os.environ['secretchatkey'])
         token = server_client.create_token(user_id)
-        print('IN CREATE CHAT USER TOKEN, TOKEN IS', token)
+        # print('IN CREATE CHAT USER TOKEN, TOKEN IS', token)
         return JsonResponse({'succes':'true', 'token': token})
     except Exception as e:
         return JsonResponse({'success': "false", 'reason': f'failed to create token, {str(e)}'})
@@ -45,7 +45,7 @@ def create_chat_user_token(request):
 @api_view(['GET'])
 def stream_api(request):
     api=os.environ['stream_key']
-    print('IN STREAM API REQUEST', api, 'type', type(api))
+    # print('IN STREAM API REQUEST', api, 'type', type(api))
     try:
         return JsonResponse({'succes':'true', 'api': api})
     except Exception as e:
@@ -63,9 +63,12 @@ def create_group_request(request):
     user = AppUser.objects.get(email = user_email)
     friend = AppUser.objects.get(email = friend_email)
     group = Group.objects.get(code = code)
-    if group is not None:
-        if friend is not None:
+    if group:
+        print('in create group invite under "if group:')
+        if friend:
+            print('in create group invite under "if friend:')
             try:
+                print('in the create group request try')
                 group_request = GroupRequest(sender = user, receiver = friend, group = group)
                 group_request.full_clean
                 group_request.save()
@@ -74,6 +77,7 @@ def create_group_request(request):
             except Exception as e:
                 return JsonResponse({'success': "False", 'reason': f'something went wrong, {str(e)}'})
         else:
+            print('inside the else on create group invite')
             return JsonResponse({'success': "False", 'reason': 'friends account doesnt exist'})
     else:
         return JsonResponse({'success': "False", 'reason': 'group doesnt exist'})
@@ -318,6 +322,22 @@ def join_group(request):
         return JsonResponse({'success': "False", 'reason': 'this group code doesnt exist'})
 
 @login_required
+@api_view(['PUT'])
+# deletes a group invite
+def decline_group(request):
+    user = AppUser.objects.get(email = request.user.email)
+    friend= AppUser.objects.get(email = request.data['friend_email'])
+    code = request.data['code']
+    try:
+        group = Group.objects.get(code= code)
+        group_request = GroupRequest.objects.get(sender = friend, receiver = user, group = group)
+        group_request.delete()
+        print('group request should now be deleted', group_request)
+        return JsonResponse({'success': "True", 'action': "group created"})
+    except Exception as e:
+        return JsonResponse({'success': "False", 'reason': str(e)}) 
+
+@login_required
 @api_view(['GET'])
 def view_groups(request):
     user = AppUser.objects.get(email = request.user.email)
@@ -327,10 +347,11 @@ def view_groups(request):
     if len(groups)>0:
         list_of_groups=[]
         for group in groups:
-            list_of_groups.append(group.name)
+            list_of_groups.append([group.name, group.code])
             print('group.name here', group.name)
         print('list of groups line 314:', list_of_groups)
         try:
+            # sends back just the group name
             return JsonResponse({'success': 'True', 'groups': list_of_groups})
         except Exception as e:
             return JsonResponse({'success': "False", 'reason': str(e)})
@@ -361,7 +382,7 @@ def create_event(request):
         zip_code = request.data['zip']
         user = AppUser.objects.get(email = request.user.email)
         
-        new_event = Event(owner=user, address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
+        new_event = Event(owner=user, code=code, address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
         new_event.full_clean()
         new_event.save()
         return JsonResponse({'added event': True})
