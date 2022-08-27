@@ -51,13 +51,22 @@ export default function LoginNavBar() {
 										title="Events"
 										id="basic-nav-dropdown"
 									>
-										<NavDropdown.Item href="#/events">
+										<NavDropdown.Item
+											className="dropdown-text"
+											href="#/events"
+										>
 											Your Events
 										</NavDropdown.Item>
-										<NavDropdown.Item href="#/allevents">
+										<NavDropdown.Item
+											className="dropdown-text"
+											href="#/allevents"
+										>
 											Search Events
 										</NavDropdown.Item>
-										<NavDropdown.Item href="#/events/create">
+										<NavDropdown.Item
+											className="dropdown-text"
+											href="#/events/create"
+										>
 											Create Event
 										</NavDropdown.Item>
 									</NavDropdown>
@@ -67,10 +76,16 @@ export default function LoginNavBar() {
 										title="Account"
 										id="basic-nav-dropdown"
 									>
-										<NavDropdown.Item href="#/account">
+										<NavDropdown.Item
+											className="dropdown-text"
+											href="#/account"
+										>
 											Account Details
 										</NavDropdown.Item>
-										<NavDropdown.Item onClick={logout}>
+										<NavDropdown.Item
+											className="dropdown-text"
+											onClick={logout}
+										>
 											Logout
 										</NavDropdown.Item>
 									</NavDropdown>
