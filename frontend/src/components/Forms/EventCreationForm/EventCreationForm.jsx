@@ -170,6 +170,7 @@ export const EventCreationForm = () => {
 	const onAck = () => {
 		setShowMessage(false);
 		navigate("/events");
+		// navigate not working.
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
