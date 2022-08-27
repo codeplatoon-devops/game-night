@@ -37,7 +37,7 @@ export default function GroupRequestForm(props) {
 		for (let group of props.groups) {
 			// console.log('group[0], name:', group[0], name)
 			if (group[0]==value.label) {
-				console.log('group name here', group[0], 'group code here', group[1])
+				// console.log('group name here', group[0], 'group code here', group[1])
 				setGroupCode(group[1])
 			}
 		}

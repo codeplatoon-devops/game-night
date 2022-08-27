@@ -16,24 +16,10 @@ import GroupRequestForm from "../components/Forms/GroupRequestForm/GroupRequestF
 export default function GroupPage({ user, token, stream, whoAmI}) {
 	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate();
-	// const [image, setImage] = useState('https://picsum.photos/200')
-	// const [groupCode, setGroupCode] = useState(null);
 	const [createGroupInformation, setCreateGroupInformation] = useState(null);
 	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
 	const [groups, setGroups] = useState(null);
 	const [groupInvitations, setGroupInvitations] = useState(null);
-	// const [groupCreated, setGroupCreated] = useState(false)
-
-	// const getGroupCode = function () {
-	// 	axios.get("/group/code").then((response) => {
-	// 		console.log(
-	// 			"get group code response.data.group_code",
-	// 			response.data.group_code
-	// 		);
-	// 		let code = response && response.data && response.data.group_code;
-	// 		setGroupCode(code);
-	// 	});
-	// };
 
 	const viewGroups = function () {
 		axios.get("/groups/view").then((response) => {
@@ -46,10 +32,6 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 			}
 		});
 	};
-
-	// const createGroupRequest = function (friend_email, code) {
-	// axios.post("/group/request/create", {friend_email: friend_email, code:code})
-	// just for test I'm putting in the group code because I know I'll be creating this group, but normally we would run the lines above
 
 	const viewGroupInvitations = function () {
 		axios.get("/group/request/view").then((response) => {
@@ -71,7 +53,7 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 		whoAmI()
 	}, []);
 
-	// this part is just necessary for the create group form
+
 	if (!user) {
 		return <h3>Loading</h3>;
 	} else {
