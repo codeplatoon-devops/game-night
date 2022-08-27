@@ -49,15 +49,15 @@ export const SignUpForm = () => {
 		// what about an event prevent default? Do we need to set the form data or just send it to the server?
 		// event.preventDefault();
 		setFormData(data);
-		setShowMessage(true);
 		axios.post("/signup", data).then((response) => {
 			console.log("signup response", response);
 			if (response.data.success === "False") {
 				window.alert(response.data.reason);
+				nav("/login");
 			} else {
+				setShowMessage(true);
 				// clear form
 				form.restart();
-				nav("/login");
 			}
 		});
 	};
@@ -77,7 +77,7 @@ export const SignUpForm = () => {
 				label="OK"
 				className="p-button-text"
 				autoFocus
-				onClick={() => setShowMessage(false)}
+				onClick={() => nav("/login")}
 			/>
 		</div>
 	);
