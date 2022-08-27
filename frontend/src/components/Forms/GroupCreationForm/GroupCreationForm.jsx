@@ -10,7 +10,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./GroupCreationForm.css";
 
-export default function GroupCreationForm({viewGroups, setCreateGroupInformation}) {
+export default function GroupCreationForm({
+	viewGroups,
+	setCreateGroupInformation,
+}) {
 	const [showMessage, setShowMessage] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 	const [groupName, setGroupName] = useState("");
@@ -30,6 +33,7 @@ export default function GroupCreationForm({viewGroups, setCreateGroupInformation
 		createGroup();
 		// setShowMessage(true);
 	};
+
 	// hardcoded to group '1' for now
 	// TODO: update redirect to group code when generated
 	const onAck = () => {
