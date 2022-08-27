@@ -1,9 +1,6 @@
 .form-group-invite {
-	min-width: 350px;
+	min-width: 400px;
 }
-.field-group-request {
-	width: 100%;
-}
-.form-group-invite-div {
+.form-group-invite-field {
 	width: 100%;
 }

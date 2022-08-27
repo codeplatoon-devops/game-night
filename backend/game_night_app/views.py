@@ -321,6 +321,22 @@ def join_group(request):
         return JsonResponse({'success': "False", 'reason': 'this group code doesnt exist'})
 
 @login_required
+@api_view(['PUT'])
+# deletes a group invite
+def decline_group(request):
+    user = AppUser.objects.get(email = request.user.email)
+    friend= AppUser.objects.get(email = request.data['friend_email'])
+    code = request.data['code']
+    try:
+        group = Group.objects.get(code= code)
+        group_request = GroupRequest.objects.get(sender = friend, receiver = user, group = group)
+        group_request.delete()
+        print('group request should now be deleted', group_request)
+        return JsonResponse({'success': "True", 'action': "group created"})
+    except Exception as e:
+        return JsonResponse({'success': "False", 'reason': str(e)}) 
+
+@login_required
 @api_view(['GET'])
 def view_groups(request):
     user = AppUser.objects.get(email = request.user.email)
@@ -365,7 +381,7 @@ def create_event(request):
         zip_code = request.data['zip']
         user = AppUser.objects.get(email = request.user.email)
         
-        new_event = Event(owner=user, address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
+        new_event = Event(owner=user, code=code, address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
         new_event.full_clean()
         new_event.save()
         return JsonResponse({'added event': True})
@@ -400,7 +416,7 @@ def userevents_byid(request,id):
 def user_events_table_data(request):
     if request.user.is_authenticated:
         events = Event.objects.filter(owner = request.user.id)
-        data = serializers.serialize('json', events, fields=['name', 'category', 'description', 'address_1', 'start_time'])
+        data = serializers.serialize('json', events, fields=['name', 'category', 'description', 'address_1', 'start_time', 'code'])
         return HttpResponse(data, content_type='application/json')
     else:
         return JsonResponse({'user': False})

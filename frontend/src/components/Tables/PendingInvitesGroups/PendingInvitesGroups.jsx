@@ -45,6 +45,22 @@ export const PendingInvitesGroups = (props) => {
 				}
 			});
 	};
+	const delineGroup = function (email, code) {
+		console.log("in decline group");
+		console.log("email: ", email);
+		console.log("code: ", code);
+		axios
+			.put("/group/decline", { friend_email: email, code: code })
+			.then((response) => {
+				hideDetails();
+				console.log("decline group response.data", response.data);
+				if (response.data.success == "True") {
+					window.alert("Group invite declined");
+				} else {
+					window.alert(`${response.data.reason}`);
+				}
+			});
+	};
 
 	let invites = [];
 	if (props.data) {
@@ -94,7 +110,9 @@ export const PendingInvitesGroups = (props) => {
 					label="Decline"
 					icon="pi pi-times"
 					className="p-button-outlined"
-					onClick={hideDetails}
+					onClick={() =>
+						delineGroup(invitationDetails[0], invitationDetails[2])
+					}
 				/>
 			</Col>
 		</Container>

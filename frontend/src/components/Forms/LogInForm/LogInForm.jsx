@@ -6,6 +6,7 @@ import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 import { classNames } from "primereact/utils";
 import { Divider } from "primereact/divider";
+import { Panel } from "primereact/panel";
 import "./LogInForm.css";
 import { Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
@@ -18,9 +19,9 @@ export const LoginForm = () => {
 		let errors = {};
 		if (!data.username) {
 			errors.username = "Username is required.";
-		} 
+		}
 		// else if (
-			// !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
+		// !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
 		// ) {
 		// 	errors.email = "Invalid email address. E.g. example@email.com";
 		// }
@@ -34,20 +35,19 @@ export const LoginForm = () => {
 		// do we need to set the formdata or just send it to the server? can we pass in event to prevent default?
 		setFormData(data);
 		// event.preventDefault();
-		axios.put('/login',data).then((response) => {
-			console.log('YOU ARE IN THE REACT .THEN RESPONSE FROM LOGIN', response)
-			if (response.data.success==='False') {
-				window.alert(response.data.reason)
-			}
-			else {
-				window.location.reload();
-				// navigate to home on login
-				// nav('/')
-				window.location.reload()
-				// clear form
+		axios.put("/login", data).then((response) => {
+			console.log(
+				"YOU ARE IN THE REACT .THEN RESPONSE FROM LOGIN",
+				response
+			);
+			if (response.data.success === "False") {
+				window.alert(response.data.reason);
+			} else {
 				form.restart();
+				navigate("/");
+				window.location.reload();
 			}
-			})
+		});
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
@@ -70,7 +70,7 @@ export const LoginForm = () => {
 				<Row>
 					<div className="form-login">
 						<div className="flex justify-content-center">
-							<div className="card card-login">
+							<div className="p-card card-login">
 								<h2 className="text-center">Log in</h2>
 								<Form
 									onSubmit={onSubmit}
@@ -165,7 +165,7 @@ export const LoginForm = () => {
 											<Button
 												type="submit"
 												label="Log In"
-												className="mt-2 btn-continue"
+												className="mt-2 btn-continue btn-login-form"
 											/>
 										</form>
 									)}
@@ -178,7 +178,7 @@ export const LoginForm = () => {
 								</Divider>
 								<Button
 									onClick={handleClick}
-									className="text-center"
+									className="mt-2 btn-continue btn-login-form"
 									label="Sign Up"
 								/>
 							</div>
