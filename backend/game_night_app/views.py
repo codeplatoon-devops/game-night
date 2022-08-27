@@ -317,6 +317,22 @@ def join_group(request):
         return JsonResponse({'success': "False", 'reason': 'this group code doesnt exist'})
 
 @login_required
+@api_view(['PUT'])
+# deletes a group invite
+def decline_group(request):
+    user = AppUser.objects.get(email = request.user.email)
+    friend= AppUser.objects.get(email = request.data['friend_email'])
+    code = request.data['code']
+    try:
+        group = Group.objects.get(code= code)
+        group_request = GroupRequest.objects.get(sender = friend, receiver = user, group = group)
+        group_request.delete()
+        print('group request should now be deleted', group_request)
+        return JsonResponse({'success': "True", 'action': "group created"})
+    except Exception as e:
+        return JsonResponse({'success': "False", 'reason': str(e)}) 
+
+@login_required
 @api_view(['GET'])
 def view_groups(request):
     user = AppUser.objects.get(email = request.user.email)
