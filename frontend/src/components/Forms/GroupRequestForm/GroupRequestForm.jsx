@@ -101,9 +101,8 @@ export default function GroupRequestForm(props) {
 					}}
 					validate={validate}
 					render={({ handleSubmit }) => (
-						<div className="form-group-invite-div">
+						<>
 							<Field
-								className="field-group-request"
 								name="groupname"
 								render={({ input, meta }) => (
 									<div className="field">
@@ -117,6 +116,11 @@ export default function GroupRequestForm(props) {
 												onChange={(e) =>
 													setGroupName(e.value)
 												}
+												className={classNames({
+													"p-invalid":
+														isFormFieldValid(meta),
+													"form-group-invite-field": true,
+												})}
 											/>
 											<label
 												htmlFor="groupname"
@@ -150,6 +154,7 @@ export default function GroupRequestForm(props) {
 												className={classNames({
 													"p-invalid":
 														isFormFieldValid(meta),
+													"form-group-invite-field": true,
 												})}
 											/>
 											<label
@@ -173,7 +178,7 @@ export default function GroupRequestForm(props) {
 								className="mt-2 btn-continue"
 								onClick={handleSubmit}
 							/>
-						</div>
+						</>
 					)}
 				/>
 			</Dialog>
