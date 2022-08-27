@@ -10,13 +10,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./GroupCreationForm.css";
 
-export default function GroupCreationForm() {
+export default function GroupCreationForm({viewGroups, setCreateGroupInformation}) {
 	const [showMessage, setShowMessage] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 	const [groupName, setGroupName] = useState("");
-	const [groupInformation, setGroupInformation] = useState(null);
+	// const [groupInformation, setGroupInformation] = useState(null);
 	const [groupCode, setGroupCode] = useState(null);
-	const [groups, setGroups] = useState(null);
+
 	let creationError = "";
 	const validate = () => {
 		let errors = {};
@@ -30,23 +30,12 @@ export default function GroupCreationForm() {
 		createGroup();
 		// setShowMessage(true);
 	};
-	const viewGroups = function () {
-		axios.get("/groups/view").then((response) => {
-			console.log("view groups response.data", response.data);
-			if (response.data.success == "True") {
-				let new_groups =
-					response && response.data && response.data.groups;
-				setGroups(new_groups);
-			} else {
-			}
-		});
-	};
 	// hardcoded to group '1' for now
 	// TODO: update redirect to group code when generated
 	const onAck = () => {
 		setShowMessage(false);
 		setGroupName("");
-		setGroupInformation(null);
+		// setGroupInformation(null);
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
@@ -77,11 +66,7 @@ export default function GroupCreationForm() {
 				console.log("create group response.data", response.data);
 				if (response.data.success == "True") {
 					setShowMessage(true);
-					// window.alert(
-					// 	`Group created! Your group code has been assigned ${groupCode}`
-					// );
-					// CreateChannel(name, code)
-					setGroupInformation([groupName, groupCode]);
+					// setCreateGroupInformation([groupName, groupCode]);
 					viewGroups();
 					// reload or nav to groups here
 				} else {
@@ -104,6 +89,7 @@ export default function GroupCreationForm() {
 	useEffect(() => {
 		getGroupCode();
 	}, []);
+
 	return (
 		<>
 			<Button

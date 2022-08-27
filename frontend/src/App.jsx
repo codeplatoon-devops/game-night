@@ -10,6 +10,7 @@ import SignUpPage from "./pages/SignUpPage";
 import AccountPage from "./pages/AccountPage";
 import GroupPage from "./pages/GroupPage";
 import EventPage from "./pages/EventPage";
+import ChatroomPage from "./pages/ChatroomPage";
 import AllEventsPage from "./pages/AllEventsPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
@@ -75,6 +76,12 @@ export default function App() {
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/account" element={<AccountPage />} />
+					<Route path="/chatroom" element={<ChatroomPage 
+							user={user}
+							token={token}
+							stream={stream}
+							setUser={setUser}
+							whoAmI={whoAmI}/>} />
 					<Route path="/events" element={<EventPage data={userEvent}/>} />
 					<Route path="/allevents" element={<AllEventsPage />} />
 					<Route
@@ -88,6 +95,7 @@ export default function App() {
 								user={user}
 								token={token}
 								stream={stream}
+								whoAmI={whoAmI}
 							/>
 						}
 					/>

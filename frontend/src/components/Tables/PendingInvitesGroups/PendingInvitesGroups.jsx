@@ -11,10 +11,12 @@ import "./PendingInvitesGroups.css";
 import axios from "axios";
 
 export const PendingInvitesGroups = (props) => {
+	// props.data = groupInvitations
 	const [showMessage, setShowMessage] = useState(false);
 	const [groupDetails, setGroupDetails] = useState(null);
 	const [invitationDetails, setInvitationDetails] = useState([]);
-	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
+
+	
 	const showDetails = (invitationInfo) => {
 		setGroupDetails(
 			invitationInfo[0] +
@@ -37,7 +39,7 @@ export const PendingInvitesGroups = (props) => {
 				console.log("join group response.data", response.data);
 				if (response.data.success == "True") {
 					window.alert("Group joined!");
-					setJoinGroupInformation([name, code]);
+					props.setJoinGroupInformation([name, code]);
 				} else {
 					window.alert(`${response.data.reason}`);
 				}
@@ -63,6 +65,7 @@ export const PendingInvitesGroups = (props) => {
 	let invites = [];
 	if (props.data) {
 		for (let invitation of props.data) {
+			// props.data = groupInvitations
 			// console.log("invitation in props.data: ", invitation);
 			let tempInvite = {
 				groupName: invitation[1],

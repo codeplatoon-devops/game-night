@@ -4,19 +4,23 @@ import { Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window
 import axios from 'axios'
 import './chatroom.css'
 import 'stream-chat-react/dist/css/index.css'
-import { useChatContext } from "stream-chat-react"
+// import { useChatContext } from "stream-chat-react"
 // had to change this file: node_modules/stream-chat-react/dist/components/MessageInput/hooks/useEmojiIndex.js
 
-function Chatroom ({user, token, stream, createGroupInformation, joinGroupInformation}) {
+function Chatroom ({user, token, stream, createGroupInformation, joinGroupInformation, whoAmI}) {
     
     const [client, setClient] = useState(null)
     const [userId, setUserId] = useState(null)
     const [image, setImage] = useState('https://picsum.photos/200')
     // filters only the channels that the user is a member of
-    const filters = {type: 'messaging', members: {$in: [user.id]}}
     const user_id = user.id.toString()
+    const filters = {type: 'messaging', members: {$in: [user_id]}}
     // puts the channel with the lattest message at the top
     const sort = {last_message_at: -1}
+
+    useEffect(() => {
+		whoAmI()
+	}, []);
 
     const createGroupChannel = async () => {
         if (client) {
@@ -68,6 +72,7 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                 members: [user_id]
             })
             console.log('joinchannel', join_channel)
+            await join_channel.addMembers([user_id])
             await join_channel.watch()
         }
         else {
@@ -97,19 +102,19 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                     // await site_channel.watch()
                     setClient(chatClient)
                     // shouldn't need all this channel specific stuff since have channel list
-                    // 10 is for kyndall, 11 for alisha
-                    const first_channel = chatClient.channel('messaging', 'SiteChat-11', {
+                    // 1 is for kyndall, 2 for alisha
+                    const first_channel = chatClient.channel('messaging', 'UserTwoChat', {
                         // add as many custom fields as you'd like
                         image: 'https://picsum.photos/200',
                         // instead of name 
-                        name: 'Site-wide Chatroom11',
+                        name: 'Site-wide Chatroom2',
                         // members: [user.id]
                         members: [user_id]
                     })
                     // await channel.create()
                     // setChannel(channel)
                     // channel.addMembers(user_id)
-                    // await first_channel.watch()
+                    await first_channel.watch()
                     // setClient(chatClient)
         
                 }
@@ -124,7 +129,7 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
     if (!client) return <LoadingIndicator />
 
     return (
-        <Chat client = {client} theme = "messaging light">
+        <Chat client = {client} theme = "messaging dark">
         <ChannelList 
         filters ={filters}
         sort = {sort}/>    

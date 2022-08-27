@@ -7,10 +7,12 @@ import "./GroupsTable.css";
 export default function GroupsTable(props) {
 	const [selectedGroup, setSelectedGroup] = useState(null);
 	let groups = [];
+	// props.groups now has group name and code
 	if (props.groups) {
 		for (let group of props.groups) {
 			let tempGroup = {
-				groupName: group,
+				groupName: group[0],
+
 			};
 
 			groups.push(tempGroup);
