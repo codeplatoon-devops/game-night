@@ -388,12 +388,12 @@ export const EventCreationForm = () => {
 															showButtons
 															value={maxAttendees}
 															placeholder="Max attendees"
-															onChange={(e) =>
+															onValueChange={(e) =>
+																{console.log('line 392 e.target.value', e.target.value)
 																setMaxAttendees(
-																	e.target
-																		.value
+																	e.target.value
 																)
-															}
+																}}
 															min={1}
 															max={500}
 														/>
