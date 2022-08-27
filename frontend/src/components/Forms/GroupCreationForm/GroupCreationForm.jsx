@@ -70,7 +70,7 @@ export default function GroupCreationForm({
 				console.log("create group response.data", response.data);
 				if (response.data.success == "True") {
 					setShowMessage(true);
-					// setCreateGroupInformation([groupName, groupCode]);
+					setCreateGroupInformation([groupName, groupCode]);
 					viewGroups();
 					// reload or nav to groups here
 				} else {

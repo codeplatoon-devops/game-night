@@ -11,7 +11,7 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
     
     const [client, setClient] = useState(null)
     const [userId, setUserId] = useState(null)
-    const [image, setImage] = useState('https://picsum.photos/200')
+    // const [image, setImage] = useState('https://picsum.photos/200')
     // filters only the channels that the user is a member of
     const user_id = user.id.toString()
     const filters = {type: 'messaging', members: {$in: [user_id]}}
@@ -33,7 +33,7 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
             console.log('user_id', user_id, 'type', typeof(user_id), 'channelID is', channelId, 'channel name is', channelName)
             const new_channel = client.channel('messaging', channelId, {
                 // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
-                image: "https://picsum.photos/200",
+                // image: "https://picsum.photos/200",
                 name: channelName,
                 members: [user_id]
             })
@@ -67,13 +67,13 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
             // await new_channel.watch()
             const join_channel = client.channel('messaging', channelId, {
                 // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
-                image: 'https://picsum.photos/200',
+                // image: 'https://picsum.photos/200',
                 name: channelName,
                 members: [user_id]
             })
-            console.log('joinchannel', join_channel)
             await join_channel.addMembers([user_id])
             await join_channel.watch()
+            console.log('joinchannel', join_channel)
         }
         else {
             setTimeout(joinGroupChannel, 3000)
@@ -89,7 +89,10 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
             if (!client) {
                 async function init() {
                     const user_id= (user.id).toString()
-                    console.log('USER ID HERE LINE 58', user_id, 'type here', typeof(user_id))
+                    const channelName = 'This is your personal Notes/Reminders/Chat Space'
+                    let channelId = user_id
+                    channelId += "PersonalChat"
+                    console.log('USER ID HERE LINE 95', user_id, 'type here', typeof(user_id), 'channelName', channelName, 'channelID', channelId)
                     const chatClient = StreamChat.getInstance(stream)
                     // https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
                     await chatClient.connectUser(user, token)
@@ -103,11 +106,11 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                     setClient(chatClient)
                     // shouldn't need all this channel specific stuff since have channel list
                     // 1 is for kyndall, 2 for alisha
-                    const first_channel = chatClient.channel('messaging', 'UserTwoChat', {
+                    const first_channel = chatClient.channel('messaging', channelId, {
                         // add as many custom fields as you'd like
-                        image: 'https://picsum.photos/200',
+                        // image: 'https://picsum.photos/200',
                         // instead of name 
-                        name: 'Site-wide Chatroom2',
+                        name: channelName,
                         // members: [user.id]
                         members: [user_id]
                     })
