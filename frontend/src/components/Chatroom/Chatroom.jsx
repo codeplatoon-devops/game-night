@@ -7,7 +7,7 @@ import 'stream-chat-react/dist/css/index.css'
 // import { useChatContext } from "stream-chat-react"
 // had to change this file: node_modules/stream-chat-react/dist/components/MessageInput/hooks/useEmojiIndex.js
 
-function Chatroom ({user, token, stream, createGroupInformation, joinGroupInformation, whoAmI}) {
+function Chatroom ({user, token, stream, createGroupInformation, joinGroupInformation, whoAmI, createEventInformation}) {
     
     const [client, setClient] = useState(null)
     const [userId, setUserId] = useState(null)
@@ -38,6 +38,29 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                 members: [user_id]
             })
             console.log('new channel', new_channel)
+    
+            await new_channel.watch()
+        }
+        else {
+            setTimeout(createGroupChannel, 3000)
+        }
+    }
+
+    const createEventChannel = async () => {
+        if (client) {
+            let channelId = "EventChatroom"
+            let channelName= createEventInformation[0]
+            channelName += ' Chatroom'
+            channelId+=createEventInformation[1].toString()
+            let user_id = user.id.toString()
+            console.log('user_id', user_id, 'type', typeof(user_id), 'channelID is', channelId, 'channel name is', channelName)
+            const new_channel = client.channel('messaging', channelId, {
+                // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
+                // image: "https://picsum.photos/200",
+                name: channelName,
+                members: [user_id]
+            })
+            console.log('newly created channel', new_channel)
     
             await new_channel.watch()
         }

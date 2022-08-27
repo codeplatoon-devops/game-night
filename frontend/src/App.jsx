@@ -32,6 +32,8 @@ export default function App() {
 	const [token, setToken] = useState(null);
 	const [stream, setStream] = useState(null);
 	const [userEvent, setUserEvent] = useState([]);
+	const [createEventInformation, setCreateEventInformation] = useState(null);
+	const [joinEventInformation, setJoinEventInformation] = useState(null);
 
 	const whoAmI = async () => {
 		const response = await axios.get("/whoami");
@@ -81,12 +83,17 @@ export default function App() {
 							token={token}
 							stream={stream}
 							setUser={setUser}
-							whoAmI={whoAmI}/>} />
+							whoAmI={whoAmI}
+							createEventInformation = {createEventInformation}
+							joinEventInformation = {joinEventInformation}
+							/>} />
 					<Route path="/events" element={<EventPage data={userEvent}/>} />
 					<Route path="/allevents" element={<AllEventsPage />} />
 					<Route
 						path="/events/create"
-						element={<EventCreatePage />}
+						element={<EventCreatePage 
+							setCreateEventInformation = {setCreateEventInformation}
+						/>}
 					/>
 					<Route
 						path="/groups"
@@ -101,7 +108,8 @@ export default function App() {
 					/>
 					<Route
 						path="/events/:eventId"
-						element={<EventDetailPage />}
+						element={<EventDetailPage 
+							setJoinEventInformation = {setJoinEventInformation}/>}
 					/>
 				</Routes>
 			</Router>

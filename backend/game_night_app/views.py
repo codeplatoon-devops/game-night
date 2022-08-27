@@ -391,7 +391,7 @@ def create_event(request):
         new_event.full_clean()
         new_event.save()
         print('NEW EVENT ADDED', new_event)
-        return JsonResponse({'added event': True})
+        return JsonResponse({'added event': True, 'eventName': new_event.name, 'eventCode': new_event.code})
     except Exception as e:
         return JsonResponse({'success': "false", 'reason': f'failed to create event: {str(e)}'})
 
