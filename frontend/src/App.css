@@ -17,7 +17,7 @@ body,
 } */
 /* this is to ensure divs don't show up behind navbar */
 .separator {
-	height: 56px;
+	height: 93px;
 }
 
 img {
