@@ -62,9 +62,12 @@ def create_group_request(request):
     user = AppUser.objects.get(email = user_email)
     friend = AppUser.objects.get(email = friend_email)
     group = Group.objects.get(code = code)
-    if group is not None:
+    if group:
+        print('in create group invite under "if group:')
         if friend:
+            print('in create group invite under "if friend:')
             try:
+                print('in the create group request try')
                 group_request = GroupRequest(sender = user, receiver = friend, group = group)
                 group_request.full_clean
                 group_request.save()
@@ -73,6 +76,7 @@ def create_group_request(request):
             except Exception as e:
                 return JsonResponse({'success': "False", 'reason': f'something went wrong, {str(e)}'})
         else:
+            print('inside the else on create group invite')
             return JsonResponse({'success': "False", 'reason': 'friends account doesnt exist'})
     else:
         return JsonResponse({'success': "False", 'reason': 'group doesnt exist'})
@@ -326,10 +330,11 @@ def view_groups(request):
     if len(groups)>0:
         list_of_groups=[]
         for group in groups:
-            list_of_groups.append(group.name)
+            list_of_groups.append([group.name, group.code])
             print('group.name here', group.name)
         print('list of groups line 314:', list_of_groups)
         try:
+            # sends back just the group name
             return JsonResponse({'success': 'True', 'groups': list_of_groups})
         except Exception as e:
             return JsonResponse({'success': "False", 'reason': str(e)})

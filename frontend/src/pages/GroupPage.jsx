@@ -17,23 +17,23 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate();
 	// const [image, setImage] = useState('https://picsum.photos/200')
-	const [groupCode, setGroupCode] = useState(null);
+	// const [groupCode, setGroupCode] = useState(null);
 	const [createGroupInformation, setCreateGroupInformation] = useState(null);
 	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
 	const [groups, setGroups] = useState(null);
 	const [groupInvitations, setGroupInvitations] = useState(null);
 	// const [groupCreated, setGroupCreated] = useState(false)
 
-	const getGroupCode = function () {
-		axios.get("/group/code").then((response) => {
-			console.log(
-				"get group code response.data.group_code",
-				response.data.group_code
-			);
-			let code = response && response.data && response.data.group_code;
-			setGroupCode(code);
-		});
-	};
+	// const getGroupCode = function () {
+	// 	axios.get("/group/code").then((response) => {
+	// 		console.log(
+	// 			"get group code response.data.group_code",
+	// 			response.data.group_code
+	// 		);
+	// 		let code = response && response.data && response.data.group_code;
+	// 		setGroupCode(code);
+	// 	});
+	// };
 
 	const viewGroups = function () {
 		axios.get("/groups/view").then((response) => {
@@ -66,14 +66,13 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 	};
 
 	useEffect(() => {
-		getGroupCode();
 		viewGroups();
 		viewGroupInvitations();
 		whoAmI()
 	}, []);
 
 	// this part is just necessary for the create group form
-	if (!groupCode) {
+	if (!user) {
 		return <h3>Loading</h3>;
 	} else {
 		return (
@@ -83,7 +82,7 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 					<Col md={4}>
 						<GroupsTable groups={groups} />
 						{/* Group creation */}
-						<GroupCreationForm />
+						<GroupCreationForm viewGroups={viewGroups} setCreateGroupInformation= {setCreateGroupInformation}/>
 						{/* Group invite */}
 						<GroupRequestForm groups={groups} />
 						<Row>
@@ -91,6 +90,7 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 								{groupInvitations ? (
 									<PendingInvitesGroups
 										data={groupInvitations}
+										setJoinGroupInformation={setJoinGroupInformation}
 									/>
 								) : (
 									<PendingInvitesGroups

@@ -8,10 +8,11 @@ import "./GroupsTable.css";
 export default function GroupsTable(props) {
 	const [activeIndex, setActiveIndex] = useState(null);
 	let groups = [];
+	// props.groups now has group name and code
 	if (props.groups) {
 		for (let group of props.groups) {
 			let tempGroup = {
-				groupName: <Button className="p-button-text">{group}</Button>,
+				groupName: <Button className="p-button-text">{group[0]}</Button>,
 			};
 
 			groups.push(tempGroup);
