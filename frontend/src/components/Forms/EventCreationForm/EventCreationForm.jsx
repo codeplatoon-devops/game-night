@@ -212,6 +212,7 @@ export const EventCreationForm = () => {
 				</div>
 			</Dialog>
 			<Col></Col>
+
 			<Col>
 				<div className="flex justify-content-center form-event-create">
 					<div className="p-card form-event-create-card">

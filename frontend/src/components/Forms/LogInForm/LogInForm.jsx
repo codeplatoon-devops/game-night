@@ -65,7 +65,6 @@ export const LoginForm = () => {
 
 	return (
 		<Container>
-			{/* <Col></Col> */}
 			<Col>
 				<Row>
 					<div className="form-login">
@@ -186,7 +185,6 @@ export const LoginForm = () => {
 					</div>
 				</Row>
 			</Col>
-			{/* <Col></Col> */}
 		</Container>
 	);
 };
