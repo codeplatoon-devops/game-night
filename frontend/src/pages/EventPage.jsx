@@ -7,15 +7,16 @@ import Col from 'react-bootstrap/Col';
 export default function EventPage({data}) {
 	return (
 	<Container>
+		<h1 className="page-title">Scheduled Events</h1>
 		<Row>
-			<Col md={8}>
-				<div>
-					<Calendar data={data}/>
-				</div>
-			</Col>
 			<Col md={4}>
 				<div>
 					<EventsTable />
+				</div>
+			</Col>
+			<Col md={8}>
+				<div>
+					<Calendar data={data}/>
 				</div>
 			</Col>
 		</Row>
