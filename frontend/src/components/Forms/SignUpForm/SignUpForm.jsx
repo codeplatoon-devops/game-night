@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 export const SignUpForm = () => {
 	const [showMessage, setShowMessage] = useState(false);
+
 	const [formData, setFormData] = useState({});
 
 	const nav = useNavigate();

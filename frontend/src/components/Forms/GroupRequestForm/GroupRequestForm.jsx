@@ -135,15 +135,12 @@ export default function GroupRequestForm(props) {
 												onChange={(e) => {
 													setGroupName(e.value);
 													getTheCode(e.value);
-
 												}}
-
 												className={classNames({
 													"p-invalid":
 														isFormFieldValid(meta),
 													"form-group-invite-field": true,
 												})}
-
 											/>
 											<label
 												htmlFor="groupname"
