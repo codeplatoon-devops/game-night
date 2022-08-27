@@ -32,7 +32,7 @@ img {
 	justify-content: center;
 }
 body {
-	background-color: var(--surface-a);
+	background-color: #17212f;
 	font-family: var(--font-family);
 	color: var(--text-color);
 }
