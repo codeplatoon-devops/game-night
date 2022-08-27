@@ -10,7 +10,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./GroupCreationForm.css";
 
-export default function GroupCreationForm({viewGroups, setCreateGroupInformation}) {
+export default function GroupCreationForm({
+	viewGroups,
+	setCreateGroupInformation,
+}) {
 	const [showMessage, setShowMessage] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 	const [groupName, setGroupName] = useState("");
@@ -30,6 +33,7 @@ export default function GroupCreationForm({viewGroups, setCreateGroupInformation
 		createGroup();
 		// setShowMessage(true);
 	};
+
 	// hardcoded to group '1' for now
 	// TODO: update redirect to group code when generated
 	const onAck = () => {
@@ -91,7 +95,7 @@ export default function GroupCreationForm({viewGroups, setCreateGroupInformation
 	}, []);
 
 	return (
-		<Container>
+		<>
 			<Button
 				label="Create Group"
 				onClick={() => setShowForm(true)}
@@ -129,11 +133,11 @@ export default function GroupCreationForm({viewGroups, setCreateGroupInformation
 				visible={showForm}
 				onHide={() => setShowForm(false)}
 				showHeader={true}
+				header="Create a Group"
 			>
 				<div className="form-group-create">
 					<div className="flex justify-content-center">
 						<div className="card-group-create">
-							<h2 className="text-center">Create a Group</h2>
 							<Form
 								onSubmit={handleSubmit}
 								initialValues={{
@@ -141,10 +145,7 @@ export default function GroupCreationForm({viewGroups, setCreateGroupInformation
 								}}
 								validate={validate}
 								render={({ handleSubmit }) => (
-									<form
-										onSubmit={handleSubmit}
-										className="p-fluid"
-									>
+									<>
 										<Field
 											name="groupname"
 											render={({ input, meta }) => (
@@ -166,6 +167,7 @@ export default function GroupCreationForm({viewGroups, setCreateGroupInformation
 																		isFormFieldValid(
 																			meta
 																		),
+																	"form-group-creation-field": true,
 																}
 															)}
 														/>
@@ -192,14 +194,15 @@ export default function GroupCreationForm({viewGroups, setCreateGroupInformation
 											type="submit"
 											label="Create Group"
 											className="mt-2 btn-continue"
+											onClick={handleSubmit}
 										/>
-									</form>
+									</>
 								)}
 							/>
 						</div>
 					</div>
 				</div>
 			</Dialog>
-		</Container>
+		</>
 	);
 }

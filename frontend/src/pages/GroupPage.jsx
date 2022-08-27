@@ -20,6 +20,8 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
 	const [groups, setGroups] = useState(null);
 	const [groupInvitations, setGroupInvitations] = useState(null);
+	const [showChat, setShowChat] = useState(false)
+	// const [groupCreated, setGroupCreated] = useState(false)
 
 	const viewGroups = function () {
 		axios.get("/groups/view").then((response) => {
@@ -50,7 +52,14 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 	useEffect(() => {
 		viewGroups();
 		viewGroupInvitations();
+
 		whoAmI()
+
+		setTimeout(() => {
+			setShowChat(true)
+			console.log("TIMEOUT")
+		}, 300)
+
 	}, []);
 
 
@@ -87,14 +96,18 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 					<Col md={8}>
 						{/* {groups || groupInformation
 						? */}
-						<Chatroom
+						{ showChat &&
+							<Chatroom
 							user={user}
 							token={token}
 							stream={stream}
 							createGroupInformation={createGroupInformation}
 							joinGroupInformation={joinGroupInformation}
+
 							whoAmI={whoAmI}
-						/>
+
+						/> }
+
 						{/* : null
 						} */}
 					</Col>

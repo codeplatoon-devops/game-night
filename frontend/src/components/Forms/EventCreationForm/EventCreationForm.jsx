@@ -137,26 +137,31 @@ export const EventCreationForm = () => {
 		setShowMessage(false);
 		// let attendees = document.getElementById('maxattendees').value
 		// console.log('attendees', attendees)
-		
-		axios.post('/events/create', {
-			event_name: eventName,
-			category: category,
-			games: games,
-			private: isPrivate,
-			attendees: 2, //need to change this
-			chatcreation: createChat,
-			allDay: isAllDay,
-			eventStart: eventStartDate,
-			eventEnd: eventEndDate,
-			description: description,
-			addressLine1: aLineOne,
-			addressLine2: aLineTwo,
-			city: city,
-			state: state,
-			zip: zip
-		})
-		.then((response) => {console.log('response', response)})
-		.catch((error) => {console.log('ERROR', error)})
+
+		axios
+			.post("/events/create", {
+				event_name: eventName,
+				category: category,
+				games: games,
+				private: isPrivate,
+				attendees: 2, //need to change this
+				chatcreation: createChat,
+				allDay: isAllDay,
+				eventStart: eventStartDate,
+				eventEnd: eventEndDate,
+				description: description,
+				addressLine1: aLineOne,
+				addressLine2: aLineTwo,
+				city: city,
+				state: state,
+				zip: zip,
+			})
+			.then((response) => {
+				console.log("response", response);
+			})
+			.catch((error) => {
+				console.log("ERROR", error);
+			});
 	};
 
 	// hardcoded to event '1' for now
@@ -207,9 +212,10 @@ export const EventCreationForm = () => {
 				</div>
 			</Dialog>
 			<Col></Col>
+
 			<Col>
-				<div className="flex justify-content-center">
-					<div className="card form-event-create-card">
+				<div className="flex justify-content-center form-event-create">
+					<div className="p-card form-event-create-card">
 						<h2 className="text-center">Create Event</h2>
 						<Form
 							onSubmit={onSubmit}
@@ -231,11 +237,8 @@ export const EventCreationForm = () => {
 								zipcode: "",
 							}}
 							validate={validate}
-							render={({ handleSubmit }) => (
-								<form
-									onSubmit={handleSubmit}
-									className="p-fluid"
-								>
+							render={({ onSubmit }) => (
+								<form onSubmit={onSubmit} className="p-fluid">
 									<Row>
 										<Col xs={7}>
 											<Field

@@ -6,9 +6,11 @@
 .field {
 	margin-bottom: 1.5rem;
 }
-.card {
+.form-signup-card {
 	padding: 2em;
+	margin: 2rem;
 }
+
 .form-signup {
 	justify-content: center;
 	margin: auto;

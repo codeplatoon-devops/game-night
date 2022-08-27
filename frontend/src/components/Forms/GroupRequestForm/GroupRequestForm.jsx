@@ -33,15 +33,20 @@ export default function GroupRequestForm(props) {
 		};
 	}
 
-	const getTheCode =function (value) {
+	const getTheCode = function (value) {
 		for (let group of props.groups) {
 			// console.log('group[0], name:', group[0], name)
-			if (group[0]==value.label) {
-				// console.log('group name here', group[0], 'group code here', group[1])
-				setGroupCode(group[1])
+			if (group[0] == value.label) {
+				console.log(
+					"group name here",
+					group[0],
+					"group code here",
+					group[1]
+				);
+				setGroupCode(group[1]);
 			}
 		}
-	}
+	};
 
 	const handleSubmit = () => {
 		console.log("submit");
@@ -74,7 +79,6 @@ export default function GroupRequestForm(props) {
 
 	const createGroupRequest = function (friend_email) {
 		if (groupCode) {
-
 			axios
 				.post("/group/request/create", {
 					friend_email: friend_email,
@@ -116,9 +120,8 @@ export default function GroupRequestForm(props) {
 					}}
 					validate={validate}
 					render={({ handleSubmit }) => (
-						<div className="form-group-invite-div">
+						<>
 							<Field
-								className="field-group-request"
 								name="groupname"
 								render={({ input, meta }) => (
 									<div className="field">
@@ -129,10 +132,15 @@ export default function GroupRequestForm(props) {
 												autoFocus
 												value={groupName}
 												options={groups}
-												onChange={(e) =>
-													{setGroupName(e.value);
+												onChange={(e) => {
+													setGroupName(e.value);
 													getTheCode(e.value);
-													}}
+												}}
+												className={classNames({
+													"p-invalid":
+														isFormFieldValid(meta),
+													"form-group-invite-field": true,
+												})}
 											/>
 											<label
 												htmlFor="groupname"
@@ -166,6 +174,7 @@ export default function GroupRequestForm(props) {
 												className={classNames({
 													"p-invalid":
 														isFormFieldValid(meta),
+													"form-group-invite-field": true,
 												})}
 											/>
 											<label
@@ -189,7 +198,7 @@ export default function GroupRequestForm(props) {
 								className="mt-2 btn-continue"
 								onClick={handleSubmit}
 							/>
-						</div>
+						</>
 					)}
 				/>
 			</Dialog>

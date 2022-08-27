@@ -1,6 +1,6 @@
 @font-face {
 	font-family: Short Stack;
-	src: url('./assets/Font/ShortStack-Regular.ttf');
+	src: url("./assets/Font/ShortStack-Regular.ttf");
 }
 
 #root {
@@ -17,7 +17,7 @@ body,
 } */
 /* this is to ensure divs don't show up behind navbar */
 .separator {
-	height: 56px;
+	height: 93px;
 }
 
 img {
@@ -30,4 +30,10 @@ img {
 .center-page {
 	display: flex;
 	justify-content: center;
+}
+
+body {
+	background-color: #17212f;
+	font-family: var(--font-family);
+	color: var(--text-color);
 }

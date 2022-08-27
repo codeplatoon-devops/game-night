@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+import logo from '../../assets/Images/logo.png'
 
 import "./NavBar.css"
 
@@ -29,17 +30,19 @@ export default function LoginNavBar() {
   return (
     <Navbar className="fixed-top navbar-color" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand href="#/">[logo here]</Navbar.Brand>
+        <Navbar.Brand href="#/">
+            <img src={logo} alt="logo" width="300px"></img>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="m-auto width-100">
                 <Container>
-                    <Row>
+                    <Row style={{'font-size': '20px'}}>
                         <Col>
-                            <Nav.Link href="#/">Home</Nav.Link>
+                            <Nav.Link className="blue-font" href="#/">Home</Nav.Link>
                         </Col>
                         <Col>
-                            <Nav.Link href="#/groups">Your Groups</Nav.Link>
+                            <Nav.Link className="blue-font" href="#/groups">Your Groups</Nav.Link>
                         </Col>
                         <Col>
                         <NavDropdown title="Events" id="basic-nav-dropdown">
