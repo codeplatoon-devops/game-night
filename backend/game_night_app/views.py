@@ -427,7 +427,7 @@ def user_events_table_data(request):
         attending_ids = all_events_attending.values_list('event', flat='True')
         events_attending = Event.objects.filter(id__in=attending_ids)
         user_events = list(chain(events_owner,events_attending))
-        data = serializers.serialize('json', user_events, fields=['name', 'category', 'description', 'address_1', 'start_time'])
+        data = serializers.serialize('json', user_events, fields=['name', 'category', 'description', 'address_1', 'start_time', 'code'])
         return HttpResponse(data, content_type='application/json')
     else:
         return JsonResponse({'user': False})
