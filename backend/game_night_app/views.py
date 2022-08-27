@@ -361,10 +361,16 @@ def view_groups(request):
 @api_view(['POST'])   
 def create_event(request):  
     if request.method == 'POST':
+        all_events = Event.objects.all()
+        all_codes = []
+        for event in all_events:
+            all_codes.append(event.code)
+        code = str(random.randint(10001,99999999))
+        while code in all_codes:
+            code = str(random.randint(10001,99999999))
         print('IN DJANGO EVENT CREATION, REQUEST.DATA IS', request.data)
-        
         name = request.data['event_name']
-        code = str(random.randint(10001, 99999999))
+        # code = str(random.randint(10001, 99999999))
         category = request.data['category']
         max_attendees = request.data['attendees']
         games = request.data['games']

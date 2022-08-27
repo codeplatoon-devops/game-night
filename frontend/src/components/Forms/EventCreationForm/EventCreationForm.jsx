@@ -144,7 +144,7 @@ export const EventCreationForm = () => {
 				category: category,
 				games: games,
 				private: isPrivate,
-				attendees: 2, //need to change this
+				attendees: maxAttendees,
 				chatcreation: createChat,
 				allDay: isAllDay,
 				eventStart: eventStartDate,
