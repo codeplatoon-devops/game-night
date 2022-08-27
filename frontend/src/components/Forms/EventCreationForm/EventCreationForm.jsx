@@ -133,7 +133,8 @@ export const EventCreationForm = () => {
 		return errors;
 	};
 
-	const onSubmit = (form) => {
+	const handleSubmit = (form) => {
+		console.log('in on submit for event')
 		setShowMessage(false);
 		// let attendees = document.getElementById('maxattendees').value
 		// console.log('attendees', attendees)
@@ -157,10 +158,10 @@ export const EventCreationForm = () => {
 				zip: zip,
 			})
 			.then((response) => {
-				console.log("response", response);
+				console.log("create event response", response);
 			})
 			.catch((error) => {
-				console.log("ERROR", error);
+				console.log("create event ERROR", error);
 			});
 	};
 
@@ -168,7 +169,7 @@ export const EventCreationForm = () => {
 	// TODO: update redirect to event code when generated
 	const onAck = () => {
 		setShowMessage(false);
-		navigate("/events/1");
+		navigate("/events");
 	};
 
 	const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
@@ -218,7 +219,7 @@ export const EventCreationForm = () => {
 					<div className="p-card form-event-create-card">
 						<h2 className="text-center">Create Event</h2>
 						<Form
-							onSubmit={onSubmit}
+							onSubmit={handleSubmit}
 							initialValues={{
 								eventname: "",
 								category: null,
@@ -237,8 +238,8 @@ export const EventCreationForm = () => {
 								zipcode: "",
 							}}
 							validate={validate}
-							render={({ onSubmit }) => (
-								<form onSubmit={onSubmit} className="p-fluid">
+							render={({ handleSubmit }) => (
+								<form onSubmit={handleSubmit} className="p-fluid">
 									<Row>
 										<Col xs={7}>
 											<Field

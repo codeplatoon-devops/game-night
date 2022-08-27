@@ -360,39 +360,39 @@ def view_groups(request):
 
 @api_view(['POST'])   
 def create_event(request):  
-    if request.method == 'POST':
-        all_events = Event.objects.all()
-        all_codes = []
-        for event in all_events:
-            all_codes.append(event.code)
+    # print('IN DJANGO EVENT CREATION, REQUEST.DATA IS', request.data)
+    all_events = Event.objects.all()
+    all_codes = []
+    for event in all_events:
+        all_codes.append(event.code)
+    code = str(random.randint(10001,99999999))
+    while code in all_codes:
         code = str(random.randint(10001,99999999))
-        while code in all_codes:
-            code = str(random.randint(10001,99999999))
-        print('IN DJANGO EVENT CREATION, REQUEST.DATA IS', request.data)
-        name = request.data['event_name']
-        # code = str(random.randint(10001, 99999999))
-        category = request.data['category']
-        max_attendees = request.data['attendees']
-        games = request.data['games']
-        private = request.data['private']
-        chat_creation = request.data['chatcreation']
-        all_day = request.data['allDay']
-        start_time = request.data['eventStart']
-        end_time = request.data['eventEnd']
-        description = request.data['description']
-        address_1 = request.data['addressLine1']
-        address_2 = request.data['addressLine2']
-        city = request.data['city']
-        state = request.data['state']
-        zip_code = request.data['zip']
-        user = AppUser.objects.get(email = request.user.email)
-        
+    name = request.data['event_name']
+    # code = str(random.randint(10001, 99999999))
+    category = request.data['category']
+    games = request.data['games']
+    private = request.data['private']
+    max_attendees = request.data['attendees']
+    chat_creation = request.data['chatcreation']
+    all_day = request.data['allDay']
+    start_time = request.data['eventStart']
+    end_time = request.data['eventEnd']
+    description = request.data['description']
+    address_1 = request.data['addressLine1']
+    address_2 = request.data['addressLine2']
+    city = request.data['city']
+    state = request.data['state']
+    zip_code = request.data['zip']
+    user = AppUser.objects.get(email = request.user.email)
+    try:
         new_event = Event(owner=user, code=code, address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
         new_event.full_clean()
         new_event.save()
+        print('NEW EVENT ADDED', new_event)
         return JsonResponse({'added event': True})
-        
-    return JsonResponse({'get event': True})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to create event: {str(e)}'})
 
 
 @api_view(['GET'])
