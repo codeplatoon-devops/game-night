@@ -22,6 +22,7 @@ export default function GroupPage({ user, token, stream }) {
 	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
 	const [groups, setGroups] = useState(null);
 	const [groupInvitations, setGroupInvitations] = useState(null);
+	const [showChat, setShowChat] = useState(false)
 	// const [groupCreated, setGroupCreated] = useState(false)
 
 	const getGroupCode = function () {
@@ -69,6 +70,10 @@ export default function GroupPage({ user, token, stream }) {
 		getGroupCode();
 		viewGroups();
 		viewGroupInvitations();
+		setTimeout(() => {
+			setShowChat(true)
+			console.log("TIMEOUT")
+		}, 300)
 	}, []);
 
 	// this part is just necessary for the create group form
@@ -104,13 +109,14 @@ export default function GroupPage({ user, token, stream }) {
 					<Col md={8}>
 						{/* {groups || groupInformation
 						? */}
-						<Chatroom
+						{ showChat &&
+							<Chatroom
 							user={user}
 							token={token}
 							stream={stream}
 							createGroupInformation={createGroupInformation}
 							joinGroupInformation={joinGroupInformation}
-						/>
+						/> }
 						{/* : null
 						} */}
 					</Col>
