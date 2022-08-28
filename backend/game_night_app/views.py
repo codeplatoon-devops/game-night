@@ -390,6 +390,9 @@ def create_event(request):
         new_event = Event(owner=user, code=code, address_1=address_1, address_2=address_2, city=city, state=state, zip_code=zip_code, name=name, category=category, max_attendees=max_attendees, games=games, private=private, chat_creation=chat_creation, all_day=all_day, start_time=start_time, end_time=end_time, description=description)
         new_event.full_clean()
         new_event.save()
+        owner_attending = EventUser(attendee = user, event = new_event)
+        owner_attending.full_clean()
+        owner_attending.save()
         print('NEW EVENT ADDED', new_event)
         return JsonResponse({'added event': True, 'eventName': new_event.name, 'eventCode': new_event.code})
     except Exception as e:
