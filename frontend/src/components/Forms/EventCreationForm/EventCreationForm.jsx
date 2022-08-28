@@ -16,7 +16,7 @@ import "./EventCreationForm.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const EventCreationForm = () => {
+export const EventCreationForm = ({setCreateEventInformation}) => {
 	const [showMessage, setShowMessage] = useState(false); // for submission dialog
 	const [formData, setFormData] = useState({});
 	const [eventName, setEventName] = useState(""); // event name
@@ -159,6 +159,11 @@ export const EventCreationForm = () => {
 			})
 			.then((response) => {
 				console.log("create event response", response);
+				if (chatcreation) {
+					let eventName = response && response.data && response.data.eventName
+					let code = response && response.data && response.data.eventCode
+					setCreateEventInformation([eventName, code])
+				}
 			})
 			.catch((error) => {
 				console.log("create event ERROR", error);
