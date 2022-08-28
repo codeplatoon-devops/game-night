@@ -111,7 +111,7 @@ export default function HomePage({ user }) {
 									<i className="pi pi-calendar"></i>
 								</span>
 								<h5 style={{ "margin-bottom": "20px" }}>
-									Reason #1 (calendar/personal events?)
+									Event Planning
 								</h5>
 								<span className=" text-sm line-height-3">
 									Fermentum et sollicitudin ac orci phasellus
@@ -126,7 +126,7 @@ export default function HomePage({ user }) {
 									<i className="pi pi-check"></i>
 								</span>
 								<h5 style={{ "margin-bottom": "20px" }}>
-									A Huge Games Selection
+									A Huge Selection of Games
 								</h5>
 								<img src={homeImage} />
 							</Col>
@@ -138,7 +138,7 @@ export default function HomePage({ user }) {
 									<i className="pi pi-comments"></i>
 								</span>
 								<h5 style={{ "margin-bottom": "20px" }}>
-									Something Else (chat?)
+									User Groups and Chatrooms
 								</h5>
 								<span className="text-sm line-height-3">
 									Mattis rhoncus urna neque viverra justo nec
