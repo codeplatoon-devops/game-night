@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { LoginForm } from "../components/Forms/LogInForm/LogInForm";
 import CardHome from "../components/Card/CardHome";
+import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
@@ -86,14 +87,14 @@ export default function HomePage({ user }) {
 									cake! Lets play!
 								</h4>
 								<hr />
-								<h4
+								{/* <p
 									style={{
 										"margin-top": "30px",
-										width: "700px",
+										fontSize: "18pt",
 									}}
 								>
 									Why Choose Us?
-								</h4>
+								</p> */}
 							</Col>
 							<Col></Col>
 						</Row>
@@ -101,68 +102,98 @@ export default function HomePage({ user }) {
 							style={{
 								"margin-top": "30px",
 								"margin-bottom": "30px",
+								height: "450px",
 							}}
 						>
-							<Col className=" mb-4 px-5">
-								<span
-									className="p-3 shadow-2 mb-3 inline-block"
-									style={{ borderRadius: "10px" }}
+							<Col xs={4}>
+								<Card
+									style={{
+										height: "100%",
+										padding: "15px",
+										margin: "10px",
+									}}
 								>
-									<i className="pi pi-calendar"></i>
-								</span>
-								<h5 style={{ "margin-bottom": "20px" }}>
-									Reason #1 (calendar/personal events?)
-								</h5>
-								<span className=" text-sm line-height-3">
-									Fermentum et sollicitudin ac orci phasellus
-									egestas tellus rutrum tellus.
-								</span>
+									<span
+										className="p-3 shadow-2 mb-3 inline-block"
+										style={{ borderRadius: "10px" }}
+									>
+										<i className="pi pi-calendar"></i>
+									</span>
+									<h5 style={{ "margin-bottom": "20px" }}>
+										Event Planning
+									</h5>
+									<span className=" text-sm line-height-3">
+										Fermentum et sollicitudin ac orci
+										phasellus egestas tellus rutrum tellus.
+									</span>
+								</Card>
 							</Col>
-							<Col className=" mb-4 px-5">
-								<span
-									className="p-3 shadow-2 mb-3 inline-block"
-									style={{ borderRadius: "10px" }}
+							<Col xs={4}>
+								<Card
+									style={{
+										height: "100%",
+										padding: "15px",
+										margin: "10px",
+									}}
 								>
-									<i className="pi pi-check"></i>
-								</span>
-								<h5 style={{ "margin-bottom": "20px" }}>
-									A Huge Games Selection
-								</h5>
-								<img src={homeImage} />
+									<span
+										className="p-3 shadow-2 mb-3 inline-block"
+										style={{ borderRadius: "10px" }}
+									>
+										<i className="pi pi-check"></i>
+									</span>
+									<h5 style={{ "margin-bottom": "20px" }}>
+										A Huge Selection of Games
+									</h5>
+									<img src={homeImage} />
+								</Card>
 							</Col>
-							<Col className=" mb-0 px-3">
-								<span
-									className="p-3 shadow-2 mb-3 inline-block"
-									style={{ borderRadius: "10px" }}
+							<Col xs={4}>
+								<Card
+									style={{
+										height: "100%",
+										padding: "15px",
+										margin: "10px",
+									}}
 								>
-									<i className="pi pi-comments"></i>
-								</span>
-								<h5 style={{ "margin-bottom": "20px" }}>
-									Something Else (chat?)
-								</h5>
-								<span className="text-sm line-height-3">
-									Mattis rhoncus urna neque viverra justo nec
-									ultrices. Id cursus metus aliquam eleifend.
-								</span>
+									<span
+										className="p-3 shadow-2 mb-3 inline-block"
+										style={{ borderRadius: "10px" }}
+									>
+										<i className="pi pi-comments"></i>
+									</span>
+									<h5 style={{ "margin-bottom": "20px" }}>
+										User Groups and Chatrooms
+									</h5>
+									<span className="text-sm line-height-3">
+										Mattis rhoncus urna neque viverra justo
+										nec ultrices. Id cursus metus aliquam
+										eleifend.
+									</span>
+								</Card>
 							</Col>
 						</Row>
 					</Container>
 				</Row>
 				<hr />
 				<Row style={{ "margin-top": "30px", "margin-bottom": "30px" }}>
-					<div className=" text-center">
-						<h2 className="mb-3">Join Our Community</h2>
-						<h5 className="mb-5">
-							Lorem ipsum dolor sit, amet consectetur adipisicing
-							elit. Velit numquam eligendi quos.
-						</h5>
-						<Button
-							label="Sign Up Now"
-							icon="pi pi-user"
-							className="font-bold px-5 py-3 p-button-raised p-button-rounded white-space-nowrap"
-							onClick={handleSignUpClick}
-						/>
-					</div>
+					<Col xs={2}></Col>
+					<Col>
+						<Card className=" text-center">
+							<h2 className="mb-3">Join Our Community</h2>
+							<h5 className="mb-5">
+								Lorem ipsum dolor sit, amet consectetur
+								adipisicing elit. Velit numquam eligendi quos.
+							</h5>
+							<Button
+								label="Sign Up Now"
+								icon="pi pi-user"
+								className="font-bold px-5 py-3 p-button-raised p-button-rounded white-space-nowrap"
+								onClick={handleSignUpClick}
+							/>
+						</Card>
+					</Col>
+					<Col xs={2}></Col>
 				</Row>
 			</Container>
 		</div>

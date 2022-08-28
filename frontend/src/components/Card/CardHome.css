@@ -1,8 +1,8 @@
-.p-card {
+/* .p-card {
     width: 500px;
-}
+} */
 
 .card-center {
-    display: flex;
-    justify-content: center;
+	display: flex;
+	justify-content: center;
 }
