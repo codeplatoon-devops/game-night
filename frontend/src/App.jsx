@@ -34,6 +34,7 @@ export default function App() {
 	const [userEvent, setUserEvent] = useState([]);
 	const [createEventInformation, setCreateEventInformation] = useState(null);
 	const [joinEventInformation, setJoinEventInformation] = useState(null);
+	const [client, setClient] = useState(null)
 
 	const whoAmI = async () => {
 		const response = await axios.get("/whoami");
@@ -84,6 +85,8 @@ export default function App() {
 							stream={stream}
 							setUser={setUser}
 							whoAmI={whoAmI}
+							client = {client}
+							setClient={setClient}
 							createEventInformation = {createEventInformation}
 							joinEventInformation = {joinEventInformation}
 							/>} />
@@ -103,6 +106,8 @@ export default function App() {
 								token={token}
 								stream={stream}
 								whoAmI={whoAmI}
+								client = {client}
+								setClient={setClient}
 							/>
 						}
 					/>
