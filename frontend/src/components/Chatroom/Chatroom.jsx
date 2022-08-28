@@ -7,11 +7,10 @@ import 'stream-chat-react/dist/css/index.css'
 // import { useChatContext } from "stream-chat-react"
 // had to change this file: node_modules/stream-chat-react/dist/components/MessageInput/hooks/useEmojiIndex.js
 
-function Chatroom ({user, token, stream, createGroupInformation, joinGroupInformation, whoAmI}) {
+function Chatroom ({user, token, stream, createGroupInformation, joinGroupInformation, whoAmI, createEventInformation, joinEventInformation, client, setClient}) {
     
-    const [client, setClient] = useState(null)
-    const [userId, setUserId] = useState(null)
-    // const [image, setImage] = useState('https://picsum.photos/200')
+    // const [client, setClient] = useState(null)
+    // const [userId, setUserId] = useState(null)
     // filters only the channels that the user is a member of
     const user_id = user.id.toString()
     const filters = {type: 'messaging', members: {$in: [user_id]}}
@@ -23,12 +22,11 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
 	}, []);
 
     const createGroupChannel = async () => {
-        if (client) {
+        if (client && createGroupInformation) {
             let channelId = "GroupChatroom"
             let channelName= createGroupInformation[0]
             channelName += ' Chatroom'
             channelId+=createGroupInformation[1].toString()
-            console.log('userId', userId, 'type', typeof(userId), 'channelID is', channelId, 'channel name is', channelName)
             let user_id = user.id.toString()
             console.log('user_id', user_id, 'type', typeof(user_id), 'channelID is', channelId, 'channel name is', channelName)
             const new_channel = client.channel('messaging', channelId, {
@@ -46,21 +44,52 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
         }
     }
 
+    const createEventChannel = async () => {
+        if (client && createEventInformation) {
+            let channelId = "EventChatroom"
+            let channelName= createEventInformation[0]
+            channelName += ' Chatroom'
+            channelId+=createEventInformation[1].toString()
+            let user_id = user.id.toString()
+            console.log('create event channel user_id', user_id, 'type', typeof(user_id), 'channelID is', channelId, 'channel name is', channelName)
+            const new_event_channel = client.channel('messaging', channelId, {
+                // want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
+                // image: "https://picsum.photos/200",
+                name: channelName,
+                members: [user_id]
+            })
+            console.log('newly created event channel', new_event_channel)
+    
+            await new_event_channel.watch()
+        }
+        else {
+            setTimeout(createEventChannel, 3000)
+        }
+    }
+
     useEffect(()=> {
         createGroupChannel()
     },[createGroupInformation])
 
     useEffect(()=> {
+        createEventChannel()
+    },[createEventInformation])
+
+    useEffect(()=> {
         joinGroupChannel()
     },[joinGroupInformation])
 
+    useEffect(()=> {
+        joinEventChannel()
+    },[joinEventInformation])
+
     const joinGroupChannel = async () => {
-        if (client) {
+        if (client && joinGroupInformation) {
             let channelId = "GroupChatroom"
             let channelName= joinGroupInformation[0]
             channelName += ' Chatroom'
             channelId+=joinGroupInformation[1].toString()
-            console.log('user_id', user_id, 'type', typeof(user_id), 'channelID is', channelId, 'channel name is', channelName)
+            console.log('join group channel user_id', user_id, 'type', typeof(user_id), 'channelID is', channelId, 'channel name is', channelName)
             // const response = await client.queryChannels();
             // const filteredChannel = response.filter((c)=> c.name === channelName);
             // filteredChannel.addMembers([user_id])
@@ -77,6 +106,27 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
         }
         else {
             setTimeout(joinGroupChannel, 3000)
+        }
+    }
+
+    const joinEventChannel = async () => {
+        if (client && joinEventInformation) {
+            let channelId = "EventChatroom"
+            let channelName= joinEventInformation[0]
+            channelName += ' Chatroom'
+            channelId+=joinEventInformation[1].toString()
+            let user_id = user.id.toString()
+            console.log('join event channel user_id', user_id, 'type', typeof(user_id), 'channelID is', channelId, 'channel name is', channelName)
+            const join_event_channel = client.channel('messaging', channelId, {
+                name: channelName,
+                members: [user_id]
+            })
+            await join_event_channel.addMembers([user_id])
+            await join_event_channel.watch()
+            console.log('joineventchannel', join_event_channel)
+        }
+        else {
+            setTimeout(joinEventChannel, 3000)
         }
     }
 
@@ -123,7 +173,7 @@ function Chatroom ({user, token, stream, createGroupInformation, joinGroupInform
                 }
                 init()
             }
-            return () => { if (client) client.disconnectUser()}
+            // return () => { if (client) client.disconnectUser()}
         }
     }, [])
 

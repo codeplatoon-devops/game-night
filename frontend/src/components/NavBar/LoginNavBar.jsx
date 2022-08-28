@@ -10,11 +10,12 @@ import logo from "../../assets/Images/logo.png";
 
 import "./NavBar.css";
 
-export default function LoginNavBar() {
+export default function LoginNavBar({client}) {
 	let navigate = useNavigate();
 
 	const logout = function (event) {
 		event.preventDefault();
+		if (client) {client.disconnectUser()}
 		axios
 			.post("/logout")
 			.then((response) => {

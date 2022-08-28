@@ -13,7 +13,7 @@ import GroupRequestForm from "../components/Forms/GroupRequestForm/GroupRequestF
 // import CreateChannel from "../components/Chatroom/CreateChannel";
 // import { useChatContext } from "stream-chat-react"
 
-export default function GroupPage({ user, token, stream, whoAmI}) {
+export default function GroupPage({ user, token, stream, whoAmI, client, setClient}) {
 	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate();
 	const [createGroupInformation, setCreateGroupInformation] = useState(null);
@@ -103,7 +103,8 @@ export default function GroupPage({ user, token, stream, whoAmI}) {
 							stream={stream}
 							createGroupInformation={createGroupInformation}
 							joinGroupInformation={joinGroupInformation}
-
+							client = {client}
+							setClient={setClient}
 							whoAmI={whoAmI}
 
 						/> }
