@@ -26,7 +26,5 @@ urlpatterns = [
     path('userevents/<int:id>', views.userevents_byid),
     path('streamapi', views.stream_api),
     path('events/create', views.create_event),
-    # user events -- has only the necessary information for event table
-    path('userevents/table', views.user_events_table_data),
 
 ]
