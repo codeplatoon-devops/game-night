@@ -86,14 +86,14 @@ export default function HomePage({ user }) {
 									cake! Lets play!
 								</h4>
 								<hr />
-								<h4
+								<p
 									style={{
 										"margin-top": "30px",
-										width: "700px",
+										fontSize: "18pt",
 									}}
 								>
 									Why Choose Us?
-								</h4>
+								</p>
 							</Col>
 							<Col></Col>
 						</Row>
