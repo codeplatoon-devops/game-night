@@ -72,7 +72,7 @@ export default function App() {
 	return (
 		<div className="App">
 			<Router>
-				{user ? <LoginNavBar /> : <LogoutNavBar />}
+				{user ? <LoginNavBar client={client}/> : <LogoutNavBar />}
 				<div className="separator"></div>
 				<Routes>
 					<Route path="/" element={<HomePage user={user} />} />
