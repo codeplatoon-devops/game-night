@@ -1,24 +1,38 @@
 import { EventsTable } from "../components/Tables/EventsTable/EventsTable";
-import Calendar from '../components/Calendar/Calendar'
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Calendar from "../components/Calendar/Calendar";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import { Button } from "primereact/button";
+import { useNavigate } from "react-router-dom";
 
-export default function EventPage({data}) {
+export default function EventPage({ data }) {
+	const navigate = useNavigate();
+
+	const handleClick = () => {
+		navigate("/events/create");
+	};
 	return (
-	<Container>
-		<Row>
-			<Col md={8}>
-				<div>
-					<Calendar data={data}/>
-				</div>
-			</Col>
-			<Col md={4}>
-				<div>
-					<EventsTable />
-				</div>
-			</Col>
-		</Row>
-	</Container>
+		<Container>
+			<h1 className="page-title">Scheduled Events</h1>
+			<Row>
+				<Col md={4}>
+					<div>
+						<EventsTable />
+						<Button
+							onClick={handleClick}
+							icon="pi pi-plus"
+							label="Create Event"
+							className="btn-create-event"
+						/>
+					</div>
+				</Col>
+				<Col md={8}>
+					<div>
+						<Calendar data={data} />
+					</div>
+				</Col>
+			</Row>
+		</Container>
 	);
 }

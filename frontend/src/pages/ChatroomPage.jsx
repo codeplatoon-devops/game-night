@@ -18,6 +18,7 @@ export default function ChatroomPage ({setUser, user, stream, token, whoAmI}) {
                     user={user}
                     token={token}
                     stream={stream}
+                    whoAmI={whoAmI}
                 /> 
             </div>
             :

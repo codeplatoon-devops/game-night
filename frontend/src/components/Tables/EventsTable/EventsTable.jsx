@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ListBox } from 'primereact/listbox';
 import { useNavigate } from "react-router-dom";
+import { Panel } from "primereact/panel";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -67,14 +68,16 @@ export const EventsTable = () => {
 	}
 
 	return (
-		<ListBox 
-		value={selectedEvent} 
-		options={events} 
-		onChange={handleChange} 
-		optionLabel="name" 
-		style={{ width: '30rem' }} 
-		itemTemplate={eventsTemplate}
-		listStyle={{ maxHeight: '250px' }}
-		/>
+		<Panel header="Upcoming events">
+			<ListBox 
+			value={selectedEvent} 
+			options={events} 
+			onChange={handleChange} 
+			optionLabel="name" 
+			style={{ width: '100%' }} 
+			itemTemplate={eventsTemplate}
+			listStyle={{ maxHeight: '250px' }}
+			/>
+		</Panel>
 	);
 };
