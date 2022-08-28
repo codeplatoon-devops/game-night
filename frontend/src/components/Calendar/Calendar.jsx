@@ -37,7 +37,7 @@ export default function Calendar({data}) {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         }}
         events={ 
-          data.map((event) => ({title: event.fields.name, start: event.fields.start_time, end: event.fields.end_time , allDay: event.fields.all_day, url: `/#/events/${event.fields.code}`}))
+          data.map((event) => ({title: event.name, start: event.start_time, end: event.end_time , allDay: event.all_day, url: `/#/events/${event.code}`}))
         }
       />
     </div>

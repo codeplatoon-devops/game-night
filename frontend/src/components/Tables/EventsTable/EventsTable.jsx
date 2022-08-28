@@ -19,13 +19,14 @@ export const EventsTable = () => {
 
 	useEffect(() => {
 		axios
-		.get('/userevents/table')
+		.get('/userevents')
 		.then((response) => {
 			let data = []
 			for(let item in response.data) {
-				data.push(response.data[item].fields)
+				data.push(response.data[item])
 			}
 			setEvents(data)
+			console.log(data)
 			
 		})
 		.catch((error) => {console.log('ERROR', error);})
