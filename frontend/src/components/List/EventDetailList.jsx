@@ -9,8 +9,8 @@ export default function EventDetailList({eventDetail, games, startTime, endTime}
 
  return(
     <div className="surface-0">
-    <div className="font-medium text-3xl text-900 mb-3">Event Information</div>
-    {/* <div className="text-500 mb-5">Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit rutrum.</div> */}
+    <div className="font-medium text-3xl text-900 mb-3 mt-3">Event Information</div>
+    {/* <div className="text-500 mb-5">Find information on event below. Event Owners can edit their information here.</div> */}
     <ul className="list-none p-0 m-0">
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Event Name</div>
@@ -19,7 +19,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime}
                 <Button label="Edit" icon="pi pi-pencil" className="p-button-text" />
             </div>
         </li>
-        <li className="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 border-300 flex-wrap">
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Description</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">{eventDetail.description}</div>
             <div className="w-6 md:w-2 flex justify-content-end">
@@ -39,7 +39,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime}
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Owner</div>
-            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{eventDetail.owner}</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">?</div>
             <div className="w-6 md:w-2 flex justify-content-end">
                 <Button label="Edit" icon="pi pi-pencil" className="p-button-text" />
             </div>
@@ -65,7 +65,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime}
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Current Number of Attendees / Max Attendees</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-            {'2' + ' / ' + eventDetail.max_attendees}
+            {'?' + ' / ' + eventDetail.max_attendees}
             </div>
             <div className="w-6 md:w-2 flex justify-content-end">
                 <Button label="Edit" icon="pi pi-pencil" className="p-button-text" />

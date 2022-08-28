@@ -30,7 +30,7 @@ export default function EventDetailPage() {
 	}, [])
 
     return(
-        <div>
+        <div style={{'margin-left': '20%', 'margin-right': '20%'}}>
 		{eventDetail &&
 			<EventDetailList eventDetail={eventDetail} games={games} startTime={startTime} endTime={endTime}/>
 		}
