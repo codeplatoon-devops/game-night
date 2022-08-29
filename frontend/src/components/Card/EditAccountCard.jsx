@@ -1,6 +1,7 @@
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import { Dialog } from 'primereact/dialog'
 import { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -11,6 +12,7 @@ export default function EditAccountCard({userInfo, setEdit, edit}){
 
     const [username, setUsername] = useState(userInfo.username)
     const [email, setEmail] = useState(userInfo.email)
+    const [confirmationDialog, setConfirmationDialog] = useState(false)
 
     const updateUser = () => {
         axios
@@ -49,7 +51,7 @@ export default function EditAccountCard({userInfo, setEdit, edit}){
 	const footer = (
         <span>
             <Button label="Edit Account" icon="pi pi-user-edit" onClick={editAccount}/>
-            <Button label="Delete Account" className="p-button-danger" onClick={deleteAccount}/>
+            <Button label="Delete Account" className="p-button-danger" onClick={() => setConfirmationDialog(true)}/>
         </span>
     );
 
@@ -89,6 +91,14 @@ export default function EditAccountCard({userInfo, setEdit, edit}){
                 </Card>
             </div>
         }
+            <Dialog
+				className="confirmation-modal text-center"
+                header="Are you sure?"
+				visible={confirmationDialog}
+				onHide={() => setConfirmationDialog(false)}
+			>
+                <Button label="Delete Account" className="p-button-danger" onClick={deleteAccount}/>
+            </Dialog>
         </div>
     )
 
