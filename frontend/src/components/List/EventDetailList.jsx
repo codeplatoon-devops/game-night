@@ -3,6 +3,9 @@ import "primeflex/primeflex.css";
 import { InputText } from 'primereact/inputtext';
 import { Chips } from 'primereact/chips';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { SelectButton } from "primereact/selectbutton";
+import { Calendar } from "primereact/calendar";
+import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from 'primereact/button';
 import { Chip } from 'primereact/chip';
@@ -36,6 +39,8 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
     const [newCity, setNewCity] = useState(eventDetail.city);
     const [newState, setNewState] = useState(eventDetail.state);
     const [newZip, setNewZip] = useState(eventDetail.zip_code);
+    const [newStartTime, setNewStartTime] = useState(startTime);
+    const [newEndTime, setNewEndTime] = useState(endTime);
 
     const stateSelectItems = [
 		{ label: "Alabama", value: "AL" },
@@ -94,6 +99,11 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
 		{ label: "Wyoming", value: "WY" },
 	];
 
+    const isPrivateSelect = [
+		{ label: "Private", value: true },
+		{ label: "Public", value: false },
+	];
+
 
     const handleClick = (game) => {
         axios.get(`/games/${game}`)
@@ -117,6 +127,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
         setEditMaxAttendees(false);
         setEditPrivate(false);
         setEditLocation(false);
+        setEditTime(false);
         console.log('new games', newGames)
         axios.put(`/userevents/${eventDetail.code}`, {
             name: newName,
@@ -128,7 +139,9 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
             state: newState,
             zip_code: newZip,
             max_attendees: newMaxAttendees,
-            private: newPrivate
+            private: newPrivate,
+            start_time: newStartTime,
+            end_time: newEndTime
         })
         .then((response) => {console.log(response)})
         .catch((error) => console.log(error))
@@ -250,36 +263,112 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Date/Time</div>
+            {editTime ?
+                <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                <Container style={{'width': '300px'}}>
+                <Row>
+                    <label>Start Time/Date</label>
+                    <Calendar
+                        baseZIndex={ 5001 }
+                        dateFormat="mm/dd/yy"
+                        mask="99/99/9999"
+                        showIcon
+                        hourFormat="12"
+                        showTime={true}									
+                        value={startTime}
+                        onChange={(e) =>
+                            setNewStartTime(e.target.value)
+                        }
+                        showButtonBar
+                    />
+                </Row>
+                <Row style={{'margin-top': '20px'}}>
+                    <label>End Time/Date</label>
+                    <Calendar
+                        baseZIndex={ 5001 }
+                        dateFormat="mm/dd/yy"
+                        mask="99/99/9999"
+                        showIcon
+                        hourFormat="12"
+                        showTime={true}	
+                        value={endTime}
+                        onChange={(e) =>
+                            setNewEndTime(e.target.value)
+                        }
+                        showButtonBar
+                    />
+                </Row>
+                </Container>
+                </div>
+            :
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
             {startTime + ' - ' + endTime}
             </div>
+            }
             {editable ?
             <div className="w-6 md:w-2 flex justify-content-end">
-                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditName(true)}/>
+                { editTime ? 
+                    <Button label="Update" icon="pi pi-check" className="p-button-text" onClick={updateEvent}/>
+                :
+                    <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditTime(true)}/>
+                }
             </div>
             : null }
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Current Number of Attendees / Max Attendees</div>
-            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-            {eventDetail.peeps + ' / ' + eventDetail.max_attendees}
-            </div>
+            {editMaxAttendees ?
+                <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                <InputNumber
+                    showButtons
+                    value={newMaxAttendees}
+                    placeholder="Max attendees"
+                    onValueChange={(e) => setNewMaxAttendees(e.target.value)}
+                    min={1}
+                    max={500}
+                />
+                </div>
+            :
+                <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                {eventDetail.peeps + ' / ' + eventDetail.max_attendees}
+                </div>
+            }
             {editable ?
             <div className="w-6 md:w-2 flex justify-content-end">
-                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditName(true)}/>
+                { editMaxAttendees ? 
+                    <Button label="Update" icon="pi pi-check" className="p-button-text" onClick={updateEvent}/>
+                :
+                    <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditMaxAttendees(true)}/>
+                }
             </div>
             : null }
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Event Public Status</div>
-            {eventDetail.private ? 
-                <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Private</div>
+            {editPrivate ? 
+                <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                    <SelectButton
+                    value={newPrivate}
+                    options={ isPrivateSelect }
+                    onChange={(e) => setNewPrivate(e.target.value)}
+                    ></SelectButton>
+                </div>
             :
-                <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Public</div>
+            <>
+                {newPrivate ?
+                    <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Private</div>
+                :
+                    <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Public</div>
+                }
+            </>
             }
             {editable ?
             <div className="w-6 md:w-2 flex justify-content-end">
-                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditName(true)}/>
+                { editPrivate ? 
+                    <Button label="Update" icon="pi pi-check" className="p-button-text" onClick={updateEvent}/>
+                :
+                    <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditPrivate(true)}/>
+                }
             </div>
             : null }
         </li>
