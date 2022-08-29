@@ -346,16 +346,24 @@ def decline_group(request):
 def view_groups(request):
     user = AppUser.objects.get(email = request.user.email)
     # groups = Group.objects.filter(member = user)
+    user_id = user.id
+    print('user id here line 350', user_id)
     groups = user.members.all()
-    print('GROUPS HERE LINE 309', groups)
+    print('GROUPS HERE LINE 352', groups)
     if len(groups)>0:
         list_of_groups=[]
         for group in groups:
-            list_of_groups.append([group.name, group.code])
-            print('group.name here', group.name)
-        print('list of groups line 314:', list_of_groups)
+            # print('group.member355', group.member.values())
+            # group_members = group.member.all
+            all_members=group.member.all()
+            other_members=[]
+            for member in all_members:
+                if member.id != user_id:
+                    other_members.append(member.username)
+            list_of_groups.append([group.name, group.code, other_members])
+        print('line 364 list of groups', list_of_groups)
+            # print('group.member360.exclude', group.member.all().exclude(members=user))
         try:
-            # sends back just the group name
             return JsonResponse({'success': 'True', 'groups': list_of_groups})
         except Exception as e:
             return JsonResponse({'success': "False", 'reason': str(e)})
