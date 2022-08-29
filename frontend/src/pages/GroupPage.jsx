@@ -20,6 +20,8 @@ export default function GroupPage({
 	whoAmI,
 	client,
 	setClient,
+	setDeleteChannelInformation,
+	deleteChannelInformation,
 }) {
 	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate();
@@ -76,7 +78,7 @@ export default function GroupPage({
 				<h1>Group Page</h1>
 				<Row>
 					<Col md={4}>
-						<GroupsTable groups={groups} setLeaveGroupInformation={setLeaveGroupInformation}/>
+						<GroupsTable groups={groups} setLeaveGroupInformation={setLeaveGroupInformation} setDeleteChannelInformation={setDeleteChannelInformation}/>
 						{/* Group creation */}
 						<GroupCreationForm
 							viewGroups={viewGroups}
@@ -119,6 +121,7 @@ export default function GroupPage({
 								setClient={setClient}
 								whoAmI={whoAmI}
 								leaveGroupInformation={leaveGroupInformation}
+								deleteChannelInformation={deleteChannelInformation}
 							/>
 						)}
 

@@ -45,6 +45,13 @@ export default function GroupsTable(props) {
 			.then((response)=> {
 				console.log('leave group response.data', response.data)
 				props.setLeaveGroupInformation([name,code])
+				if (response.data.group_deleted) {
+					let channelId = "GroupChatroom";
+					let channelName = name
+					channelName += " Chatroom";
+					channelId += code.toString();
+					setDeleteChannelInformation([channelId,channelName])
+				}
 			})
 	}
 

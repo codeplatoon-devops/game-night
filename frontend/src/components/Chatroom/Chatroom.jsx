@@ -80,6 +80,21 @@ function Chatroom({
 		}
     }
 
+    const deleteChannel = async () => {
+        // https://getstream.io/chat/docs/react/channel_members/
+        if (client && leaveGroupInformation) {
+			let channelId = deleteChannelInformation[0]
+			let channelName = deleteChannelInformation[1];
+			let user_id = user.id.toString();
+			const delete_channel = client.channel("messaging", channelId, {
+				name: channelName,
+			});
+			await delete_channel.delete()
+		} else {
+			setTimeout(leaveGroupChannel, 2000);
+		}
+    }
+
 	const createEventChannel = async () => {
 		if (client && createEventInformation) {
 			let channelId = "EventChatroom";
@@ -116,6 +131,10 @@ function Chatroom({
 	useEffect(() => {
 		joinEventChannel();
 	}, [joinEventInformation]);
+
+    useEffect(() => {
+		deleteChannel();
+	}, [deleteChannelInformation]);
 
 	const joinGroupChannel = async () => {
 		if (client && joinGroupInformation) {
