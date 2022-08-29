@@ -16,7 +16,7 @@ import "./EventCreationForm.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const EventCreationForm = ({setCreateEventInformation}) => {
+export const EventCreationForm = ({ setCreateEventInformation }) => {
 	const [showMessage, setShowMessage] = useState(false); // for submission dialog
 	const [formData, setFormData] = useState({});
 	const [eventName, setEventName] = useState(""); // event name
@@ -25,7 +25,7 @@ export const EventCreationForm = ({setCreateEventInformation}) => {
 	const [eventStartDate, setEventStartDate] = useState(null); // start datetime
 	const [eventEndDate, setEventEndDate] = useState(null); // end datetime
 	const [state, setState] = useState(null); // state for event location
-	const [maxAttendees, setMaxAttendees] = useState(null); // max attendees
+	const [maxAttendees, setMaxAttendees] = useState(1); // max attendees
 	const [createChat, setCreateChat] = useState(false); // create a chat for the event?
 	const [games, setGames] = useState([]); // what games will be there?
 	const [isAllDay, setIsAllDay] = useState(false); // is it an all-day event
@@ -134,8 +134,8 @@ export const EventCreationForm = ({setCreateEventInformation}) => {
 	};
 
 	const handleSubmit = (form) => {
-		console.log('in on submit for event')
-		setShowMessage(false);
+		console.log("in on submit for event");
+		setShowMessage(true);
 		// let attendees = document.getElementById('maxattendees').value
 		// console.log('attendees', attendees)
 
@@ -160,9 +160,11 @@ export const EventCreationForm = ({setCreateEventInformation}) => {
 			.then((response) => {
 				console.log("create event response", response);
 				if (chatcreation) {
-					let eventName = response && response.data && response.data.eventName
-					let code = response && response.data && response.data.eventCode
-					setCreateEventInformation([eventName, code])
+					let eventName =
+						response && response.data && response.data.eventName;
+					let code =
+						response && response.data && response.data.eventCode;
+					setCreateEventInformation([eventName, code]);
 				}
 			})
 			.catch((error) => {
@@ -245,7 +247,10 @@ export const EventCreationForm = ({setCreateEventInformation}) => {
 							}}
 							validate={validate}
 							render={({ handleSubmit }) => (
-								<form onSubmit={handleSubmit} className="p-fluid">
+								<form
+									onSubmit={handleSubmit}
+									className="p-fluid"
+								>
 									<Row>
 										<Col xs={7}>
 											<Field
@@ -389,20 +394,30 @@ export const EventCreationForm = ({setCreateEventInformation}) => {
 												name="maxattendees"
 												render={({ input }) => (
 													<div className="field">
-														<InputNumber
-															id="maxattendees"
-															{...input}
-															showButtons
-															value={maxAttendees}
-															placeholder="Max attendees"
-															onValueChange={(e) =>
-																setMaxAttendees(
-																	e.target.value
-																)
+														<span className="p-float-label">
+															<InputNumber
+																id="maxattendees"
+																{...input}
+																showButtons
+																value={
+																	maxAttendees
 																}
-															min={1}
-															max={500}
-														/>
+																placeholder="Max attendees"
+																onValueChange={(
+																	e
+																) =>
+																	setMaxAttendees(
+																		e.target
+																			.value
+																	)
+																}
+																min={1}
+																max={500}
+															/>
+															<label htmlFor="maxattendees">
+																Max Attendees
+															</label>
+														</span>
 													</div>
 												)}
 											/>
