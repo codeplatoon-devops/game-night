@@ -17,7 +17,7 @@ from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, G
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 from itertools import chain, count
-from django.db.models import Count, Case, When, IntegerField
+from django.db.models import Count, Case, When, IntegerField, Subquery,OuterRef
 
 
 
@@ -183,13 +183,14 @@ def log_in(request):
 
 
 @api_view(['GET'])
-def bga_games(request):
+def bga_games(request, game):
+    print('this is the game name:', game)
     api_id = str(os.getenv('GM_CLIENT_ID'))
-    name = request.query_params['name']
+    # name = request.query_params['name']
     url = 'https://api.boardgameatlas.com/api/search?'
     payload = {
         'client_id': api_id,
-        'name': name,
+        'name': game,
         'exact': True,
         'limit': 2,
         'fields': 'name,price,url,description_preview,players,playtime,thumb_url,description'
@@ -241,13 +242,16 @@ def whoami(request):
             body = json.loads(request.body)
             request.user.email = body['email']
             request.user.username = body['username']
+            if body['first_name'] and body['last_name']:
+                request.user.first_name = body['first_name']
+                request.user.last_name = body['last_name']
             request.user.save()
             return JsonResponse({'updated user info': True})
         elif request.method == 'DELETE':
             request.user.delete()
             return JsonResponse({'deleted user': True})
         else:
-            data = serializers.serialize("json", [request.user], fields=['email', 'username'])
+            data = serializers.serialize("json", [request.user], fields=['email', 'username', 'first_name', 'last_name'])
             return HttpResponse(data)
     else:
         return JsonResponse({'user': False})
@@ -416,7 +420,8 @@ def userevents(request):
     if request.user.is_authenticated:
         all_events_attending = EventUser.objects.filter(attendee=request.user.id)
         attending_ids = all_events_attending.values_list('event', flat='True')
-        events_attending = Event.objects.filter(id__in=attending_ids).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField())))         
+        events_user = AppUser.objects.filter(event=OuterRef('pk'))
+        events_attending = Event.objects.filter(id__in=attending_ids).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))).annotate(username=Subquery(events_user.values('username')))         
         data = events_attending.values()
         return Response(data)
     else:
@@ -429,7 +434,8 @@ def userevents_byid(request,id):
         if len(code) < 8:
             code = code.rjust(8,'0')
         # removed the check that only lets you get events you own
-        events = Event.objects.filter(code=code).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))) 
+        events_user = AppUser.objects.filter(event=OuterRef('pk'))
+        events = Event.objects.filter(code=code).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))).annotate(username=Subquery(events_user.values('username'))) 
         # data = serializers.serialize('json',events)
         data = events.values()
         return Response(data)

@@ -34,7 +34,7 @@ export default function App() {
 	const [userEvent, setUserEvent] = useState([]);
 	const [createEventInformation, setCreateEventInformation] = useState(null);
 	const [joinEventInformation, setJoinEventInformation] = useState(null);
-	const [client, setClient] = useState(null)
+	const [client, setClient] = useState(null);
 
 	const whoAmI = async () => {
 		const response = await axios.get("/whoami");
@@ -42,14 +42,13 @@ export default function App() {
 			response.data && response.data[0] && response.data[0].fields;
 		// user.id = (response.data[0].pk).toString()
 		user.id = response.data[0].fields.username.toString();
-		console.log("user from whoami?", user, response);
+		// console.log("user from whoami?", user, response);
 		setUser(user);
 	};
 
 	useEffect(() => {
 		axios.get("/chattoken").then((response) => {
 			let newtoken = response && response.data && response.data.token;
-			console.log("newtoken", newtoken);
 			setToken(newtoken);
 		});
 
@@ -63,7 +62,7 @@ export default function App() {
 		});
 
 		axios.get("/userevents").then((response) => {
-			console.log("user events", response.data);
+			// console.log("user events", response.data);
 			setUserEvent(response.data);
 		});
 		whoAmI();
@@ -72,31 +71,43 @@ export default function App() {
 	return (
 		<div className="App">
 			<Router>
-				{user ? <LoginNavBar client={client}/> : <LogoutNavBar />}
+				{user ? <LoginNavBar client={client} /> : <LogoutNavBar />}
 				<div className="separator"></div>
 				<Routes>
 					<Route path="/" element={<HomePage user={user} />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/account" element={<AccountPage />} />
-					<Route path="/chatroom" element={<ChatroomPage 
-							user={user}
-							token={token}
-							stream={stream}
-							setUser={setUser}
-							whoAmI={whoAmI}
-							client = {client}
-							setClient={setClient}
-							createEventInformation = {createEventInformation}
-							joinEventInformation = {joinEventInformation}
-							/>} />
-					<Route path="/events" element={<EventPage data={userEvent}/>} />
+					<Route
+						path="/chatroom"
+						element={
+							<ChatroomPage
+								user={user}
+								token={token}
+								stream={stream}
+								setUser={setUser}
+								whoAmI={whoAmI}
+								client={client}
+								setClient={setClient}
+								createEventInformation={createEventInformation}
+								joinEventInformation={joinEventInformation}
+							/>
+						}
+					/>
+					<Route
+						path="/events"
+						element={<EventPage data={userEvent} />}
+					/>
 					<Route path="/allevents" element={<AllEventsPage />} />
 					<Route
 						path="/events/create"
-						element={<EventCreatePage 
-							setCreateEventInformation = {setCreateEventInformation}
-						/>}
+						element={
+							<EventCreatePage
+								setCreateEventInformation={
+									setCreateEventInformation
+								}
+							/>
+						}
 					/>
 					<Route
 						path="/groups"
@@ -106,15 +117,20 @@ export default function App() {
 								token={token}
 								stream={stream}
 								whoAmI={whoAmI}
-								client = {client}
+								client={client}
 								setClient={setClient}
 							/>
 						}
 					/>
 					<Route
 						path="/events/:eventId"
-						element={<EventDetailPage 
-							setJoinEventInformation = {setJoinEventInformation}/>}
+						element={
+							<EventDetailPage
+								setJoinEventInformation={
+									setJoinEventInformation
+								}
+							/>
+						}
 					/>
 				</Routes>
 			</Router>

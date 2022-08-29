@@ -34,9 +34,10 @@ export default function GroupsTable(props) {
 	const handleChange = () => {
 		console.log("clicked group");
 		// get members of the group
-		return(
-		<Button onClick={leaveGroup}>Leave Group</Button>
-		)
+		// return(
+		// <Button onClick={leaveGroup}>Leave Group</Button>
+		// )
+		// console.log("clicked group");
 	};
 
 	const leaveGroup= function () {

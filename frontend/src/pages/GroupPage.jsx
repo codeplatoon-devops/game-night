@@ -13,19 +13,26 @@ import GroupRequestForm from "../components/Forms/GroupRequestForm/GroupRequestF
 // import CreateChannel from "../components/Chatroom/CreateChannel";
 // import { useChatContext } from "stream-chat-react"
 
-export default function GroupPage({ user, token, stream, whoAmI, client, setClient}) {
+export default function GroupPage({
+	user,
+	token,
+	stream,
+	whoAmI,
+	client,
+	setClient,
+}) {
 	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate();
 	const [createGroupInformation, setCreateGroupInformation] = useState(null);
 	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
 	const [groups, setGroups] = useState(null);
 	const [groupInvitations, setGroupInvitations] = useState(null);
-	const [showChat, setShowChat] = useState(false)
+	const [showChat, setShowChat] = useState(false);
 	// const [groupCreated, setGroupCreated] = useState(false)
 
 	const viewGroups = function () {
 		axios.get("/groups/view").then((response) => {
-			console.log("view groups response.data", response.data);
+			// console.log("view groups response.data", response.data);
 			if (response.data.success == "True") {
 				let new_groups =
 					response && response.data && response.data.groups;
@@ -37,7 +44,7 @@ export default function GroupPage({ user, token, stream, whoAmI, client, setClie
 
 	const viewGroupInvitations = function () {
 		axios.get("/group/request/view").then((response) => {
-			console.log("view group invitations response.data", response.data);
+			// console.log("view group invitations response.data", response.data);
 			if (response.data.success == "True") {
 				let new_invitations =
 					response && response.data && response.data.group_requests;
@@ -53,15 +60,13 @@ export default function GroupPage({ user, token, stream, whoAmI, client, setClie
 		viewGroups();
 		viewGroupInvitations();
 
-		whoAmI()
+		whoAmI();
 
 		setTimeout(() => {
-			setShowChat(true)
-			console.log("TIMEOUT")
-		}, 300)
-
+			setShowChat(true);
+			// console.log("TIMEOUT");
+		}, 300);
 	}, []);
-
 
 	if (!user) {
 		return <h3>Loading</h3>;
@@ -73,7 +78,12 @@ export default function GroupPage({ user, token, stream, whoAmI, client, setClie
 					<Col md={4}>
 						<GroupsTable groups={groups} />
 						{/* Group creation */}
-						<GroupCreationForm viewGroups={viewGroups} setCreateGroupInformation= {setCreateGroupInformation}/>
+						<GroupCreationForm
+							viewGroups={viewGroups}
+							setCreateGroupInformation={
+								setCreateGroupInformation
+							}
+						/>
 						{/* Group invite */}
 						<GroupRequestForm groups={groups} />
 						<Row>
@@ -81,7 +91,9 @@ export default function GroupPage({ user, token, stream, whoAmI, client, setClie
 								{groupInvitations ? (
 									<PendingInvitesGroups
 										data={groupInvitations}
-										setJoinGroupInformation={setJoinGroupInformation}
+										setJoinGroupInformation={
+											setJoinGroupInformation
+										}
 									/>
 								) : (
 									<PendingInvitesGroups
@@ -96,18 +108,18 @@ export default function GroupPage({ user, token, stream, whoAmI, client, setClie
 					<Col md={8}>
 						{/* {groups || groupInformation
 						? */}
-						{ showChat &&
+						{showChat && (
 							<Chatroom
-							user={user}
-							token={token}
-							stream={stream}
-							createGroupInformation={createGroupInformation}
-							joinGroupInformation={joinGroupInformation}
-							client = {client}
-							setClient={setClient}
-							whoAmI={whoAmI}
-
-						/> }
+								user={user}
+								token={token}
+								stream={stream}
+								createGroupInformation={createGroupInformation}
+								joinGroupInformation={joinGroupInformation}
+								client={client}
+								setClient={setClient}
+								whoAmI={whoAmI}
+							/>
+						)}
 
 						{/* : null
 						} */}
