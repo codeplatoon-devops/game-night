@@ -40,7 +40,7 @@ export default function LoginNavBar({client}) {
 						<Container>
 							<Row style={{ "font-size": "20px" }}>
 								<Col>
-									<Nav.Link href="#/">Home</Nav.Link>
+									<Nav.Link href="#/chatroom">Chatroom</Nav.Link>
 								</Col>
 								<Col>
 									<Nav.Link href="#/groups">
