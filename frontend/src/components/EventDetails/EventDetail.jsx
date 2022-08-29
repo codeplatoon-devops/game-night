@@ -1,34 +1,28 @@
-import './EventDetail.css'
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'
+import "./EventDetail.css";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import axios from 'axios';
-import { Button } from 'react-bootstrap'
-import GameModal from '../Games/GameModal'
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import axios from "axios";
+import { Button } from "react-bootstrap";
+import GameModal from "../Games/GameModal";
 
-export const EventDetails =()=> {
-    let { eventId } = useParams()
+export const EventDetails = () => {
+	let { eventId } = useParams();
 
-    const [eventDetail, setEventDetail] = useState(null)
+	const [eventDetail, setEventDetail] = useState(null);
 
-
-
-    useEffect(() => {
-		axios
-		.get(`/userevents/${eventId}`)
-		.then((response) => {
-            console.log('response data',response)
-			setEventDetail(response.data)
-		})
-	}, [])
-
+	useEffect(() => {
+		axios.get(`/userevents/${eventId}`).then((response) => {
+			// console.log('response data',response)
+			setEventDetail(response.data);
+		});
+	}, []);
 
     return(
-
         <div>
             {   eventDetail
             ? <div>

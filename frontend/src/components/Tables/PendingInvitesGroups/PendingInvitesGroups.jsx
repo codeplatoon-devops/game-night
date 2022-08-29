@@ -16,7 +16,6 @@ export const PendingInvitesGroups = (props) => {
 	const [groupDetails, setGroupDetails] = useState(null);
 	const [invitationDetails, setInvitationDetails] = useState([]);
 
-	
 	const showDetails = (invitationInfo) => {
 		setGroupDetails(
 			invitationInfo[0] +
@@ -25,7 +24,7 @@ export const PendingInvitesGroups = (props) => {
 				"!"
 		);
 		setInvitationDetails(invitationInfo);
-		console.log("group detail info: ", groupDetails);
+		// console.log("group detail info: ", groupDetails);
 		setShowMessage(true);
 	};
 	const hideDetails = () => {
@@ -36,7 +35,7 @@ export const PendingInvitesGroups = (props) => {
 			.put("/group/join", { friend_email: email, code: code })
 			.then((response) => {
 				hideDetails();
-				console.log("join group response.data", response.data);
+				// console.log("join group response.data", response.data);
 				if (response.data.success == "True") {
 					window.alert("Group joined!");
 					props.setJoinGroupInformation([name, code]);
@@ -46,14 +45,14 @@ export const PendingInvitesGroups = (props) => {
 			});
 	};
 	const delineGroup = function (email, code) {
-		console.log("in decline group");
-		console.log("email: ", email);
-		console.log("code: ", code);
+		// console.log("in decline group");
+		// console.log("email: ", email);
+		// console.log("code: ", code);
 		axios
 			.put("/group/decline", { friend_email: email, code: code })
 			.then((response) => {
 				hideDetails();
-				console.log("decline group response.data", response.data);
+				// console.log("decline group response.data", response.data);
 				if (response.data.success == "True") {
 					window.alert("Group invite declined");
 				} else {

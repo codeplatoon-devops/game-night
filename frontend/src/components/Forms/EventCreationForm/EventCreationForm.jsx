@@ -137,7 +137,7 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 	};
 
 	const handleSubmit = (form) => {
-		console.log("in on submit for event");
+		// console.log("in on submit for event");
 		setShowMessage(true);
 		// setShowMessage(true);
 		// let attendees = document.getElementById('maxattendees').value
@@ -162,7 +162,7 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 				zip: zip,
 			})
 			.then((response) => {
-				console.log("create event response", response);
+				// console.log("create event response", response);
 				let theEventCode =
 					response && response.data && response.data.eventCode;
 				setEventCode(theEventCode);
@@ -175,7 +175,7 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 				}
 			})
 			.catch((error) => {
-				console.log("create event ERROR", error);
+				// console.log("create event ERROR", error);
 			});
 	};
 

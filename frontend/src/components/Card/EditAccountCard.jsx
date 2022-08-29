@@ -8,52 +8,63 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 
-export default function EditAccountCard({userInfo, setEdit, edit}){
-
-    const [username, setUsername] = useState(userInfo.username)
-    const [email, setEmail] = useState(userInfo.email)
+export default function EditAccountCard({ userInfo, setEdit, edit }) {
+	const [username, setUsername] = useState(userInfo.username);
+	const [email, setEmail] = useState(userInfo.email);
     const [confirmationDialog, setConfirmationDialog] = useState(false)
 
-    const updateUser = () => {
-        axios
-            .put('whoami', {
-                username: username,
-                email: email
-            })
-            .then((response) => {
-                console.log('this is the response:', response)
-                window.location.reload()
-            })
-            .catch((error) => console.log(error))
-    }
-    
+	const updateUser = () => {
+		axios
+			.put("whoami", {
+				username: username,
+				email: email,
+			})
+			.then((response) => {
+				// console.log("this is the response:", response);
+				window.location.reload();
+			});
+		// .catch((error) => console.log(error));
+	};
 
-    const deleteAccount = async (event) => {
-        event.preventDefault();
-        let res = await axios.delete('/whoami');
-        window.location.replace("/")
-    }
+	const deleteAccount = async (event) => {
+		event.preventDefault();
+		let res = await axios.delete("/whoami");
+		window.location.replace("/");
+	};
 
-    const editAccount = () => {
-		setEdit(true)
-	}
+	const editAccount = () => {
+		setEdit(true);
+	};
 
 	const cancelButton = () => {
-		setEdit(false)
-	}
+		setEdit(false);
+	};
 
-    const editFooter = (
-        <span>
-            <Button label="Save" icon="pi pi-check" onClick={updateUser}/>
-            <Button label="Cancel" icon="pi pi-times" className="p-button-secondary ml-2" onClick={cancelButton}/>
-        </span>
+	const editFooter = (
+		<span>
+			<Button label="Save" icon="pi pi-check" onClick={updateUser} />
+			<Button
+				label="Cancel"
+				icon="pi pi-times"
+				className="p-button-secondary ml-2"
+				onClick={cancelButton}
+			/>
+		</span>
 	);
 	const footer = (
-        <span>
-            <Button label="Edit Account" icon="pi pi-user-edit" onClick={editAccount}/>
-            <Button label="Delete Account" className="p-button-danger" onClick={() => setConfirmationDialog(true)}/>
-        </span>
-    );
+		<span>
+			<Button
+				label="Edit Account"
+				icon="pi pi-user-edit"
+				onClick={editAccount}
+			/>
+			<Button
+				label="Delete Account"
+				className="p-button-danger"
+				onClick={() => setConfirmationDialog(true)}
+			/>
+		</span>
+	);
 
     return(
         <div>
@@ -94,12 +105,11 @@ export default function EditAccountCard({userInfo, setEdit, edit}){
             <Dialog
 				className="confirmation-modal text-center"
                 header="Are you sure?"
-				visible={confirmationDialog}
-				onHide={() => setConfirmationDialog(false)}
+                visible={confirmationDialog}
+                onHide={() => setConfirmationDialog(false)}
 			>
                 <Button label="Delete Account" className="p-button-danger" onClick={deleteAccount}/>
             </Dialog>
         </div>
     )
-
 }
