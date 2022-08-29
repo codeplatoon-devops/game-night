@@ -17,7 +17,7 @@ from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, G
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 from itertools import chain, count
-from django.db.models import Count, Case, When, IntegerField
+from django.db.models import Count, Case, When, IntegerField, Subquery,OuterRef
 
 
 
@@ -409,7 +409,8 @@ def userevents(request):
     if request.user.is_authenticated:
         all_events_attending = EventUser.objects.filter(attendee=request.user.id)
         attending_ids = all_events_attending.values_list('event', flat='True')
-        events_attending = Event.objects.filter(id__in=attending_ids).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField())))         
+        events_user = AppUser.objects.filter(event=OuterRef('pk'))
+        events_attending = Event.objects.filter(id__in=attending_ids).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))).annotate(username=Subquery(events_user.values('username')))         
         data = events_attending.values()
         return Response(data)
     else:
@@ -422,7 +423,8 @@ def userevents_byid(request,id):
         if len(code) < 8:
             code = code.rjust(8,'0')
         # removed the check that only lets you get events you own
-        events = Event.objects.filter(code=code).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))) 
+        events_user = AppUser.objects.filter(event=OuterRef('pk'))
+        events = Event.objects.filter(code=code).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))).annotate(username=Subquery(events_user.values('username'))) 
         # data = serializers.serialize('json',events)
         data = events.values()
         return Response(data)

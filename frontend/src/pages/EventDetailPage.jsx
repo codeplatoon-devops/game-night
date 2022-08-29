@@ -9,14 +9,16 @@ import { Button } from 'react-bootstrap'
 import EventDetailList from "../components/List/EventDetailList"
 import DialogGame from "../components/Dialog/DialogGame"
 
+
 export default function EventDetailPage() {
+	let { eventId } = useParams();
 
-	let { eventId } = useParams()
+	const [eventDetail, setEventDetail] = useState(null);
+	const [games, setGames] = useState(null);
+	const [startTime, setStartTime] = useState(null);
+	const [endTime, setEndTime] = useState(null);
 
-    const [eventDetail, setEventDetail] = useState(null)
-	const [games, setGames] = useState(null)
-	const [startTime, setStartTime] = useState(null)
-	const [endTime, setEndTime] = useState(null)
+	
 
 	const [gameInfo, setGameInfo] = useState(null)
     const [displayBasic2, setDisplayBasic2] = useState(false);
@@ -25,7 +27,6 @@ export default function EventDetailPage() {
 		axios
 		.get(`/userevents/${eventId}`)
 		.then((response) => {
-            console.log('response data', response.data[0])
 			setGames(Object.values(response.data[0].games))
 			setStartTime(moment(response.data[0].start_time).format('MMMM Do YYYY, h:mm a'))
 			setEndTime(moment(response.data[0].end_time).format('MMMM Do YYYY, h:mm a'))

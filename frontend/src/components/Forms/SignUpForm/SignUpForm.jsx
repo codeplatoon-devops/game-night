@@ -45,12 +45,12 @@ export const SignUpForm = () => {
 	};
 
 	const onSubmit = (data, form) => {
-		console.log("submitted signupform, data is", data);
+		// console.log("submitted signupform, data is", data);
 		// what about an event prevent default? Do we need to set the form data or just send it to the server?
 		// event.preventDefault();
 		setFormData(data);
 		axios.post("/signup", data).then((response) => {
-			console.log("signup response", response);
+			// console.log("signup response", response);
 			if (response.data.success === "False") {
 				window.alert(response.data.reason);
 				nav("/login");
