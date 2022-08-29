@@ -2,6 +2,7 @@ import './EventDetailList.css'
 import "primeflex/primeflex.css";
 import { Button } from 'primereact/button';
 import { Chip } from 'primereact/chip';
+import './EventDetailList.css';
 // import { StyleClass } from 'primereact/styleclass';
 import axios from 'axios';
 
@@ -37,7 +38,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
             </div>
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Games</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Owner's Games</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 {games.map((game, index) => (
                     <Chip label={game} value={game} onClick={() => handleClick(game)} style={{cursor: 'pointer'}} className="mr-2" />
