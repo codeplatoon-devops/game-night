@@ -22,50 +22,35 @@ export const EventDetails = () => {
 		});
 	}, []);
 
-	return (
-		<div>
-			{eventDetail ? (
-				<div>
-					<h1>{eventDetail[0].fields.name}</h1>
-					<DataTable value={eventDetail} responsiveLayout="scroll">
-						<Column field="fields.code" header="Code"></Column>
-						<Column
-							field="fields.address_1"
-							header="Address 1"
-						></Column>
-						<Column
-							field="fields.address_2"
-							header="Address 2"
-						></Column>
-						<Column field="fields.city" header="City"></Column>
-						<Column field="fields.state" header="State"></Column>
-						<Column
-							field="fields.zip_code"
-							header="Zip Code"
-						></Column>
-						<Column
-							field="fields.max_attendees"
-							header="Max Attendees"
-						></Column>
-					</DataTable>
-					<p>{eventDetail[0].fields.description}</p>
-					<Container>
-						<Row>
-							{Object.keys(eventDetail[0].fields.games).map(
-								(key, index) => {
-									return (
-										<Col className="gamecards">
-											<GameModal gameName={key} />
-										</Col>
-									);
-								}
-							)}
-						</Row>
-					</Container>
-				</div>
-			) : (
-				<h1>nothing here</h1>
-			)}
-		</div>
-	);
-};
+    return(
+        <div>
+            {   eventDetail
+            ? <div>
+                <h1>{eventDetail[0].fields.name}</h1>
+                <DataTable value={eventDetail} responsiveLayout="scroll">
+                    <Column field='fields.code' header="Code"></Column>
+                    <Column field='fields.address_1' header="Address 1"></Column>
+                    <Column field='fields.address_2' header="Address 2"></Column>
+                    <Column field='fields.city' header="City"></Column>
+                    <Column field='fields.state' header="State"></Column>
+                    <Column field='fields.zip_code' header="Zip Code"></Column>
+                    <Column field='fields.max_attendees' header="Max Attendees"></Column>
+                </DataTable>
+                <p>{eventDetail[0].fields.description}</p>
+                <Container>
+                    <Row>
+                        {eventDetail[0].fields.games.map((game)=>{return <Col className='gamecards'><GameModal gameName={game} /></Col>})}
+                    </Row>
+
+
+                </Container>
+
+                </div>
+            : <h1>nothing here</h1>
+
+
+            }
+
+        </div>
+    )
+}
