@@ -61,7 +61,7 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
 			<Button
 				label="Delete Account"
 				className="p-button-danger"
-				onClick={deleteAccount}
+				onClick={() => setConfirmationDialog(true)}
 			/>
 		</span>
 	);
