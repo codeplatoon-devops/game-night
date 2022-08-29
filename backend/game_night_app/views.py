@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
+from .serializers import EventSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
  # pip install stream-chat
@@ -15,7 +16,10 @@ from dotenv import load_dotenv
 from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
-from itertools import chain
+from itertools import chain, count
+from django.db.models import Count, Case, When, IntegerField
+
+
 
 
 load_dotenv()
@@ -402,17 +406,14 @@ def create_event(request):
 @api_view(['GET'])
 def userevents(request):
     if request.user.is_authenticated:
-        events_owner = Event.objects.filter(owner=request.user.id)
-        owned_ids = events_owner.values_list('id', flat='True')
-        all_events_attending = EventUser.objects.filter(attendee=request.user.id).exclude(event__in=owned_ids)
+        all_events_attending = EventUser.objects.filter(attendee=request.user.id)
         attending_ids = all_events_attending.values_list('event', flat='True')
-        events_attending = Event.objects.filter(id__in=attending_ids)
-        user_events = list(chain(events_owner,events_attending))
-        data = serializers.serialize('json', user_events)
- 
-        return HttpResponse(data, content_type='application/json')
+        events_attending = Event.objects.filter(id__in=attending_ids).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField())))         
+        data = events_attending.values()
+        return Response(data)
     else:
         return JsonResponse({'user': False})
+
 @api_view(['GET'])
 def userevents_byid(request,id):
     if request.user.is_authenticated:
@@ -420,26 +421,14 @@ def userevents_byid(request,id):
         if len(code) < 8:
             code = code.rjust(8,'0')
         # removed the check that only lets you get events you own
-        events = Event.objects.filter(code=code) 
-        data = serializers.serialize('json',events)
- 
-        return HttpResponse(data, content_type='application/json')
+        events = Event.objects.filter(code=code).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))) 
+        # data = serializers.serialize('json',events)
+        data = events.values()
+        return Response(data)
+        # return HttpResponse(data, content_type='application/json')
     else:
         return JsonResponse({'user': False})
     
-@api_view(['GET'])
-def user_events_table_data(request):
-    if request.user.is_authenticated:
-        events_owner = Event.objects.filter(owner = request.user.id)
-        owned_ids = events_owner.values_list('id', flat='True')
-        all_events_attending = EventUser.objects.filter(attendee=request.user.id).exclude(event__in=owned_ids)
-        attending_ids = all_events_attending.values_list('event', flat='True')
-        events_attending = Event.objects.filter(id__in=attending_ids)
-        user_events = list(chain(events_owner,events_attending))
-        data = serializers.serialize('json', user_events, fields=['name', 'category', 'description', 'address_1', 'start_time', 'code'])
-        return HttpResponse(data, content_type='application/json')
-    else:
-        return JsonResponse({'user': False})
 
 @api_view(['GET'])
 def allevents(request):

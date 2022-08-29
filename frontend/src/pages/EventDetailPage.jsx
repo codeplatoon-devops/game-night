@@ -21,11 +21,11 @@ export default function EventDetailPage() {
 		axios
 		.get(`/userevents/${eventId}`)
 		.then((response) => {
-            console.log('response data', response.data[0].fields)
-			setGames(Object.values(response.data[0].fields.games))
-			setStartTime(moment(response.data[0].fields.start_time).format('MMMM Do YYYY, h:mm a'))
-			setEndTime(moment(response.data[0].fields.end_time).format('MMMM Do YYYY, h:mm a'))
-			setEventDetail(response.data[0].fields)
+            console.log('response data', response.data[0])
+			setGames(Object.values(response.data[0].games))
+			setStartTime(moment(response.data[0].start_time).format('MMMM Do YYYY, h:mm a'))
+			setEndTime(moment(response.data[0].end_time).format('MMMM Do YYYY, h:mm a'))
+			setEventDetail(response.data[0])
 		})
 	}, [])
 
