@@ -6,3 +6,7 @@
 	display: flex;
 	justify-content: center;
 }
+
+.confirmation-modal {
+	min-width: 400px;
+}
