@@ -45,8 +45,7 @@ export const EventDetails =()=> {
                 <p>{eventDetail[0].fields.description}</p>
                 <Container>
                     <Row>
-                        {Object.keys(eventDetail[0].fields.games).map((key, index)=> { return <Col className='gamecards'><GameModal gameName={key} /></Col>})}
-
+                        {eventDetail[0].fields.games.map((game)=>{return <Col className='gamecards'><GameModal gameName={game} /></Col>})}
                     </Row>
 
 
