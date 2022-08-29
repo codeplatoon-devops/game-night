@@ -129,6 +129,7 @@ export default function App() {
 								setJoinEventInformation={
 									setJoinEventInformation
 								}
+								user={user}
 							/>
 						}
 					/>
