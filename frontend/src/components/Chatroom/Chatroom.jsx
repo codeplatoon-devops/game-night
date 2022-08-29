@@ -28,6 +28,7 @@ function Chatroom({
 	joinEventInformation,
 	client,
 	setClient,
+    leaveGroupInformation,
 }) {
 	// const [client, setClient] = useState(null)
 	// const [userId, setUserId] = useState(null)
@@ -48,16 +49,6 @@ function Chatroom({
 			channelName += " Chatroom";
 			channelId += createGroupInformation[1].toString();
 			let user_id = user.id.toString();
-			// console.log(
-			// 	"user_id",
-			// 	user_id,
-			// 	"type",
-			// 	typeof user_id,
-			// 	"channelID is",
-			// 	channelId,
-			// 	"channel name is",
-			// 	channelName
-			// );
 			const new_channel = client.channel("messaging", channelId, {
 				// want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
 				// image: "https://picsum.photos/200",
@@ -72,6 +63,23 @@ function Chatroom({
 		}
 	};
 
+    const leaveGroupChannel = async () => {
+        // https://getstream.io/chat/docs/react/channel_members/
+        if (client && leaveGroupInformation) {
+			let channelId = "GroupChatroom";
+			let channelName = leaveGroupInformation[0];
+			channelName += " Chatroom";
+			channelId += leaveGroupInformation[1].toString();
+			let user_id = user.id.toString();
+			const leave_group_channel = client.channel("messaging", channelId, {
+				name: channelName,
+			});
+			await leave_group_channel.removeMembers([user_id])
+		} else {
+			setTimeout(leaveGroupChannel, 2000);
+		}
+    }
+
 	const createEventChannel = async () => {
 		if (client && createEventInformation) {
 			let channelId = "EventChatroom";
@@ -79,24 +87,10 @@ function Chatroom({
 			channelName += " Chatroom";
 			channelId += createEventInformation[1].toString();
 			let user_id = user.id.toString();
-			// console.log(
-			// 	"create event channel user_id",
-			// 	user_id,
-			// 	"type",
-			// 	typeof user_id,
-			// 	"channelID is",
-			// 	channelId,
-			// 	"channel name is",
-			// 	channelName
-			// );
 			const new_event_channel = client.channel("messaging", channelId, {
-				// want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
-				// image: "https://picsum.photos/200",
 				name: channelName,
 				members: [user_id],
 			});
-			// console.log("newly created event channel", new_event_channel);
-
 			await new_event_channel.watch();
 		} else {
 			setTimeout(createEventChannel, 3000);
@@ -114,6 +108,10 @@ function Chatroom({
 	useEffect(() => {
 		joinGroupChannel();
 	}, [joinGroupInformation]);
+
+    useEffect(() => {
+		leaveGroupChannel();
+	}, [leaveGroupInformation]);
 
 	useEffect(() => {
 		joinEventChannel();
@@ -160,16 +158,6 @@ function Chatroom({
 			channelName += " Chatroom";
 			channelId += joinEventInformation[1].toString();
 			let user_id = user.id.toString();
-			// console.log(
-			// 	"join event channel user_id",
-			// 	user_id,
-			// 	"type",
-			// 	typeof user_id,
-			// 	"channelID is",
-			// 	channelId,
-			// 	"channel name is",
-			// 	channelName
-			// );
 			const join_event_channel = client.channel("messaging", channelId, {
 				name: channelName,
 				members: [user_id],
@@ -193,16 +181,6 @@ function Chatroom({
 						"This is your personal Notes/Reminders/Chat Space";
 					let channelId = user_id;
 					channelId += "PersonalChat";
-					// console.log(
-					// 	"USER ID HERE LINE 95",
-					// 	user_id,
-					// 	"type here",
-					// 	typeof user_id,
-					// 	"channelName",
-					// 	channelName,
-					// 	"channelID",
-					// 	channelId
-					// );
 					const chatClient = StreamChat.getInstance(stream);
 					// https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
 					await chatClient.connectUser(user, token);

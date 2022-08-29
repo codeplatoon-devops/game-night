@@ -351,9 +351,7 @@ def view_groups(request):
     user = AppUser.objects.get(email = request.user.email)
     # groups = Group.objects.filter(member = user)
     user_id = user.id
-    print('user id here line 350', user_id)
     groups = user.members.all()
-    print('GROUPS HERE LINE 352', groups)
     if len(groups)>0:
         list_of_groups=[]
         for group in groups:
@@ -365,14 +363,35 @@ def view_groups(request):
                 if member.id != user_id:
                     other_members.append(member.username)
             list_of_groups.append([group.name, group.code, other_members])
-        print('line 364 list of groups', list_of_groups)
-            # print('group.member360.exclude', group.member.all().exclude(members=user))
+        # print('line 364 list of groups', list_of_groups)
         try:
             return JsonResponse({'success': 'True', 'groups': list_of_groups})
         except Exception as e:
             return JsonResponse({'success': "False", 'reason': str(e)})
     else:
         return JsonResponse({'success': "False", 'reason': "you don't have any groups"})
+
+@login_required
+@api_view(['PUT'])
+def leave_group(request):
+    user = AppUser.objects.get(email = request.user.email)
+    group_code = request.data['code']
+    group = Group.objects.get(code=group_code)
+    print('users groups before delete', user.members.all())
+    try:
+        user.members.remove(group)
+        print(f'user should no longer be in group --group {group.id} should now be deleted', user.members.all)
+        group_members = group.member.all()
+        if not group_members:
+            group.delete()
+            print('group should be deleted', group)
+            return JsonResponse({'success': 'True', 'action': 'user left group', 'group deleted':'True'})
+        else:
+            return JsonResponse({'success': 'True', 'action': 'user left group', 'group deleted':'False'})
+    except Exception as e:
+        return JsonResponse({'success': "False", 'reason': str(e)})
+
+
 
 
 @api_view(['POST'])   
