@@ -183,13 +183,14 @@ def log_in(request):
 
 
 @api_view(['GET'])
-def bga_games(request):
+def bga_games(request, game):
+    print('this is the game name:', game)
     api_id = str(os.getenv('GM_CLIENT_ID'))
-    name = request.query_params['name']
+    # name = request.query_params['name']
     url = 'https://api.boardgameatlas.com/api/search?'
     payload = {
         'client_id': api_id,
-        'name': name,
+        'name': game,
         'exact': True,
         'limit': 2,
         'fields': 'name,price,url,description_preview,players,playtime,thumb_url,description'
