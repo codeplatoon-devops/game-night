@@ -20,6 +20,7 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 	const [showMessage, setShowMessage] = useState(false); // for submission dialog
 	const [formData, setFormData] = useState({});
 	const [eventName, setEventName] = useState(""); // event name
+	const [eventCode, setEventCode] = useState(null);
 	const [isPrivate, setIsPrivate] = useState(true); // event privacy
 	const [category, setCategory] = useState(null); // category
 	const [eventStartDate, setEventStartDate] = useState(null); // start datetime
@@ -129,6 +130,8 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 		}
 		if (!zip) {
 			errors.zipcode = "Zipcode is required.";
+		} else if (zip.length > 5) {
+			errors.zipcode = "Enter a valid zipcode.";
 		}
 		return errors;
 	};
@@ -136,6 +139,7 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 	const handleSubmit = (form) => {
 		console.log("in on submit for event");
 		setShowMessage(true);
+		// setShowMessage(true);
 		// let attendees = document.getElementById('maxattendees').value
 		// console.log('attendees', attendees)
 
@@ -159,6 +163,9 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 			})
 			.then((response) => {
 				console.log("create event response", response);
+				let theEventCode =
+					response && response.data && response.data.eventCode;
+				setEventCode(theEventCode);
 				if (chatcreation) {
 					let eventName =
 						response && response.data && response.data.eventName;
@@ -175,8 +182,9 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 	// hardcoded to event '1' for now
 	// TODO: update redirect to event code when generated
 	const onAck = () => {
+		const eventURL = "/events/" + eventCode + "/";
 		setShowMessage(false);
-		navigate("/events");
+		navigate(eventURL);
 		// navigate not working.
 	};
 
@@ -215,7 +223,7 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
 					<h5>Event Creation Successful!</h5>
 					<p style={{ lineHeight: 1.5 }}>
-						Your event has been saved under the code [event code].
+						Your event has been saved under the code {eventCode}.
 						Please proceed to the next page for more details.
 					</p>
 				</div>
