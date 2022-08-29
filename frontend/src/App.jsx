@@ -34,6 +34,7 @@ export default function App() {
 	const [userEvent, setUserEvent] = useState([]);
 	const [createEventInformation, setCreateEventInformation] = useState(null);
 	const [joinEventInformation, setJoinEventInformation] = useState(null);
+	const [deleteChannelInformation, setDeleteChannelInformation] = useState(null)
 	const [client, setClient] = useState(null);
 
 	const whoAmI = async () => {
@@ -91,12 +92,15 @@ export default function App() {
 								setClient={setClient}
 								createEventInformation={createEventInformation}
 								joinEventInformation={joinEventInformation}
+								deleteChannelInformation={deleteChannelInformation}
 							/>
 						}
 					/>
 					<Route
 						path="/events"
-						element={<EventPage data={userEvent} />}
+						element={<EventPage data={userEvent} 
+						setDeleteChannelInformation={setDeleteChannelInformation}
+						deleteChannelInformation={deleteChannelInformation}/>}
 					/>
 					<Route path="/allevents" element={<AllEventsPage />} />
 					<Route
