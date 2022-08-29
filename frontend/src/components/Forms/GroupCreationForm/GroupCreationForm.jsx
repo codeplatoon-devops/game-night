@@ -67,7 +67,7 @@ export default function GroupCreationForm({
 		axios
 			.post("/group/create", { name: groupName, code: groupCode })
 			.then((response) => {
-				console.log("create group response.data", response.data);
+				// console.log("create group response.data", response.data);
 				if (response.data.success == "True") {
 					setShowMessage(true);
 					setCreateGroupInformation([groupName, groupCode]);
@@ -82,10 +82,10 @@ export default function GroupCreationForm({
 	};
 	const getGroupCode = function () {
 		axios.get("/group/code").then((response) => {
-			console.log(
-				"get group code response.data.group_code",
-				response.data.group_code
-			);
+			// console.log(
+			// 	"get group code response.data.group_code",
+			// 	response.data.group_code
+			// );
 			let code = response && response.data && response.data.group_code;
 			setGroupCode(code);
 		});

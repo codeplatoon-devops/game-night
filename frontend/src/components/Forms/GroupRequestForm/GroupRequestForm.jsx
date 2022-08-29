@@ -37,19 +37,19 @@ export default function GroupRequestForm(props) {
 		for (let group of props.groups) {
 			// console.log('group[0], name:', group[0], name)
 			if (group[0] == value.label) {
-				console.log(
-					"group name here",
-					group[0],
-					"group code here",
-					group[1]
-				);
+				// console.log(
+				// 	"group name here",
+				// 	group[0],
+				// 	"group code here",
+				// 	group[1]
+				// );
 				setGroupCode(group[1]);
 			}
 		}
 	};
 
 	const handleSubmit = () => {
-		console.log("submit");
+		// console.log("submit");
 		createGroupRequest(friendEmail);
 		setShowInviteForm(false);
 	};
@@ -85,10 +85,10 @@ export default function GroupRequestForm(props) {
 					group_code: groupCode,
 				})
 				.then((response) => {
-					console.log(
-						"create group request response.data",
-						response.data
-					);
+					// console.log(
+					// 	"create group request response.data",
+					// 	response.data
+					// );
 					if (response.data.success == "True") {
 						window.alert("Group invitation sent!");
 					} else {
@@ -112,8 +112,8 @@ export default function GroupRequestForm(props) {
 				visible={showInviteForm}
 				onHide={() => setShowInviteForm(false)}
 			>
-				{props.groups
-					? <Form
+				{props.groups ? (
+					<Form
 						onSubmit={handleSubmit}
 						initialValues={{
 							groupname: "",
@@ -139,7 +139,9 @@ export default function GroupRequestForm(props) {
 													}}
 													className={classNames({
 														"p-invalid":
-															isFormFieldValid(meta),
+															isFormFieldValid(
+																meta
+															),
 														"form-group-invite-field": true,
 													})}
 												/>
@@ -147,7 +149,9 @@ export default function GroupRequestForm(props) {
 													htmlFor="groupname"
 													className={classNames({
 														"p-error":
-															isFormFieldValid(meta),
+															isFormFieldValid(
+																meta
+															),
 													})}
 												>
 													Group name*
@@ -174,7 +178,9 @@ export default function GroupRequestForm(props) {
 													}
 													className={classNames({
 														"p-invalid":
-															isFormFieldValid(meta),
+															isFormFieldValid(
+																meta
+															),
 														"form-group-invite-field": true,
 													})}
 												/>
@@ -182,7 +188,9 @@ export default function GroupRequestForm(props) {
 													htmlFor="friendemail"
 													className={classNames({
 														"p-error":
-															isFormFieldValid(meta),
+															isFormFieldValid(
+																meta
+															),
 													})}
 												>
 													Friend's email*
@@ -201,8 +209,10 @@ export default function GroupRequestForm(props) {
 								/>
 							</>
 						)}
-				/> : <p>You don't belong to any groups</p>
-				}
+					/>
+				) : (
+					<p>You don't belong to any groups</p>
+				)}
 			</Dialog>
 		</>
 	);
