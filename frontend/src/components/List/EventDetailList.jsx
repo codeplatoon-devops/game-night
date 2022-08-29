@@ -39,8 +39,8 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
     const [newCity, setNewCity] = useState(eventDetail.city);
     const [newState, setNewState] = useState(eventDetail.state);
     const [newZip, setNewZip] = useState(eventDetail.zip_code);
-    const [newStartTime, setNewStartTime] = useState(startTime);
-    const [newEndTime, setNewEndTime] = useState(endTime);
+    const [newStartTime, setNewStartTime] = useState(eventDetail.start_time);
+    const [newEndTime, setNewEndTime] = useState(eventDetail.end_time);
 
     const stateSelectItems = [
 		{ label: "Alabama", value: "AL" },
@@ -143,7 +143,9 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
             start_time: newStartTime,
             end_time: newEndTime
         })
-        .then((response) => {console.log(response)})
+        .then((response) => {
+            console.log(response)
+        })
         .catch((error) => console.log(error))
     }
 

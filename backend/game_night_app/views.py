@@ -416,19 +416,37 @@ def userevents(request):
     else:
         return JsonResponse({'user': False})
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 def userevents_byid(request,id):
     if request.user.is_authenticated:
-        code = str(id)
-        if len(code) < 8:
-            code = code.rjust(8,'0')
-        # removed the check that only lets you get events you own
-        events_user = AppUser.objects.filter(event=OuterRef('pk'))
-        events = Event.objects.filter(code=code).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))).annotate(username=Subquery(events_user.values('username'))) 
-        # data = serializers.serialize('json',events)
-        data = events.values()
-        return Response(data)
-        # return HttpResponse(data, content_type='application/json')
+        if request.method =='GET':
+            code = str(id)
+            if len(code) < 8:
+                code = code.rjust(8,'0')
+            # removed the check that only lets you get events you own
+            events_user = AppUser.objects.filter(event=OuterRef('pk'))
+            events = Event.objects.filter(code=code).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))).annotate(username=Subquery(events_user.values('username'))) 
+            # data = serializers.serialize('json',events)
+            data = events.values()
+            return Response(data)
+        elif request.method == 'PUT':
+            body = json.loads(request.body)
+            code = str(id)
+            event = Event.objects.get(code = code)
+            event.name = body['name']
+            event.description = body['description']
+            event.games = body['games']
+            event.address_1 = body['address_1']
+            event.address_2 = body['address_2']
+            event.city = body['city']
+            event.state = body['state']
+            event.zip_code = body['zip_code']
+            event.max_attendees = body['max_attendees']
+            event.private = body['private']
+            event.start_time = body['start_time']
+            event.end_time = body['end_time']
+            event.save()
+            return JsonResponse({'event updated': True})
     else:
         return JsonResponse({'user': False})
     

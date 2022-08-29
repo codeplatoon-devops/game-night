@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'
 import moment from 'moment';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import axios from 'axios';
-import { Button } from 'react-bootstrap'
 import EventDetailList from "../components/List/EventDetailList"
 import DialogGame from "../components/Dialog/DialogGame"
 
@@ -22,6 +18,7 @@ export default function EventDetailPage({user}) {
 
 	const [gameInfo, setGameInfo] = useState(null)
     const [displayBasic2, setDisplayBasic2] = useState(false);
+	
 
     useEffect(() => {
 		axios
