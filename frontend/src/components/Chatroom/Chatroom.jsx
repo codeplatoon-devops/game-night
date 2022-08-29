@@ -202,7 +202,7 @@ function Chatroom({
 					// 	channelName,
 					// 	"channelID",
 					// 	channelId
-					);
+					// );
 					const chatClient = StreamChat.getInstance(stream);
 					// https://getstream.io/chat/docs/react/tokens_and_authentication/?language=javascript
 					await chatClient.connectUser(user, token);
