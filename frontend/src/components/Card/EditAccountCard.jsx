@@ -11,7 +11,7 @@ import axios from 'axios';
 export default function EditAccountCard({ userInfo, setEdit, edit }) {
 	const [username, setUsername] = useState(userInfo.username);
 	const [email, setEmail] = useState(userInfo.email);
-  const [confirmationDialog, setConfirmationDialog] = useState(false)
+    const [confirmationDialog, setConfirmationDialog] = useState(false)
 
 	const updateUser = () => {
 		axios
@@ -61,7 +61,7 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
 			<Button
 				label="Delete Account"
 				className="p-button-danger"
-				onClick={deleteAccount}
+				onClick={() => setConfirmationDialog(true)}
 			/>
 		</span>
 	);
@@ -103,11 +103,11 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
             </div>
         }
             <Dialog
-				        className="confirmation-modal text-center"
+				className="confirmation-modal text-center"
                 header="Are you sure?"
                 visible={confirmationDialog}
                 onHide={() => setConfirmationDialog(false)}
-			      >
+			>
                 <Button label="Delete Account" className="p-button-danger" onClick={deleteAccount}/>
             </Dialog>
         </div>
