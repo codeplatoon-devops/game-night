@@ -32,20 +32,26 @@ export default function HomePage({ user }) {
 								</h1>
 								<hr />
 
-								<Button
-									label="Log In"
-									type="button"
-									className="mr-3 p-button"
-									style={{ margin: "15px" }}
-									onClick={handleLogInClick}
-								/>
-								<Button
-									label="Sign Up"
-									type="button"
-									className="p-button-outlined"
-									style={{ margin: "15px" }}
-									onClick={handleSignUpClick}
-								/>
+								{
+									!user &&
+									<Button
+										label="Log In"
+										type="button"
+										className="mr-3 p-button"
+										style={{ margin: "15px" }}
+										onClick={handleLogInClick}
+									/>
+								}
+								{
+									!user &&
+									<Button
+										label="Sign Up"
+										type="button"
+										className="p-button-outlined"
+										style={{ margin: "15px" }}
+										onClick={handleSignUpClick}
+									/>
+								}
 							</span>
 						</Row>
 						<Row xs={4}></Row>

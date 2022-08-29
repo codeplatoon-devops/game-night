@@ -112,95 +112,97 @@ export default function GroupRequestForm(props) {
 				visible={showInviteForm}
 				onHide={() => setShowInviteForm(false)}
 			>
-				<Form
-					onSubmit={handleSubmit}
-					initialValues={{
-						groupname: "",
-						friendemail: "",
-					}}
-					validate={validate}
-					render={({ handleSubmit }) => (
-						<>
-							<Field
-								name="groupname"
-								render={({ input, meta }) => (
-									<div className="field">
-										<span className="p-float-label">
-											<Dropdown
-												placeholder="Select Group"
-												{...input}
-												autoFocus
-												value={groupName}
-												options={groups}
-												onChange={(e) => {
-													setGroupName(e.value);
-													getTheCode(e.value);
-												}}
-												className={classNames({
-													"p-invalid":
-														isFormFieldValid(meta),
-													"form-group-invite-field": true,
-												})}
-											/>
-											<label
-												htmlFor="groupname"
-												className={classNames({
-													"p-error":
-														isFormFieldValid(meta),
-												})}
-											>
-												Group name*
-											</label>
-										</span>
-										{getFormErrorMessage(meta)}
-									</div>
-								)}
-							/>
-							<Field
-								className="field-group-request"
-								name="friendemail"
-								render={({ input, meta }) => (
-									<div className="field">
-										<span className="p-float-label">
-											<InputText
-												id="friendemail"
-												{...input}
-												value={friendEmail}
-												onChange={(e) =>
-													setFriendEmail(
-														e.target.value
-													)
-												}
-												className={classNames({
-													"p-invalid":
-														isFormFieldValid(meta),
-													"form-group-invite-field": true,
-												})}
-											/>
-											<label
-												htmlFor="friendemail"
-												className={classNames({
-													"p-error":
-														isFormFieldValid(meta),
-												})}
-											>
-												Friend's email*
-											</label>
-										</span>
-										{getFormErrorMessage(meta)}
-									</div>
-								)}
-							/>
+				{props.groups
+					? <Form
+						onSubmit={handleSubmit}
+						initialValues={{
+							groupname: "",
+							friendemail: "",
+						}}
+						validate={validate}
+						render={({ handleSubmit }) => (
+							<>
+								<Field
+									name="groupname"
+									render={({ input, meta }) => (
+										<div className="field">
+											<span className="p-float-label">
+												<Dropdown
+													placeholder="Select Group"
+													{...input}
+													autoFocus
+													value={groupName}
+													options={groups}
+													onChange={(e) => {
+														setGroupName(e.value);
+														getTheCode(e.value);
+													}}
+													className={classNames({
+														"p-invalid":
+															isFormFieldValid(meta),
+														"form-group-invite-field": true,
+													})}
+												/>
+												<label
+													htmlFor="groupname"
+													className={classNames({
+														"p-error":
+															isFormFieldValid(meta),
+													})}
+												>
+													Group name*
+												</label>
+											</span>
+											{getFormErrorMessage(meta)}
+										</div>
+									)}
+								/>
+								<Field
+									className="field-group-request"
+									name="friendemail"
+									render={({ input, meta }) => (
+										<div className="field">
+											<span className="p-float-label">
+												<InputText
+													id="friendemail"
+													{...input}
+													value={friendEmail}
+													onChange={(e) =>
+														setFriendEmail(
+															e.target.value
+														)
+													}
+													className={classNames({
+														"p-invalid":
+															isFormFieldValid(meta),
+														"form-group-invite-field": true,
+													})}
+												/>
+												<label
+													htmlFor="friendemail"
+													className={classNames({
+														"p-error":
+															isFormFieldValid(meta),
+													})}
+												>
+													Friend's email*
+												</label>
+											</span>
+											{getFormErrorMessage(meta)}
+										</div>
+									)}
+								/>
 
-							<Button
-								type="submit"
-								label="Send Group Invitation"
-								className="mt-2 btn-continue"
-								onClick={handleSubmit}
-							/>
-						</>
-					)}
-				/>
+								<Button
+									type="submit"
+									label="Send Group Invitation"
+									className="mt-2 btn-continue"
+									onClick={handleSubmit}
+								/>
+							</>
+						)}
+				/> : <p>You don't belong to any groups</p>
+				}
 			</Dialog>
 		</>
 	);
