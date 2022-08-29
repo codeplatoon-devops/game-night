@@ -17,7 +17,7 @@ export default function GroupsTable(props) {
 	if (props.groups) {
 		for (let group of props.groups) {
 			let tempGroup = {
-				groupName: group[0],
+				groupName: group[0]
 				// group[2] = all the other members
 			};
 			// let singleGroup= {
@@ -40,8 +40,12 @@ export default function GroupsTable(props) {
 		// console.log("clicked group");
 	};
 
-	const leaveGroup= function () {
-		axios.put()
+	const leaveGroup= function (name, code) {
+		axios.put('/group/leave', {code:code})
+			.then((response)=> {
+				console.log('leave group response.data', response.data)
+				props.setLeaveGroupInformation([name,code])
+			})
 	}
 
 	return (
@@ -69,6 +73,7 @@ export default function GroupsTable(props) {
 			})}
 		</TabView>
 	</div> */}
+		<Button onClick={()=>{leaveGroup("FourGroup1","57644060")}}>Leave Group</Button>
 	</div>
 	);
 }

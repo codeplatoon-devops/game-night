@@ -16,7 +16,9 @@ export default function LoginNavBar({ client }) {
 	const logout = function (event) {
 		event.preventDefault();
 		if (client) {
+			console.log('line 19 of logout, client should exist', client)
 			client.disconnectUser();
+			console.log('line 21 of logout, client should not exist', client)
 		}
 		axios
 			.post("/logout")
