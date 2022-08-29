@@ -242,13 +242,16 @@ def whoami(request):
             body = json.loads(request.body)
             request.user.email = body['email']
             request.user.username = body['username']
+            if body['first_name'] and body['last_name']:
+                request.user.first_name = body['first_name']
+                request.user.last_name = body['last_name']
             request.user.save()
             return JsonResponse({'updated user info': True})
         elif request.method == 'DELETE':
             request.user.delete()
             return JsonResponse({'deleted user': True})
         else:
-            data = serializers.serialize("json", [request.user], fields=['email', 'username'])
+            data = serializers.serialize("json", [request.user], fields=['email', 'username', 'first_name', 'last_name'])
             return HttpResponse(data)
     else:
         return JsonResponse({'user': False})

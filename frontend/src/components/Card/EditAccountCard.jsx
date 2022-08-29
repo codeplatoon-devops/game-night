@@ -11,6 +11,8 @@ import axios from 'axios';
 export default function EditAccountCard({ userInfo, setEdit, edit }) {
 	const [username, setUsername] = useState(userInfo.username);
 	const [email, setEmail] = useState(userInfo.email);
+    const [firstname, setFirstname] = useState(userInfo.first_name)
+    const [lastname, setLastname] = useState(userInfo.last_name)
     const [confirmationDialog, setConfirmationDialog] = useState(false)
 
 	const updateUser = () => {
@@ -18,6 +20,8 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
 			.put("whoami", {
 				username: username,
 				email: email,
+                first_name: firstname,
+                last_name: lastname,
 			})
 			.then((response) => {
 				// console.log("this is the response:", response);
@@ -74,6 +78,22 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
                 <Container>
                     <Row>
                         <Col>
+                            <span className="ml-2">First Name</span>
+                            <br></br>
+                            <InputText value={firstname} id="accountFirstname" onChange={(e) => setFirstname(e.target.value)} />
+                        </Col>
+                    </Row>
+                    <br></br>
+                    <Row>
+                        <Col>
+                            <span className="ml-2">Last Name</span>
+                            <br></br>
+                            <InputText value={lastname} id="accountLastname" onChange={(e) => setLastname(e.target.value)} />
+                        </Col>
+                    </Row>
+                    <br></br>
+                    <Row>
+                        <Col>
                             <span className="ml-2">Username</span>
                             <br></br>
                             <InputText value={username} id="accountUsername" onChange={(e) => setUsername(e.target.value)} />
@@ -93,6 +113,9 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
         : 
             <div className="center-page">
                 <Card title="Your Information" style={{ width: '25rem', marginBottom: '2em' }} footer={footer}>
+                    <p className='=m-0' style={{lineHeight: '1.5'}}>
+                        Name: {userInfo.first_name} {userInfo.last_name}
+                    </p>
                     <p className="m-0" style={{lineHeight: '1.5'}}>
                         Email: {userInfo.email}
                     </p>
