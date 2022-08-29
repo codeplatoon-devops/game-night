@@ -36,10 +36,10 @@ export const LoginForm = () => {
 		setFormData(data);
 		// event.preventDefault();
 		axios.put("/login", data).then((response) => {
-			console.log(
-				"YOU ARE IN THE REACT .THEN RESPONSE FROM LOGIN",
-				response
-			);
+			// console.log(
+			// 	"YOU ARE IN THE REACT .THEN RESPONSE FROM LOGIN",
+			// 	response
+			// );
 			if (response.data.success === "False") {
 				window.alert(response.data.reason);
 			} else {

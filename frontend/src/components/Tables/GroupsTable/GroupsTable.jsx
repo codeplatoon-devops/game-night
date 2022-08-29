@@ -12,7 +12,6 @@ export default function GroupsTable(props) {
 		for (let group of props.groups) {
 			let tempGroup = {
 				groupName: group[0],
-
 			};
 
 			groups.push(tempGroup);
@@ -21,7 +20,7 @@ export default function GroupsTable(props) {
 		groups = [{ groupName: "None" }];
 	}
 	const handleChange = () => {
-		console.log("clicked group");
+		// console.log("clicked group");
 	};
 
 	return (
