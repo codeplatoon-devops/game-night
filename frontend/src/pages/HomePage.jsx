@@ -20,7 +20,7 @@ export default function HomePage({ user }) {
 	};
 	return (
 		<div className="w-100">
-			<Container as={Row} className="ms-auto w-100">
+			<Container as={Row} className="mx-auto w-100">
 				<Row style={{ "margin-bottom": "30px" }}>
 					<Col xs={5}>
 						<Row xs={4}></Row>
