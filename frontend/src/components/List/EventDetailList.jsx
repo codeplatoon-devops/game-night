@@ -2,9 +2,19 @@ import './EventDetailList.css'
 import "primeflex/primeflex.css";
 import { Button } from 'primereact/button';
 import { Chip } from 'primereact/chip';
-import { StyleClass } from 'primereact/styleclass';
+// import { StyleClass } from 'primereact/styleclass';
+import axios from 'axios';
 
-export default function EventDetailList({eventDetail, games, startTime, endTime}){
+export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2}){
+
+    const handleClick = (game) => {
+        axios.get(`/games/${game}`)
+        .then((response) => {
+            setGameInfo(response)
+            setDisplayBasic2(true)
+        })
+        .catch((error) => console.log('error: ' + error))
+    }
 
 
  return(
@@ -30,7 +40,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime}
             <div className="text-500 w-6 md:w-2 font-medium">Games</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 {games.map((game, index) => (
-                    <Chip label={game} className="mr-2" />
+                    <Chip label={game} value={game} onClick={() => handleClick(game)} style={{cursor: 'pointer'}} className="mr-2" />
                 ))}            
             </div>
             <div className="w-6 md:w-2 flex justify-content-end">
