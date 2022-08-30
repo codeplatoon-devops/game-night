@@ -4,10 +4,12 @@ import { Dialog } from "primereact/dialog";
 import { Container, Col } from "react-bootstrap";
 import { Row as myRow } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 export default function LeaveEventButton({eventDetail, setLeaveChannelInformation}) {
     const [showMessage, setShowMessage] = useState(false);
+	const nav = useNavigate();
 
     const leaveEvent= function () {
         let event_id = eventDetail.id
@@ -20,6 +22,7 @@ export default function LeaveEventButton({eventDetail, setLeaveChannelInformatio
                 channelName += " Chatroom";
                 channelId += code.toString();
 				setLeaveChannelInformation([channelId, channelName])
+				nav("/events/");
 			})
 	}
 

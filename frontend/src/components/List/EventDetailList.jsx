@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import EventDetailButtons from '../EventDetails/EventDetailButtons';
 
-export default function EventDetailList({eventDetail, games, editable, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation}){
+export default function EventDetailList({eventDetail, games, editable, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation, attending}){
 
     const [eventStartDate, setEventStartDate] = useState(null); // start datetime
     const [eventEndDate, setEventEndDate] = useState(null); // end datetime
@@ -361,7 +361,7 @@ export default function EventDetailList({eventDetail, games, editable, startTime
             : null }
         </li>
     </ul>
-    {user && <div><EventDetailButtons eventDetail={eventDetail} user={user} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation}/></div>}
+    {user && <div><EventDetailButtons eventDetail={eventDetail} user={user} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation} attending={attending}/></div>}
 </div>
  )
 }
