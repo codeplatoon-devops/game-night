@@ -223,8 +223,8 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
 					<h5>Event Creation Successful!</h5>
 					<p style={{ lineHeight: 1.5 }}>
-						Your event has been saved under the code {eventCode}.
-						Please proceed to the next page for more details.
+						Your event has been created! Please proceed to the next
+						page for more details.
 					</p>
 				</div>
 			</Dialog>
