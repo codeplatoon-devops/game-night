@@ -11,7 +11,6 @@ import { Button } from 'primereact/button';
 import { Chip } from 'primereact/chip';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import './EventDetailList.css';
 import { useEffect, useState } from 'react';
 
@@ -19,7 +18,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import EventDetailButtons from '../EventDetails/EventDetailButtons';
 
-export default function EventDetailList({eventDetail, games, editable, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation, attending}){
+export default function EventDetailList({eventDetail, games, editable, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation, attending, setJoinEventInformation}){
 
     const [eventStartDate, setEventStartDate] = useState(null); // start datetime
     const [eventEndDate, setEventEndDate] = useState(null); // end datetime
@@ -361,7 +360,7 @@ export default function EventDetailList({eventDetail, games, editable, startTime
             : null }
         </li>
     </ul>
-    {user && <div><EventDetailButtons eventDetail={eventDetail} user={user} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation} attending={attending}/></div>}
+    {user && <div><EventDetailButtons eventDetail={eventDetail} user={user} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation} attending={attending} setJoinEventInformation={setJoinEventInformation}/></div>}
 </div>
  )
 }

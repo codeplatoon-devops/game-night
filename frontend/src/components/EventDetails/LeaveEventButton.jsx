@@ -16,12 +16,16 @@ export default function LeaveEventButton({eventDetail, setLeaveChannelInformatio
 		axios.put('/event/leave', {id:event_id})
 			.then((response)=> {
 				console.log('leave event response.data', response.data)
-                let channelId = "EventChatroom";
-                let channelName = eventDetail.name
-                let code = eventDetail.code
-                channelName += " Chatroom";
-                channelId += code.toString();
-				setLeaveChannelInformation([channelId, channelName])
+				if (eventDetail.chat_creation) {
+					console.log('chat is true for this event, user is leaving.')
+					let channelId = "EventChatroom";
+					let channelName = eventDetail.name
+					let code = eventDetail.code
+					channelName += " Chatroom";
+					channelId += code.toString();
+					setLeaveChannelInformation([channelId, channelName])
+
+				}
 				nav("/events/");
 			})
 	}
