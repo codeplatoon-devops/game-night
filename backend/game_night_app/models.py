@@ -111,6 +111,3 @@ class EventRequest(models.Model):
 
     def __str__(self):
         return f"ID: {self.id}, Event: {self.event}, Sender: {self.sender}, Receiver: {self.receiver}"
-
-    class Meta:
-        unique_together = (('sender', 'receiver'))
