@@ -40,9 +40,7 @@ export default function App() {
 
 	const whoAmI = async () => {
 		const response = await axios.get("/whoami");
-		const user =
-			response.data && response.data[0] && response.data[0].fields;
-		// user.id = (response.data[0].pk).toString()
+		const user = response.data && response.data[0] && response.data[0].fields;
 		user.id = response.data[0].fields.username.toString();
 		user.pk = response.data[0].pk
 		console.log("user from whoami?", user, response);
@@ -104,6 +102,7 @@ export default function App() {
 						element={<EventPage data={userEvent} />}
 					/>
 					<Route path="/allevents" element={<AllEventsPage />} />
+			
 					<Route
 						path="/events/create"
 						element={
@@ -114,6 +113,7 @@ export default function App() {
 							/>
 						}
 					/>
+					
 					<Route
 						path="/groups"
 						element={
