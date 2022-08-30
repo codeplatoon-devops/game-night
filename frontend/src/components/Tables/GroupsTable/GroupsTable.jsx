@@ -43,8 +43,18 @@ export default function GroupsTable(props) {
 		// console.log("clicked group");
 	};
 
-	const leaveGroup = function () {
-		axios.put();
+	const leaveGroup = function (name, code) {
+		axios.put("/group/leave", { code: code }).then((response) => {
+			console.log("leave group response.data", response.data);
+			let channelId = "GroupChatroom";
+			let channelName = name;
+			channelName += " Chatroom";
+			channelId += code.toString();
+			props.setLeaveChannelInformation([channelId, channelName]);
+			if (response.data.group_deleted) {
+				props.setDeleteChannelInformation([channelId, channelName]);
+			}
+		});
 	};
 
 	return (
@@ -73,6 +83,13 @@ export default function GroupsTable(props) {
 			})}
 		</TabView>
 	</div> */}
+			<Button
+				onClick={() => {
+					leaveGroup("FourGroup1", "57644060");
+				}}
+			>
+				Leave Group
+			</Button>
 		</div>
 	);
 }
