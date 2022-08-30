@@ -493,9 +493,12 @@ def allevents(request):
         return Response('error fetching events')
 
 @api_view(['POST'])
-def join_event(request):
-    try: 
-        event = Event.objects.get(code=request.data['code'])
+def join_event(request,id):
+    try:
+        code = str(id)
+        if len(code) < 8:
+            code = code.rjust(8,'0') 
+        event = Event.objects.get(code=code)
         user = AppUser.objects.get(pk = request.user.id)
         add_attending = EventUser(event = event, attendee=user)
         add_attending.full_clean()
@@ -539,18 +542,15 @@ def leave_event(request):
 
 @api_view(['GET'])
 def am_attending(request,id):
-    try:
-        code = str(id)
-        if len(code) < 8:
-            code = code.rjust(8,'0')
-        eventt = Event.objects.get(code=code)
-
-        test = EventUser.objects.get(attendee=request.user.id, event=eventt.id)
-        print('event',eventt)
-        print('test',test)
+    code = str(id)
+    if len(code) < 8:
+        code = code.rjust(8,'0')
+    eventt = Event.objects.get(code=code)
+    user_obj = AppUser.objects.get(pk=request.user.id)
+    test = EventUser.objects.filter(attendee=user_obj, event=eventt)
+    if test:
         return Response(True)
-    except:
-
+    else:
         return Response(False)
 
 @login_required

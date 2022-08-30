@@ -14,6 +14,8 @@ export default function EventDetailPage({user, setDeleteChannelInformation, setL
 	const [games, setGames] = useState(null);
 	const [startTime, setStartTime] = useState(null);
 	const [endTime, setEndTime] = useState(null);
+
+	const [attending, setAttending ] = useState(false);
 	
 	const [gameInfo, setGameInfo] = useState(null)
     const [displayBasic2, setDisplayBasic2] = useState(false);
@@ -32,12 +34,21 @@ export default function EventDetailPage({user, setDeleteChannelInformation, setL
 			}
 			setEventDetail(response.data[0])
 		})
-	}, [])
+
+		}, [])
+	
+	useEffect(() => {
+		axios
+		.get(`/amattending/${eventId}`)
+		.then((response)=> {
+			setAttending(response.data)
+	})
+	},[])
 
     return(
         <div style={{'margin-left': '20%', 'margin-right': '20%'}}>
 		{eventDetail &&
-			<EventDetailList eventDetail={eventDetail} editable={editable} user={user} games={games} startTime={startTime} endTime={endTime} setGameInfo={setGameInfo} setDisplayBasic2={setDisplayBasic2} ChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation}/>
+			<EventDetailList eventDetail={eventDetail} editable={editable} user={user} games={games} startTime={startTime} endTime={endTime} setGameInfo={setGameInfo} setDisplayBasic2={setDisplayBasic2} ChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation} attending={attending}/>
 			
 		}
 		{gameInfo &&
