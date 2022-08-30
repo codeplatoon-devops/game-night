@@ -152,22 +152,11 @@ export default function EventDetailList({eventDetail, games, editable, startTime
     <ul className="list-none p-0 m-0">
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Event Name</div>
-            {editName ?
-                <div className="w-full md:w-8 md:flex-order-0 flex-order-1">
-                    <InputText value={newName} onChange={(e) => setNewName(e.target.value)}/>
-                </div>
-            :
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{eventDetail.name}</div>
-            }
-            {editable ?
-            <div className="w-6 md:w-2 flex justify-content-end">
-                { editName ?
-                    <Button label="Update" icon="pi pi-check" className="p-button-text" onClick={updateEvent}/>
-                :
-                    <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditName(true)}/>
-                }
-            </div>
-            : null }
+        </li>
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Owner</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{eventDetail.username}</div>
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Description</div>
@@ -210,10 +199,6 @@ export default function EventDetailList({eventDetail, games, editable, startTime
                 }
             </div>
             : null }
-        </li>
-        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Owner</div>
-            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{eventDetail.username}</div>
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Location</div>
