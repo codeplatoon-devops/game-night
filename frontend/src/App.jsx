@@ -44,7 +44,8 @@ export default function App() {
 			response.data && response.data[0] && response.data[0].fields;
 		// user.id = (response.data[0].pk).toString()
 		user.id = response.data[0].fields.username.toString();
-		// console.log("user from whoami?", user, response);
+		user.pk = response.data[0].pk
+		console.log("user from whoami?", user, response);
 		setUser(user);
 	};
 
@@ -138,6 +139,7 @@ export default function App() {
 									setJoinEventInformation}
 									setDeleteChannelInformation={setDeleteChannelInformation}
 									setLeaveChannelInformation={setLeaveChannelInformation}
+									user={user}
 							/>
 						}
 					/>

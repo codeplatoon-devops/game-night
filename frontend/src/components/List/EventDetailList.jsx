@@ -7,7 +7,7 @@ import './EventDetailList.css';
 import axios from 'axios';
 import EventDetailButtons from '../EventDetails/EventDetailButtons';
 
-export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2, setDeleteChannelInformation, setLeaveChannelInformation}){
+export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2, setDeleteChannelInformation, setLeaveChannelInformation, user}){
 
     const handleClick = (game) => {
         axios.get(`/games/${game}`)
@@ -95,7 +95,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
             </div>
         </li>
     </ul>
-    <EventDetailButtons />
+    {user && <div><EventDetailButtons eventDetail={eventDetail} user={user} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation}/></div>}
 </div>
  )
 }

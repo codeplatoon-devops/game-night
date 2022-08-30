@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 function EventDetailButtons({user, eventDetail, setDeleteChannelInformation, setLeaveChannelInformation}) {
-
+    console.log('event detail', eventDetail)
     const deleteEvent= function () {
         let event_id = eventDetail.id
 		axios.put('/event/delete',{id:event_id})
@@ -12,6 +12,7 @@ function EventDetailButtons({user, eventDetail, setDeleteChannelInformation, set
                 let channelId = "EventChatroom";
                 let channelName = eventDetail.name
                 channelName += " Chatroom";
+                let code = eventDetail.code
                 channelId += code.toString();
                 setDeleteChannelInformation([channelId,channelName])
             })
@@ -24,6 +25,7 @@ function EventDetailButtons({user, eventDetail, setDeleteChannelInformation, set
 				console.log('leave event response.data', response.data)
                 let channelId = "EventChatroom";
                 let channelName = eventDetail.name
+                let code = eventDetail.code
                 channelName += " Chatroom";
                 channelId += code.toString();
 				setLeaveChannelInformation([channelId, channelName])

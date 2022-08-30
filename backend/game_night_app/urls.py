@@ -27,7 +27,7 @@ urlpatterns = [
     path('userevents/<int:id>', views.userevents_byid),
     path('streamapi', views.stream_api),
     path('events/create', views.create_event),
-    # path('event/delete', views.delete_event),
-    # path('event/leave', views.leave_event),
+    path('event/delete', views.delete_event),
+    path('event/leave', views.leave_event),
 
 ]
