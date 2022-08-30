@@ -492,6 +492,18 @@ def allevents(request):
     except:
         return Response('error fetching events')
 
+@api_view(['POST'])
+def join_event(request):
+    try: 
+        event = Event.objects.get(code=request.data['code'])
+        user = AppUser.objects.get(pk = request.user.id)
+        add_attending = EventUser(event = event, attendee=user)
+        add_attending.full_clean()
+        add_attending.save()
+        return Response('joined :D')
+    except:
+        return Response('You are already attending to this event')
+
 @login_required
 @api_view(['PUT'])
 def delete_event(request):
