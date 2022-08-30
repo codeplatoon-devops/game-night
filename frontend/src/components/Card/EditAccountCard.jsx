@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 
-export default function EditAccountCard({ userInfo, setEdit, edit, setDeleteUserChannels }) {
+export default function EditAccountCard({ userInfo, setEdit, edit, setDeleteUserChannels, client }) {
 	const [username, setUsername] = useState(userInfo.username);
 	const [email, setEmail] = useState(userInfo.email);
     const [firstname, setFirstname] = useState(userInfo.first_name)
@@ -31,11 +31,17 @@ export default function EditAccountCard({ userInfo, setEdit, edit, setDeleteUser
 		// .catch((error) => console.log(error));
 	};
 
-	const deleteAccount = async (event) => {
-		event.preventDefault();
+    const deleteUser = async ()=> {
+        let res = await axios.delete("/whoami");
+        window.location.replace("/");
+    }
+	const deleteAccount = (event) => {
+        event.preventDefault();
         setDeleteUserChannels(true)
-		let res = await axios.delete("/whoami");
-		window.location.replace("/");
+        window.location.replace("/#/chatroom")
+        setTimeout(()=>{
+            deleteUser()
+        },600)
 	};
 
 	const editAccount = () => {

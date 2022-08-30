@@ -40,6 +40,7 @@ function Chatroom({
 	const filters = { type: "messaging", members: { $in: [user_id] } };
 	// puts the channel with the lattest message at the top
 	const sort = { last_message_at: -1 };
+	console.log('line 43 chatroom deleteUserChannels', deleteUserChannels)
 
 	useEffect(() => {
 		whoAmI();
@@ -114,11 +115,13 @@ function Chatroom({
 
 	const deleteAllUserChannels = async () => {
 		if (deleteUserChannels) {
-			let user_id = deleteUsername
-			const filter = { type: 'messaging', members: { $in: [user_id] } };
+			console.log('in delete all User Channels')
+			let delete_user_id = deleteUsername
+			console.log('userid is',delete_user_id)
+			const filter = { type: 'messaging', members: { $in: [delete_user_id] } };
 			const channels= await client.queryChannels(filter);
 			console.log('users channels to be deleted', channels)
-			channels.map((channel)=> {channel.delete()})
+			channels.map((channel)=> {channel.removeMembers([user_id])})
 			console.log('channels should be empty now', channels)
 		}
 	}
@@ -148,7 +151,8 @@ function Chatroom({
 	}, [deleteChannelInformation]);
 
 	useEffect(() => {
-		deleteAllUserChannels();
+		console.log('in delete user channels use effect, deleteUserChannels', deleteUserChannels)
+		deleteAllUserChannels()
 	}, [deleteUserChannels]);
 
 	const joinGroupChannel = async () => {
@@ -274,12 +278,6 @@ function Chatroom({
 
 export default Chatroom;
 
-// How to send a message:
-// const message = await channel.sendMessage({
-//     text: "Did you already see the trailer? https://www.youtube.com/watch?v=wA38GCX4Tb0",
-//   });
-
-//   return message;
 
 // 17:00: https://www.youtube.com/watch?v=WjvZL0bnbIE&list=PLQ8qxSPP3G8D-qYKE0TnyyPlZ69HGebmM&index=26&t=8s
 // https://dashboard.getstream.io/app/1205628/chat/rolespermissions/roles

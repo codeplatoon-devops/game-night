@@ -10,16 +10,19 @@ function DeleteEventButton({eventDetail, setDeleteChannelInformation}) {
     const [showMessage, setShowMessage] = useState(false);
 
     const deleteEvent= function () {
+		let event_chat= eventDetail.chat_creation
         let event_id = eventDetail.id
 		axios.put('/event/delete',{id:event_id})
 			.then((response)=> {
 				console.log('delete event response.data', response.data)
-                let channelId = "EventChatroom";
-                let channelName = eventDetail.name
-                channelName += " Chatroom";
-                let code = eventDetail.code
-                channelId += code.toString();
-                setDeleteChannelInformation([channelId,channelName])
+				if (event_chat) {
+					let channelId = "EventChatroom";
+					let channelName = eventDetail.name
+					channelName += " Chatroom";
+					let code = eventDetail.code
+					channelId += code.toString();
+					setDeleteChannelInformation([channelId,channelName])
+				}
             })
     }
 
@@ -36,8 +39,9 @@ function DeleteEventButton({eventDetail, setDeleteChannelInformation}) {
 					className="p-button-outlined"
 					autoFocus
 					onClick={() =>
-						deleteEvent()
-					}
+						{deleteEvent();
+						hideDetails();
+					}}
 				/>
 			</Col>
 			<Col></Col>
