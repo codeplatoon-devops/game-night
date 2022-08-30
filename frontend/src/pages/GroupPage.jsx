@@ -10,8 +10,6 @@ import { PendingInvitesGroups } from "../components/Tables/PendingInvitesGroups/
 import GroupCreationForm from "../components/Forms/GroupCreationForm/GroupCreationForm";
 import GroupsTable from "../components/Tables/GroupsTable/GroupsTable";
 import GroupRequestForm from "../components/Forms/GroupRequestForm/GroupRequestForm";
-// import CreateChannel from "../components/Chatroom/CreateChannel";
-// import { useChatContext } from "stream-chat-react"
 
 export default function GroupPage({
 	user,
@@ -21,18 +19,15 @@ export default function GroupPage({
 	client,
 	setClient,
 }) {
-	// const {client, setActiveChannel} = useChatContext()
 	const nav = useNavigate();
 	const [createGroupInformation, setCreateGroupInformation] = useState(null);
 	const [joinGroupInformation, setJoinGroupInformation] = useState(null);
 	const [groups, setGroups] = useState(null);
 	const [groupInvitations, setGroupInvitations] = useState(null);
 	const [showChat, setShowChat] = useState(false);
-	// const [groupCreated, setGroupCreated] = useState(false)
 
 	const viewGroups = function () {
 		axios.get("/groups/view").then((response) => {
-			// console.log("view groups response.data", response.data);
 			if (response.data.success == "True") {
 				let new_groups =
 					response && response.data && response.data.groups;
@@ -44,15 +39,11 @@ export default function GroupPage({
 
 	const viewGroupInvitations = function () {
 		axios.get("/group/request/view").then((response) => {
-			// console.log("view group invitations response.data", response.data);
 			if (response.data.success == "True") {
 				let new_invitations =
 					response && response.data && response.data.group_requests;
 				setGroupInvitations(new_invitations);
 			}
-			// else{
-			// 	console.log('')
-			// }
 		});
 	};
 
@@ -95,19 +86,11 @@ export default function GroupPage({
 											setJoinGroupInformation
 										}
 									/>
-								) : (
-									<PendingInvitesGroups
-										data={null}
-										// join={user.email}
-										// need sender email, group name, group code
-									/>
-								)}
+								) : null}
 							</Col>
 						</Row>
 					</Col>
 					<Col md={8}>
-						{/* {groups || groupInformation
-						? */}
 						{showChat && (
 							<Chatroom
 								user={user}
@@ -120,9 +103,6 @@ export default function GroupPage({
 								whoAmI={whoAmI}
 							/>
 						)}
-
-						{/* : null
-						} */}
 					</Col>
 				</Row>
 			</Container>

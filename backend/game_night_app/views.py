@@ -443,6 +443,15 @@ def userevents_byid(request,id):
     else:
         return JsonResponse({'user': False})
     
+@login_required    
+@api_view(['GET'])
+def group_details(request, id):
+    if request.user.is_authenticated:
+        code = str(id)
+        group = Group.objects.filter(code=code)
+        return Response(group)
+    else:
+        return JsonResponse({'user': False})
 
 @api_view(['GET'])
 def allevents(request):

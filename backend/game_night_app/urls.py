@@ -24,6 +24,8 @@ urlpatterns = [
     path('userevents', views.userevents),
     # gives information for one specific event based on event code
     path('userevents/<int:id>', views.userevents_byid),
+    # group details
+    path('groupdetails/<int:id>', views.group_details),
     path('streamapi', views.stream_api),
     path('events/create', views.create_event),
 
