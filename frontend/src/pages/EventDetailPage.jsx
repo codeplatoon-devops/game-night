@@ -5,7 +5,7 @@ import axios from 'axios';
 import EventDetailList from "../components/List/EventDetailList"
 import DialogGame from "../components/Dialog/DialogGame"
 
-export default function EventDetailPage({user, setDeleteChannelInformation, setLeaveChannelInformation}) {
+export default function EventDetailPage({user, setDeleteChannelInformation, setLeaveChannelInformation, setJoinEventInformation}) {
 
 	let { eventId } = useParams();
 
@@ -48,7 +48,7 @@ export default function EventDetailPage({user, setDeleteChannelInformation, setL
     return(
         <div style={{'margin-left': '20%', 'margin-right': '20%'}}>
 		{eventDetail &&
-			<EventDetailList eventDetail={eventDetail} editable={editable} user={user} games={games} startTime={startTime} endTime={endTime} setGameInfo={setGameInfo} setDisplayBasic2={setDisplayBasic2} ChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation} attending={attending}/>
+			<EventDetailList eventDetail={eventDetail} editable={editable} user={user} games={games} startTime={startTime} endTime={endTime} setGameInfo={setGameInfo} setDisplayBasic2={setDisplayBasic2} ChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation} attending={attending} setJoinEventInformation={setJoinEventInformation}/>
 			
 		}
 		{gameInfo &&
