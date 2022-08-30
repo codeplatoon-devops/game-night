@@ -23,24 +23,13 @@ export default function GroupsTable(props) {
 				// group[2] = all the other members
 				groupMembers: group[2],
 			};
-			// let singleGroup= {
-			// 	title: group[0],
-			// 	content: `Other Members: ${group[2]}`
-			// }
-			// console.log('singleGroup:',singleGroup)
 			groups.push(tempGroup);
-			// scrollGroups.push(singleGroup);
 		}
 	} else {
 		groups = [{ groupName: "None" }];
 	}
 	const handleChange = () => {
 		console.log(selectedGroup);
-		// get members of the group
-		// return(
-		// <Button onClick={leaveGroup}>Leave Group</Button>
-		// )
-		// console.log("clicked group");
 	};
 
 	const leaveGroup = function (name, code) {
@@ -71,23 +60,11 @@ export default function GroupsTable(props) {
 					listStyle={{ maxHeight: "250px" }}
 				/>
 			</Panel>
-			{/* <div className="card">
-		<h5>Your Groups</h5>
-		<TabView activeIndex={activeIndex2} onTabChange={(e) => setActiveIndex2(e.index)} scrollable>
-			{scrollGroups.map((tab) => {
-				return (
-					<TabPanel key={tab.title} header={tab.title}>
-						<p>{tab.content}</p>
-					</TabPanel>
-				)
-			})}
-		</TabView>
-	</div> */}
 			<Button
 				onClick={() => {
 					leaveGroup("FourGroup1", "57644060");
 				}}
-			>
+				>
 				Leave Group
 			</Button>
 		</div>
