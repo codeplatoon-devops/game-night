@@ -44,13 +44,13 @@ export default function GroupsTable(props) {
 		axios.put('/group/leave', {code:code})
 			.then((response)=> {
 				console.log('leave group response.data', response.data)
-				props.setLeaveGroupInformation([name,code])
+				let channelId = "GroupChatroom";
+				let channelName = name
+				channelName += " Chatroom";
+				channelId += code.toString();
+				props.setLeaveChannelInformation([channelId,channelName])
 				if (response.data.group_deleted) {
-					let channelId = "GroupChatroom";
-					let channelName = name
-					channelName += " Chatroom";
-					channelId += code.toString();
-					setDeleteChannelInformation([channelId,channelName])
+					props.setDeleteChannelInformation([channelId,channelName])
 				}
 			})
 	}
@@ -84,3 +84,8 @@ export default function GroupsTable(props) {
 	</div>
 	);
 }
+
+
+
+
+

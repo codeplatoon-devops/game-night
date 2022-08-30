@@ -35,6 +35,7 @@ export default function App() {
 	const [createEventInformation, setCreateEventInformation] = useState(null);
 	const [joinEventInformation, setJoinEventInformation] = useState(null);
 	const [deleteChannelInformation, setDeleteChannelInformation] = useState(null)
+	const [leaveChannelInformation, setLeaveChannelInformation] = useState(null)
 	const [client, setClient] = useState(null);
 
 	const whoAmI = async () => {
@@ -43,7 +44,8 @@ export default function App() {
 			response.data && response.data[0] && response.data[0].fields;
 		// user.id = (response.data[0].pk).toString()
 		user.id = response.data[0].fields.username.toString();
-		// console.log("user from whoami?", user, response);
+		user.pk = response.data[0].pk
+		console.log("user from whoami?", user, response);
 		setUser(user);
 	};
 
@@ -93,14 +95,13 @@ export default function App() {
 								createEventInformation={createEventInformation}
 								joinEventInformation={joinEventInformation}
 								deleteChannelInformation={deleteChannelInformation}
+								leaveChannelInformation={leaveChannelInformation}
 							/>
 						}
 					/>
 					<Route
 						path="/events"
-						element={<EventPage data={userEvent} 
-						setDeleteChannelInformation={setDeleteChannelInformation}
-						deleteChannelInformation={deleteChannelInformation}/>}
+						element={<EventPage data={userEvent} />}
 					/>
 					<Route path="/allevents" element={<AllEventsPage />} />
 					<Route
@@ -123,6 +124,10 @@ export default function App() {
 								whoAmI={whoAmI}
 								client={client}
 								setClient={setClient}
+								deleteChannelInformation={deleteChannelInformation}
+								leaveChannelInformation={leaveChannelInformation}
+								setDeleteChannelInformation={setDeleteChannelInformation}
+								setLeaveChannelInformation={setLeaveChannelInformation}
 							/>
 						}
 					/>
@@ -131,8 +136,10 @@ export default function App() {
 						element={
 							<EventDetailPage
 								setJoinEventInformation={
-									setJoinEventInformation
-								}
+									setJoinEventInformation}
+									setDeleteChannelInformation={setDeleteChannelInformation}
+									setLeaveChannelInformation={setLeaveChannelInformation}
+									user={user}
 							/>
 						}
 					/>

@@ -473,6 +473,42 @@ def allevents(request):
     except:
         return Response('error fetching events')
 
+@login_required
+@api_view(['PUT'])
+def delete_event(request):
+    event_id = request.data['id']
+    event = Event.objects.get(id = event_id)
+    print('in delete event, event is', event)
+    try:
+        # requests = EventRequest.objects.filter(event=event)
+        # if not requests:
+        #     event.delete()
+        # else:
+        #     requests.delete()
+        event.delete()
+        print('event should now be deleted', event)
+        return JsonResponse({'deleted event': 'True'})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to delete event: {str(e)}'})
+
+@login_required
+@api_view(['PUT'])
+def leave_event(request):
+    user = AppUser.objects.get(email = request.user.email)
+    event_id = request.data['id']
+    event = Event.objects.get(id = event_id)
+    event_user = EventUser.objects.get(attendee= user, event = event)
+    print('in leave event, event user is', event_user)
+    try:
+        event_user.delete()
+        print('event user should now be deleted', event_user)
+        return JsonResponse({'left event': 'True'})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to leave event: {str(e)}'})
+
+        
+
+
 # Alisha comments:
 
 # source ~/VEnvirons/GameNight/bin/activate

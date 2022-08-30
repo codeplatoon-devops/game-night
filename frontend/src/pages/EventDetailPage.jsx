@@ -10,7 +10,7 @@ import EventDetailList from "../components/List/EventDetailList"
 import DialogGame from "../components/Dialog/DialogGame"
 
 
-export default function EventDetailPage() {
+export default function EventDetailPage({user, setDeleteChannelInformation, setLeaveChannelInformation}) {
 	let { eventId } = useParams();
 
 	const [eventDetail, setEventDetail] = useState(null);
@@ -27,7 +27,7 @@ export default function EventDetailPage() {
 		axios
 		.get(`/userevents/${eventId}`)
 		.then((response) => {
-			console.log('event creation response.data', response.data)
+			console.log('get events response.data', response.data)
 			setGames(Object.values(response.data[0].games))
 			setStartTime(moment(response.data[0].start_time).format('MMMM Do YYYY, h:mm a'))
 			setEndTime(moment(response.data[0].end_time).format('MMMM Do YYYY, h:mm a'))
@@ -38,7 +38,7 @@ export default function EventDetailPage() {
     return(
         <div style={{'margin-left': '20%', 'margin-right': '20%'}}>
 		{eventDetail &&
-			<EventDetailList eventDetail={eventDetail} games={games} startTime={startTime} endTime={endTime} setGameInfo={setGameInfo} setDisplayBasic2={setDisplayBasic2}/>
+			<EventDetailList eventDetail={eventDetail} games={games} startTime={startTime} endTime={endTime} setGameInfo={setGameInfo} setDisplayBasic2={setDisplayBasic2} user={user} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation}/>
 		}
 		{gameInfo &&
 			<DialogGame gameInfo={gameInfo} displayBasic2={displayBasic2} setDisplayBasic2={setDisplayBasic2}/>
