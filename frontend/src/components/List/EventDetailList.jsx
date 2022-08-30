@@ -5,8 +5,9 @@ import { Chip } from 'primereact/chip';
 import './EventDetailList.css';
 // import { StyleClass } from 'primereact/styleclass';
 import axios from 'axios';
+import EventDetailButtons from '../EventDetails/EventDetailsButtons';
 
-export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2}){
+export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2, setDeleteChannelInformation, setLeaveChannelInformation}){
 
     const handleClick = (game) => {
         axios.get(`/games/${game}`)
@@ -94,6 +95,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
             </div>
         </li>
     </ul>
+    <EventDetailButtons />
 </div>
  )
 }

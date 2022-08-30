@@ -385,9 +385,9 @@ def leave_group(request):
         if not group_members:
             group.delete()
             print('group should be deleted', group)
-            return JsonResponse({'success': 'True', 'action': 'user left group', 'group deleted':'True'})
+            return JsonResponse({'success': 'True', 'action': 'user left group', 'group_deleted':'True'})
         else:
-            return JsonResponse({'success': 'True', 'action': 'user left group', 'group deleted':'False'})
+            return JsonResponse({'success': 'True', 'action': 'user left group', 'group_deleted':'False'})
     except Exception as e:
         return JsonResponse({'success': "False", 'reason': str(e)})
 

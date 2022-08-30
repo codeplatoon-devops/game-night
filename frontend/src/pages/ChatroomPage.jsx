@@ -13,6 +13,8 @@ export default function ChatroomPage({
 	setClient,
 	createEventInformation,
 	joinEventInformation,
+	leaveChannelInformation,
+	deleteChannelInformation
 }) {
 	const [showChatroom, setShowChatroom] = useState(false);
 
@@ -77,6 +79,8 @@ export default function ChatroomPage({
 							setClient={setClient}
 							createEventInformation={createEventInformation}
 							joinEventInformation={joinEventInformation}
+							leaveChannelInformation={leaveChannelInformation}
+							deleteChannelInformation={deleteChannelInformation}
 						/>
 					)}
 				</div>

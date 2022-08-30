@@ -34,6 +34,8 @@ export default function App() {
 	const [userEvent, setUserEvent] = useState([]);
 	const [createEventInformation, setCreateEventInformation] = useState(null);
 	const [joinEventInformation, setJoinEventInformation] = useState(null);
+	const [deleteChannelInformation, setDeleteChannelInformation] = useState(null)
+	const [leaveChannelInformation, setLeaveChannelInformation] = useState(null)
 	const [client, setClient] = useState(null);
 
 	const whoAmI = async () => {
@@ -91,6 +93,8 @@ export default function App() {
 								setClient={setClient}
 								createEventInformation={createEventInformation}
 								joinEventInformation={joinEventInformation}
+								deleteChannelInformation={deleteChannelInformation}
+								leaveChannelInformation={leaveChannelInformation}
 							/>
 						}
 					/>
@@ -119,6 +123,10 @@ export default function App() {
 								whoAmI={whoAmI}
 								client={client}
 								setClient={setClient}
+								deleteChannelInformation={deleteChannelInformation}
+								leaveChannelInformation={leaveChannelInformation}
+								setDeleteChannelInformation={setDeleteChannelInformation}
+								setLeaveChannelInformation={setLeaveChannelInformation}
 							/>
 						}
 					/>
@@ -127,8 +135,9 @@ export default function App() {
 						element={
 							<EventDetailPage
 								setJoinEventInformation={
-									setJoinEventInformation
-								}
+									setJoinEventInformation}
+									setDeleteChannelInformation={setDeleteChannelInformation}
+									setLeaveChannelInformation={setLeaveChannelInformation}
 							/>
 						}
 					/>
