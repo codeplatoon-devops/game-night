@@ -9,13 +9,14 @@ import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import NewPassword from './NewPassword';
 
-export default function EditAccountCard({ userInfo, setEdit, edit }) {
+export default function EditAccountCard({ userInfo, setEdit, edit, setDeleteUserChannels, client }) {
 	const [username, setUsername] = useState(userInfo.username);
 	const [email, setEmail] = useState(userInfo.email);
     const [firstname, setFirstname] = useState(userInfo.first_name)
     const [lastname, setLastname] = useState(userInfo.last_name)
     const [confirmationDialog, setConfirmationDialog] = useState(false)
     const [passwordDialog, setPasswordDialog] = useState(false)
+
 
 	const updateUser = () => {
 		axios
@@ -32,10 +33,17 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
 		// .catch((error) => console.log(error));
 	};
 
-	const deleteAccount = async (event) => {
-		event.preventDefault();
-		let res = await axios.delete("/whoami");
-		window.location.replace("/");
+    const deleteUser = async ()=> {
+        let res = await axios.delete("/whoami");
+        window.location.replace("/");
+    }
+	const deleteAccount = (event) => {
+        event.preventDefault();
+        setDeleteUserChannels(true)
+        window.location.replace("/#/chatroom")
+        setTimeout(()=>{
+            deleteUser()
+        },600)
 	};
 
 	const editAccount = () => {

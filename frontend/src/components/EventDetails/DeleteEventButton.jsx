@@ -10,19 +10,24 @@ function DeleteEventButton({ eventDetail, setDeleteChannelInformation }) {
 	const [showMessage, setShowMessage] = useState(false);
 	const nav = useNavigate();
 
-	const deleteEvent = function () {
-		let event_id = eventDetail.id;
-		axios.put("/event/delete", { id: event_id }).then((response) => {
-			console.log("delete event response.data", response.data);
-			let channelId = "EventChatroom";
-			let channelName = eventDetail.name;
-			channelName += " Chatroom";
-			let code = eventDetail.code;
-			channelId += code.toString();
-			setDeleteChannelInformation([channelId, channelName]);
-			nav("/events/");
-		});
-	};
+    const deleteEvent= function () {
+		let event_chat= eventDetail.chat_creation
+        let event_id = eventDetail.id
+		axios.put('/event/delete',{id:event_id})
+			.then((response)=> {
+				console.log('delete event response.data', response.data)
+				if (event_chat) {
+					let channelId = "EventChatroom";
+					let channelName = eventDetail.name
+					channelName += " Chatroom";
+					let code = eventDetail.code
+					channelId += code.toString();
+					setDeleteChannelInformation([channelId,channelName])
+				}
+				nav("/events/");
+            })
+    }
+
 
 	const hideDetails = () => {
 		setShowMessage(false);
@@ -36,7 +41,10 @@ function DeleteEventButton({ eventDetail, setDeleteChannelInformation }) {
 					icon="pi pi-trash"
 					className="p-button-outlined"
 					autoFocus
-					onClick={() => deleteEvent()}
+					onClick={() =>
+						{deleteEvent();
+						hideDetails();
+					}}
 				/>
 			</Col>
 			<Col></Col>
