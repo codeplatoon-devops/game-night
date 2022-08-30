@@ -28,7 +28,8 @@ function Chatroom({
 	joinEventInformation,
 	client,
 	setClient,
-    leaveGroupInformation,
+    leaveChannelInformation,
+	deleteChannelInformation,
 }) {
 	// const [client, setClient] = useState(null)
 	// const [userId, setUserId] = useState(null)
@@ -63,35 +64,32 @@ function Chatroom({
 		}
 	};
 
-    const leaveGroupChannel = async () => {
+    const leaveChannel = async () => {
         // https://getstream.io/chat/docs/react/channel_members/
-        if (client && leaveGroupInformation) {
-			let channelId = "GroupChatroom";
-			let channelName = leaveGroupInformation[0];
-			channelName += " Chatroom";
-			channelId += leaveGroupInformation[1].toString();
+        if (client && leaveChannelInformation) {
+			let channelId = deleteChannelInformation[0]
+			let channelName = deleteChannelInformation[1];
 			let user_id = user.id.toString();
-			const leave_group_channel = client.channel("messaging", channelId, {
+			const leave_channel = client.channel("messaging", channelId, {
 				name: channelName,
 			});
-			await leave_group_channel.removeMembers([user_id])
+			await leave_channel.removeMembers([user_id])
 		} else {
-			setTimeout(leaveGroupChannel, 2000);
+			setTimeout(leaveChannel, 2000);
 		}
     }
 
     const deleteChannel = async () => {
         // https://getstream.io/chat/docs/react/channel_members/
-        if (client && leaveGroupInformation) {
+        if (client && deleteChannelInformation) {
 			let channelId = deleteChannelInformation[0]
 			let channelName = deleteChannelInformation[1];
-			let user_id = user.id.toString();
 			const delete_channel = client.channel("messaging", channelId, {
 				name: channelName,
 			});
 			await delete_channel.delete()
 		} else {
-			setTimeout(leaveGroupChannel, 2000);
+			setTimeout(deleteChannel, 2000);
 		}
     }
 
@@ -125,8 +123,8 @@ function Chatroom({
 	}, [joinGroupInformation]);
 
     useEffect(() => {
-		leaveGroupChannel();
-	}, [leaveGroupInformation]);
+		leaveChannel();
+	}, [leaveChannelInformation]);
 
 	useEffect(() => {
 		joinEventChannel();

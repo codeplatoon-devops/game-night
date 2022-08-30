@@ -447,19 +447,37 @@ def userevents(request):
     else:
         return JsonResponse({'user': False})
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 def userevents_byid(request,id):
     if request.user.is_authenticated:
-        code = str(id)
-        if len(code) < 8:
-            code = code.rjust(8,'0')
-        # removed the check that only lets you get events you own
-        events_user = AppUser.objects.filter(event=OuterRef('pk'))
-        events = Event.objects.filter(code=code).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))).annotate(username=Subquery(events_user.values('username'))) 
-        # data = serializers.serialize('json',events)
-        data = events.values()
-        return Response(data)
-        # return HttpResponse(data, content_type='application/json')
+        if request.method =='GET':
+            code = str(id)
+            if len(code) < 8:
+                code = code.rjust(8,'0')
+            # removed the check that only lets you get events you own
+            events_user = AppUser.objects.filter(event=OuterRef('pk'))
+            events = Event.objects.filter(code=code).annotate(peeps=Count('events')).annotate(owner_true =Count(Case(When(owner=request.user.id, then=1),output_field=IntegerField()))).annotate(username=Subquery(events_user.values('username'))) 
+            # data = serializers.serialize('json',events)
+            data = events.values()
+            return Response(data)
+        elif request.method == 'PUT':
+            body = json.loads(request.body)
+            code = str(id)
+            event = Event.objects.get(code = code)
+            event.name = body['name']
+            event.description = body['description']
+            event.games = body['games']
+            event.address_1 = body['address_1']
+            event.address_2 = body['address_2']
+            event.city = body['city']
+            event.state = body['state']
+            event.zip_code = body['zip_code']
+            event.max_attendees = body['max_attendees']
+            event.private = body['private']
+            event.start_time = body['start_time']
+            event.end_time = body['end_time']
+            event.save()
+            return JsonResponse({'event updated': True})
     else:
         return JsonResponse({'user': False})
     
@@ -473,6 +491,42 @@ def allevents(request):
         return HttpResponse(data, content_type='application/json')
     except:
         return Response('error fetching events')
+
+@login_required
+@api_view(['PUT'])
+def delete_event(request):
+    event_id = request.data['id']
+    event = Event.objects.get(id = event_id)
+    print('in delete event, event is', event)
+    try:
+        # requests = EventRequest.objects.filter(event=event)
+        # if not requests:
+        #     event.delete()
+        # else:
+        #     requests.delete()
+        event.delete()
+        print('event should now be deleted', event)
+        return JsonResponse({'deleted event': 'True'})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to delete event: {str(e)}'})
+
+@login_required
+@api_view(['PUT'])
+def leave_event(request):
+    user = AppUser.objects.get(email = request.user.email)
+    event_id = request.data['id']
+    event = Event.objects.get(id = event_id)
+    event_user = EventUser.objects.get(attendee= user, event = event)
+    print('in leave event, event user is', event_user)
+    try:
+        event_user.delete()
+        print('event user should now be deleted', event_user)
+        return JsonResponse({'left event': 'True'})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to leave event: {str(e)}'})
+
+        
+
 
 # Alisha comments:
 
