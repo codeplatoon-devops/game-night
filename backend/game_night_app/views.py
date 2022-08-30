@@ -242,13 +242,16 @@ def whoami(request):
             body = json.loads(request.body)
             request.user.email = body['email']
             request.user.username = body['username']
+            if body['first_name'] and body['last_name']:
+                request.user.first_name = body['first_name']
+                request.user.last_name = body['last_name']
             request.user.save()
             return JsonResponse({'updated user info': True})
         elif request.method == 'DELETE':
             request.user.delete()
             return JsonResponse({'deleted user': True})
         else:
-            data = serializers.serialize("json", [request.user], fields=['email', 'username'])
+            data = serializers.serialize("json", [request.user], fields=['email', 'username', 'first_name', 'last_name'])
             return HttpResponse(data)
     else:
         return JsonResponse({'user': False})
@@ -347,21 +350,48 @@ def decline_group(request):
 def view_groups(request):
     user = AppUser.objects.get(email = request.user.email)
     # groups = Group.objects.filter(member = user)
+    user_id = user.id
     groups = user.members.all()
-    print('GROUPS HERE LINE 309', groups)
     if len(groups)>0:
         list_of_groups=[]
         for group in groups:
-            list_of_groups.append([group.name, group.code])
-            print('group.name here', group.name)
-        print('list of groups line 314:', list_of_groups)
+            # print('group.member355', group.member.values())
+            # group_members = group.member.all
+            all_members=group.member.all()
+            other_members=[]
+            for member in all_members:
+                if member.id != user_id:
+                    other_members.append(member.username)
+            list_of_groups.append([group.name, group.code, other_members])
+        # print('line 364 list of groups', list_of_groups)
         try:
-            # sends back just the group name
             return JsonResponse({'success': 'True', 'groups': list_of_groups})
         except Exception as e:
             return JsonResponse({'success': "False", 'reason': str(e)})
     else:
         return JsonResponse({'success': "False", 'reason': "you don't have any groups"})
+
+@login_required
+@api_view(['PUT'])
+def leave_group(request):
+    user = AppUser.objects.get(email = request.user.email)
+    group_code = request.data['code']
+    group = Group.objects.get(code=group_code)
+    print('users groups before delete', user.members.all())
+    try:
+        user.members.remove(group)
+        print(f'user should no longer be in group --group {group.id} should now be deleted', user.members.all)
+        group_members = group.member.all()
+        if not group_members:
+            group.delete()
+            print('group should be deleted', group)
+            return JsonResponse({'success': 'True', 'action': 'user left group', 'group_deleted':'True'})
+        else:
+            return JsonResponse({'success': 'True', 'action': 'user left group', 'group_deleted':'False'})
+    except Exception as e:
+        return JsonResponse({'success': "False", 'reason': str(e)})
+
+
 
 
 @api_view(['POST'])   
@@ -460,6 +490,42 @@ def allevents(request):
         return HttpResponse(data, content_type='application/json')
     except:
         return Response('error fetching events')
+
+@login_required
+@api_view(['PUT'])
+def delete_event(request):
+    event_id = request.data['id']
+    event = Event.objects.get(id = event_id)
+    print('in delete event, event is', event)
+    try:
+        # requests = EventRequest.objects.filter(event=event)
+        # if not requests:
+        #     event.delete()
+        # else:
+        #     requests.delete()
+        event.delete()
+        print('event should now be deleted', event)
+        return JsonResponse({'deleted event': 'True'})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to delete event: {str(e)}'})
+
+@login_required
+@api_view(['PUT'])
+def leave_event(request):
+    user = AppUser.objects.get(email = request.user.email)
+    event_id = request.data['id']
+    event = Event.objects.get(id = event_id)
+    event_user = EventUser.objects.get(attendee= user, event = event)
+    print('in leave event, event user is', event_user)
+    try:
+        event_user.delete()
+        print('event user should now be deleted', event_user)
+        return JsonResponse({'left event': 'True'})
+    except Exception as e:
+        return JsonResponse({'success': "false", 'reason': f'failed to leave event: {str(e)}'})
+
+        
+
 
 # Alisha comments:
 

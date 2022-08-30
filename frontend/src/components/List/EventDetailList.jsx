@@ -17,8 +17,9 @@ import { useEffect, useState } from 'react';
 
 // import { StyleClass } from 'primereact/styleclass';
 import axios from 'axios';
+import EventDetailButtons from '../EventDetails/EventDetailButtons';
 
-export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2, user}){
+export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation}){
 
     const [editable, setEditable] = useState(false);
     const [editName, setEditName] = useState(false);
@@ -103,7 +104,6 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
 		{ label: "Private", value: true },
 		{ label: "Public", value: false },
 	];
-
 
     const handleClick = (game) => {
         axios.get(`/games/${game}`)
@@ -375,6 +375,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
             : null }
         </li>
     </ul>
+    {user && <div><EventDetailButtons eventDetail={eventDetail} user={user} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation}/></div>}
 </div>
  )
 }
