@@ -3,7 +3,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -27,7 +27,7 @@ export default function App() {
 	let { eventId } = useParams();
 
 	axios.defaults.headers.common["X-CSRFToken"] = getCSRFToken();
-
+	let firstRender = useRef(true)
 	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
 	const [token, setToken] = useState(null);
 	const [stream, setStream] = useState(null);
@@ -40,6 +40,7 @@ export default function App() {
 	const [deleteUsername, setDeleteUsername] = useState(null)
 	const [deleteUserChannels, setDeleteUserChannels] = useState(false)
 
+
 	const whoAmI = async () => {
 		const response = await axios.get("/whoami");
 		const user =
@@ -49,7 +50,12 @@ export default function App() {
 		user.pk = response.data[0].pk
 		console.log("user from whoami?", user, response);
 		setUser(user);
-		setDeleteUsername(user.id)
+		if (firstRender.current) {
+			let newusername=""
+			newusername+=user.id
+			setDeleteUsername(newusername)
+			firstRender.current=false
+		}
 	};
 
 	useEffect(() => {
@@ -83,7 +89,7 @@ export default function App() {
 					<Route path="/" element={<HomePage user={user} />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/account" element={<AccountPage setDeleteUserChannels={setDeleteUserChannels}/>} />
+					<Route path="/account" element={<AccountPage setDeleteUserChannels={setDeleteUserChannels} client={client}/>} />
 					<Route
 						path="/chatroom"
 						element={
