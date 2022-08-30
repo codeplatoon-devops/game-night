@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./EventsTable.css";
 
 export const AllEventsTable = () => {
+	let navigate = useNavigate();
+
 	const [event, setEvent] = useState(null);
+	const [selectedEvent, setSelectedEvent] = useState(null)
 
 	useEffect(() => {
 		axios
@@ -24,6 +28,12 @@ export const AllEventsTable = () => {
 				// console.log("ERROR", error);
 			});
 	}, []);
+	
+	useEffect(() => {
+		if(selectedEvent != null) {
+			navigate(`/events/${selectedEvent.code}`);
+		}
+	}, [selectedEvent])
 
 	const addressBodyTemplate = (rowData) => {
 		return rowData.address_1 + " " + rowData.address_2;
@@ -46,9 +56,9 @@ export const AllEventsTable = () => {
 		let date = convertUTCDateToLocalDate(new Date(rowData.start_time));
 		return date.toLocaleString();
 	};
-
+	
 	return (
-		<DataTable value={event} paginator rows={15} filterDisplay="menu">
+		<DataTable value={event} paginator rows={15} filterDisplay="menu" selectionMode="single" selection={selectedEvent} onSelectionChange={e => setSelectedEvent(e.value)} >
 			<Column field="name" header="Event Name" filter />
 			<Column field="category" header="Category" filter />
 			{/* <Column field="description" header="Description" filter /> */}

@@ -1,48 +1,49 @@
-import { Button } from "primereact/button";
-import axios from "axios";
+import DeleteEventButton from "./DeleteEventButton"
+import LeaveEventButton from "./LeaveEventButton"
 
 
 function EventDetailButtons({user, eventDetail, setDeleteChannelInformation, setLeaveChannelInformation}) {
-    const deleteEvent= function () {
-        let event_id = eventDetail.id
-		axios.put('/event/delete',{id:event_id})
-			.then((response)=> {
-				console.log('delete event response.data', response.data)
-                let channelId = "EventChatroom";
-                let channelName = eventDetail.name
-                channelName += " Chatroom";
-                let code = eventDetail.code
-                channelId += code.toString();
-                setDeleteChannelInformation([channelId,channelName])
-            })
-    }
 
-    const leaveEvent= function () {
-        let event_id = eventDetail.id
-		axios.put('/event/leave', {id:event_id})
-			.then((response)=> {
-				console.log('leave event response.data', response.data)
-                let channelId = "EventChatroom";
-                let channelName = eventDetail.name
-                let code = eventDetail.code
-                channelName += " Chatroom";
-                channelId += code.toString();
-				setLeaveChannelInformation([channelId, channelName])
-			})
-	}
+    //const deleteEvent= function () {
+      //  let event_id = eventDetail.id
+		//axios.put('/event/delete',{id:event_id})
+			//.then((response)=> {
+				//console.log('delete event response.data', response.data)
+          //      let channelId = "EventChatroom";
+            //    let channelName = eventDetail.name
+              //  channelName += " Chatroom";
+                //let code = eventDetail.code
+              //  channelId += code.toString();
+                //setDeleteChannelInformation([channelId,channelName])
+          //  })
+   // }
+
+   // const leaveEvent= function () {
+      //  let event_id = eventDetail.id
+		//axios.put('/event/leave', {id:event_id})
+			//.then((response)=> {
+				//console.log('leave event response.data', response.data)
+                //let channelId = "EventChatroom";
+              //  let channelName = eventDetail.name
+            //    let code = eventDetail.code
+          //      channelName += " Chatroom";
+        //        channelId += code.toString();
+			//	setLeaveChannelInformation([channelId, channelName])
+		//	})
+//	}
 
     if (eventDetail.owner_id === user.pk) {
         return(
             <>
-            {/* <Button label="Edit" icon="pi pi-pencil" className="p-button-text" /> */}
-            <Button label="Delete" icon="pi pi-trash" className="p-button-text" onClick={deleteEvent}/>
+            <DeleteEventButton setDeleteChannelInformation={setDeleteChannelInformation} eventDetail={eventDetail}/>
             </>
         )
 
     }
     else {
+        // if user is not the event onwer they can leave
         return(
-            <Button label="Leave" icon="pi pi-eject" className="p-button-text" onClick={leaveEvent}/>
+            <LeaveEventButton setLeaveChannelInformation={setLeaveChannelInformation} eventDetail={eventDetail}/>
         )
     }
 
