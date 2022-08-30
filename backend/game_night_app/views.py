@@ -13,7 +13,7 @@ import random
 import requests
 import os
 from dotenv import load_dotenv
-from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
+from .models import AppUser, Event, EventRequest, EventUser, Group, GroupRequest
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 from itertools import chain, count
@@ -224,11 +224,12 @@ def sign_up(request):
             newUser = AppUser.objects.create_user(username=username, password=password, email=user_email, last_name= last_name, first_name=first_name)
             newUser.full_clean
             newUser.save()
-            list= GroupList(owner = newUser)
-            list.full_clean
-            list.save()
-            print('new user is', newUser, 'new list is', list)
-            return JsonResponse({'success': "True", 'action': 'user signed up, list created'})
+            # list= GroupList(owner = newUser)
+            # list.full_clean
+            # list.save()
+            # print('new user is', newUser, 'new list is', list)
+            print('new user is', newUser)
+            return JsonResponse({'success': "True", 'action': 'user signed up'})
     except Exception as e:
         return JsonResponse({'success': "False", 'reason': str(e)})
 
