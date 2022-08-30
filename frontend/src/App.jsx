@@ -135,8 +135,7 @@ export default function App() {
 						path="/events/:eventId"
 						element={
 							<EventDetailPage
-								setJoinEventInformation={
-									setJoinEventInformation}
+								setJoinEventInformation={setJoinEventInformation}
 									setDeleteChannelInformation={setDeleteChannelInformation}
 									setLeaveChannelInformation={setLeaveChannelInformation}
 									user={user}
