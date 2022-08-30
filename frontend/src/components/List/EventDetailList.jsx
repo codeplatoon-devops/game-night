@@ -21,6 +21,8 @@ import EventDetailButtons from '../EventDetails/EventDetailButtons';
 
 export default function EventDetailList({eventDetail, games, editable, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation}){
 
+    const [eventStartDate, setEventStartDate] = useState(null); // start datetime
+    const [eventEndDate, setEventEndDate] = useState(null); // end datetime
 
     const [editName, setEditName] = useState(false);
     const [editDesc, setEditDesc] = useState(false);
@@ -122,7 +124,6 @@ export default function EventDetailList({eventDetail, games, editable, startTime
         setEditPrivate(false);
         setEditLocation(false);
         setEditTime(false);
-        console.log('new games', newGames)
         axios.put(`/userevents/${eventDetail.code}`, {
             name: newName,
             description: newDesc,
@@ -270,11 +271,15 @@ export default function EventDetailList({eventDetail, games, editable, startTime
                         dateFormat="mm/dd/yy"
                         mask="99/99/9999"
                         showIcon
+                        minDate={new Date()}
+                        maxDate={eventEndDate}
                         hourFormat="12"
                         showTime={true}									
                         value={startTime}
-                        onChange={(e) =>
-                            setNewStartTime(e.target.value)
+                        onChange={(e) => {
+                            setNewStartTime(e.target.value);
+                            setEventStartDate(e.target.value);
+                            }
                         }
                         showButtonBar
                     />
@@ -287,6 +292,7 @@ export default function EventDetailList({eventDetail, games, editable, startTime
                         mask="99/99/9999"
                         showIcon
                         hourFormat="12"
+                        minDate={eventStartDate}
                         showTime={true}	
                         value={endTime}
                         onChange={(e) =>
