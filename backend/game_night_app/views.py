@@ -111,15 +111,15 @@ def view_group_request(request):
 @api_view(['POST'])
 def create_event_request(request):
     print('YOU ARE IN THE POST REQUEST ON DJANGO FOR CREATE EVENT REQUESTS')
-    user_email = request.user.email
+    owner_id = request.data['owner_id']
     friend_email = request.data['friend_email']
     # could give the user the option to invite an entire group or send to specific individuals - the rest of the code assumes an individual, but I would think group invite would be nice as well.
     # would need if we do group invite:::: group_code = request.data['group_code']
-    event_code = request.data['event_code']
-    print('USER EMAIL', user_email, 'FRIEND EMAIL', friend_email, 'event code', event_code)
-    user = AppUser.objects.get(email = user_email)
+    event_id = request.data['event_id']
+    # print('USER EMAIL', user_email, 'FRIEND EMAIL', friend_email, 'event code', event_code)
+    user = AppUser.objects.get(id = owner_id)
     friend = AppUser.objects.get(email = friend_email)
-    event = Event.objects.get(code = event_code)
+    event = Event.objects.get(id = event_id)
     if event is not None:
         if friend is not None:
             try:
@@ -129,6 +129,7 @@ def create_event_request(request):
                 print('YOUR NEW EVENT REQUEST IS', event_request)
                 return JsonResponse({'success': "True", 'action':'event request created in db'})
             except Exception as e:
+                print(str(e))
                 return JsonResponse({'success': "False", 'reason': f'something went wrong, {str(e)}'})
         else:
             return JsonResponse({'success': "False", 'reason': 'friends account doesnt exist'})
