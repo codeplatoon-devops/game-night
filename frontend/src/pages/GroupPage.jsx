@@ -76,10 +76,19 @@ export default function GroupPage({
 	} else {
 		return (
 			<Container>
-				<h1>Group Page</h1>
+				<h1 style={{ margin: "20px" }}>Group Page</h1>
+				<hr />
 				<Row>
 					<Col md={4}>
-						<GroupsTable groups={groups} setLeaveChannelInformation={setLeaveChannelInformation} setDeleteChannelInformation={setDeleteChannelInformation}/>
+						<GroupsTable
+							groups={groups}
+							setLeaveChannelInformation={
+								setLeaveChannelInformation
+							}
+							setDeleteChannelInformation={
+								setDeleteChannelInformation
+							}
+						/>
 						{/* Group creation */}
 						<GroupCreationForm
 							viewGroups={viewGroups}
@@ -121,8 +130,12 @@ export default function GroupPage({
 								client={client}
 								setClient={setClient}
 								whoAmI={whoAmI}
-								leaveChannelInformation={leaveChannelInformation}
-								deleteChannelInformation={deleteChannelInformation}
+								leaveChannelInformation={
+									leaveChannelInformation
+								}
+								deleteChannelInformation={
+									deleteChannelInformation
+								}
 							/>
 						)}
 
