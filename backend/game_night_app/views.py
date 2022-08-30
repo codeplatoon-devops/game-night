@@ -2,7 +2,7 @@ from audioop import add
 from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from .serializers import EventSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -525,8 +525,19 @@ def leave_event(request):
     except Exception as e:
         return JsonResponse({'success': "false", 'reason': f'failed to leave event: {str(e)}'})
 
-        
-
+@login_required
+@api_view(['PUT'])
+def new_password(request):
+    if request.user.is_authenticated:    
+        if request.method == "PUT":
+            try:
+                body = json.loads(request.body)
+                request.user.set_password(body['new_password'])
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                return JsonResponse({'success': True})
+            except Exception as e:
+                return JsonResponse({'success': False, 'reason': str(e)})
 
 # Alisha comments:
 
