@@ -525,6 +525,22 @@ def leave_event(request):
     except Exception as e:
         return JsonResponse({'success': "false", 'reason': f'failed to leave event: {str(e)}'})
 
+@api_view(['GET'])
+def am_attending(request,id):
+    try:
+        code = str(id)
+        if len(code) < 8:
+            code = code.rjust(8,'0')
+        eventt = Event.objects.get(code=code)
+
+        test = EventUser.objects.get(attendee=request.user.id, event=eventt.id)
+        print('event',eventt)
+        print('test',test)
+        return Response(True)
+    except:
+
+        return Response(False)
+
 @login_required
 @api_view(['PUT'])
 def new_password(request):
