@@ -1,7 +1,6 @@
 .card {
 	margin-top: 2rem;
 	text-align: center;
-	width: 50vw;
 }
 .field {
 	margin-bottom: 1.5rem;
@@ -9,9 +8,10 @@
 .form-signup-card {
 	padding: 2em;
 	margin: 2rem;
+	width: 100%;
 }
 
 .form-signup {
 	justify-content: center;
-	margin: auto;
+	width: 100%;
 }

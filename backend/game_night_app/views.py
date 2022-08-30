@@ -2,7 +2,7 @@ from audioop import add
 from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from .serializers import EventSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -492,6 +492,21 @@ def allevents(request):
     except:
         return Response('error fetching events')
 
+@api_view(['POST'])
+def join_event(request,id):
+    try:
+        code = str(id)
+        if len(code) < 8:
+            code = code.rjust(8,'0') 
+        event = Event.objects.get(code=code)
+        user = AppUser.objects.get(pk = request.user.id)
+        add_attending = EventUser(event = event, attendee=user)
+        add_attending.full_clean()
+        add_attending.save()
+        return Response('joined :D')
+    except:
+        return Response('You are already attending to this event')
+
 @login_required
 @api_view(['PUT'])
 def delete_event(request):
@@ -525,8 +540,32 @@ def leave_event(request):
     except Exception as e:
         return JsonResponse({'success': "false", 'reason': f'failed to leave event: {str(e)}'})
 
-        
+@api_view(['GET'])
+def am_attending(request,id):
+    code = str(id)
+    if len(code) < 8:
+        code = code.rjust(8,'0')
+    eventt = Event.objects.get(code=code)
+    user_obj = AppUser.objects.get(pk=request.user.id)
+    test = EventUser.objects.filter(attendee=user_obj, event=eventt)
+    if test:
+        return Response(True)
+    else:
+        return Response(False)
 
+@login_required
+@api_view(['PUT'])
+def new_password(request):
+    if request.user.is_authenticated:    
+        if request.method == "PUT":
+            try:
+                body = json.loads(request.body)
+                request.user.set_password(body['new_password'])
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                return JsonResponse({'success': True})
+            except Exception as e:
+                return JsonResponse({'success': False, 'reason': str(e)})
 
 # Alisha comments:
 

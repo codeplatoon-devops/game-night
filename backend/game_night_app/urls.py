@@ -28,6 +28,9 @@ urlpatterns = [
     path('streamapi', views.stream_api),
     path('events/create', views.create_event),
     path('event/delete', views.delete_event),
+    path('event/join/<int:id>', views.join_event),
+    path('amattending/<int:id>', views.am_attending),
     path('event/leave', views.leave_event),
+    path('new_password', views.new_password),
 
 ]

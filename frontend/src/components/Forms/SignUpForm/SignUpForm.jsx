@@ -115,8 +115,8 @@ export const SignUpForm = () => {
 					</p>
 				</div>
 			</Dialog>
-			<Col></Col>
-			<Col>
+			<Col xs={3}></Col>
+			<Col xs={6}>
 				<div className="flex justify-content-center form-signup">
 					<div className="p-card form-signup-card">
 						<h2 className="text-center">Sign Up</h2>
@@ -307,7 +307,7 @@ export const SignUpForm = () => {
 					</div>
 				</div>
 			</Col>
-			<Col></Col>
+			<Col xs={3}></Col>
 		</Container>
 	);
 };

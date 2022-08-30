@@ -34,8 +34,10 @@ export default function App() {
 	const [userEvent, setUserEvent] = useState([]);
 	const [createEventInformation, setCreateEventInformation] = useState(null);
 	const [joinEventInformation, setJoinEventInformation] = useState(null);
-	const [deleteChannelInformation, setDeleteChannelInformation] = useState(null)
-	const [leaveChannelInformation, setLeaveChannelInformation] = useState(null)
+	const [deleteChannelInformation, setDeleteChannelInformation] =
+		useState(null);
+	const [leaveChannelInformation, setLeaveChannelInformation] =
+		useState(null);
 	const [client, setClient] = useState(null);
 	const [deleteUsername, setDeleteUsername] = useState(null)
 	const [deleteUserChannels, setDeleteUserChannels] = useState(false)
@@ -45,9 +47,8 @@ export default function App() {
 		const response = await axios.get("/whoami");
 		const user =
 			response.data && response.data[0] && response.data[0].fields;
-		// user.id = (response.data[0].pk).toString()
 		user.id = response.data[0].fields.username.toString();
-		user.pk = response.data[0].pk
+		user.pk = response.data[0].pk;
 		console.log("user from whoami?", user, response);
 		setUser(user);
 		if (firstRender.current) {
@@ -83,7 +84,11 @@ export default function App() {
 	return (
 		<div className="App">
 			<Router>
-				{user ? <LoginNavBar client={client} /> : <LogoutNavBar />}
+				{user ? (
+					<LoginNavBar client={client} whoAmI={whoAmI} />
+				) : (
+					<LogoutNavBar />
+				)}
 				<div className="separator"></div>
 				<Routes>
 					<Route path="/" element={<HomePage user={user} />} />
@@ -115,6 +120,7 @@ export default function App() {
 						element={<EventPage data={userEvent} />}
 					/>
 					<Route path="/allevents" element={<AllEventsPage />} />
+
 					<Route
 						path="/events/create"
 						element={
@@ -125,6 +131,7 @@ export default function App() {
 							/>
 						}
 					/>
+
 					<Route
 						path="/groups"
 						element={
@@ -135,10 +142,18 @@ export default function App() {
 								whoAmI={whoAmI}
 								client={client}
 								setClient={setClient}
-								deleteChannelInformation={deleteChannelInformation}
-								leaveChannelInformation={leaveChannelInformation}
-								setDeleteChannelInformation={setDeleteChannelInformation}
-								setLeaveChannelInformation={setLeaveChannelInformation}
+								deleteChannelInformation={
+									deleteChannelInformation
+								}
+								leaveChannelInformation={
+									leaveChannelInformation
+								}
+								setDeleteChannelInformation={
+									setDeleteChannelInformation
+								}
+								setLeaveChannelInformation={
+									setLeaveChannelInformation
+								}
 							/>
 						}
 					/>
@@ -146,10 +161,16 @@ export default function App() {
 						path="/events/:eventId"
 						element={
 							<EventDetailPage
-								setJoinEventInformation={setJoinEventInformation}
-									setDeleteChannelInformation={setDeleteChannelInformation}
-									setLeaveChannelInformation={setLeaveChannelInformation}
-									user={user}
+								setJoinEventInformation={
+									setJoinEventInformation
+								}
+								setDeleteChannelInformation={
+									setDeleteChannelInformation
+								}
+								setLeaveChannelInformation={
+									setLeaveChannelInformation
+								}
+								user={user}
 							/>
 						}
 					/>

@@ -6,28 +6,22 @@ import { Row as myRow } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function DeleteEventButton({ eventDetail, setDeleteChannelInformation }) {
+function JoinEventButton({ eventDetail, attending}) {
 	const [showMessage, setShowMessage] = useState(false);
 	const nav = useNavigate();
 
-    const deleteEvent= function () {
-		let event_chat= eventDetail.chat_creation
-        let event_id = eventDetail.id
-		axios.put('/event/delete',{id:event_id})
-			.then((response)=> {
-				console.log('delete event response.data', response.data)
-				if (event_chat) {
-					let channelId = "EventChatroom";
-					let channelName = eventDetail.name
-					channelName += " Chatroom";
-					let code = eventDetail.code
-					channelId += code.toString();
-					setDeleteChannelInformation([channelId,channelName])
-				}
-				nav("/events/");
-            })
-    }
-
+	const joinEvent = function () {
+		let event_id = eventDetail.id;
+		axios.post(`/event/join/${eventDetail.code}`).then((response) => {
+			console.log("join event response.data", response.data);
+			let channelId = "EventChatroom";
+			let channelName = eventDetail.name;
+			channelName += " Chatroom";
+			let code = eventDetail.code;
+			channelId += code.toString();
+			nav("/events/");
+		});
+	};
 
 	const hideDetails = () => {
 		setShowMessage(false);
@@ -37,14 +31,11 @@ function DeleteEventButton({ eventDetail, setDeleteChannelInformation }) {
 		<Container as={myRow} className="flex justify-content-center">
 			<Col>
 				<Button
-					label="Delete"
+					label="Join"
 					icon="pi pi-trash"
 					className="p-button-outlined"
 					autoFocus
-					onClick={() =>
-						{deleteEvent();
-						hideDetails();
-					}}
+					onClick={() => joinEvent()}
 				/>
 			</Col>
 			<Col></Col>
@@ -62,7 +53,7 @@ function DeleteEventButton({ eventDetail, setDeleteChannelInformation }) {
 	return (
 		<>
 			<Button
-				label="Delete"
+				label="Join"
 				icon="pi pi-trash"
 				className="p-button-text"
 				onClick={() => {
@@ -74,15 +65,14 @@ function DeleteEventButton({ eventDetail, setDeleteChannelInformation }) {
 				visible={showMessage}
 				onHide={hideDetails}
 				showHeader={true}
-				header="Delete Event?"
+				header="Join Event?"
 				footer={dialogFooter}
 				breakpoints={{ "960px": "80vw" }}
 				style={{ width: "30vw" }}
 			>
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
 					<p style={{ lineHeight: 1.5 }}>
-						Deleting this event will delete it for all attendees,
-						are you sure you want to delete this event?
+						Join the event?
 					</p>
 				</div>
 			</Dialog>
@@ -90,4 +80,4 @@ function DeleteEventButton({ eventDetail, setDeleteChannelInformation }) {
 	);
 }
 
-export default DeleteEventButton;
+export default JoinEventButton;

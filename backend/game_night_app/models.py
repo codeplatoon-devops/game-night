@@ -74,6 +74,9 @@ class EventUser(models.Model):
 
     def __str__(self):
         return f"ID: {self.id}, Attendee: {self.attendee}"
+    
+    class Meta:
+        unique_together = (('attendee', 'event'))
 
 class Group(models.Model):
     name=models.CharField(max_length=32, blank=False,default=None, unique=True, verbose_name="Name")

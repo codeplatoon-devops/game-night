@@ -19,9 +19,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import EventDetailButtons from '../EventDetails/EventDetailButtons';
 
-export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation}){
+export default function EventDetailList({eventDetail, games, editable, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation, attending}){
 
-    const [editable, setEditable] = useState(false);
+    const [eventStartDate, setEventStartDate] = useState(null); // start datetime
+    const [eventEndDate, setEventEndDate] = useState(null); // end datetime
+
     const [editName, setEditName] = useState(false);
     const [editDesc, setEditDesc] = useState(false);
     const [editGames, setEditGames] = useState(false);
@@ -114,12 +116,6 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
         .catch((error) => console.log('error: ' + error))
     }
 
-    useEffect(() => {
-        if(user.id === eventDetail.username){
-            setEditable(true);
-        }
-    }, [])
-
     const updateEvent = () => {
         setEditName(false);
         setEditDesc(false);
@@ -128,7 +124,6 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
         setEditPrivate(false);
         setEditLocation(false);
         setEditTime(false);
-        console.log('new games', newGames)
         axios.put(`/userevents/${eventDetail.code}`, {
             name: newName,
             description: newDesc,
@@ -144,6 +139,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
             end_time: newEndTime
         })
         .then((response) => {
+            window.location.reload()
             console.log(response)
         })
         .catch((error) => console.log(error))
@@ -157,22 +153,11 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
     <ul className="list-none p-0 m-0">
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Event Name</div>
-            {editName ?
-                <div className="w-full md:w-8 md:flex-order-0 flex-order-1">
-                    <InputText value={newName} onChange={(e) => setNewName(e.target.value)}/>
-                </div>
-            :
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{eventDetail.name}</div>
-            }
-            {editable ?
-            <div className="w-6 md:w-2 flex justify-content-end">
-                { editName ?
-                    <Button label="Update" icon="pi pi-check" className="p-button-text" onClick={updateEvent}/>
-                :
-                    <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditName(true)}/>
-                }
-            </div>
-            : null }
+        </li>
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Owner</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{eventDetail.username}</div>
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Description</div>
@@ -215,10 +200,6 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
                 }
             </div>
             : null }
-        </li>
-        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Owner</div>
-            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{eventDetail.username}</div>
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Location</div>
@@ -275,11 +256,15 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
                         dateFormat="mm/dd/yy"
                         mask="99/99/9999"
                         showIcon
+                        minDate={new Date()}
+                        maxDate={eventEndDate}
                         hourFormat="12"
                         showTime={true}									
                         value={startTime}
-                        onChange={(e) =>
-                            setNewStartTime(e.target.value)
+                        onChange={(e) => {
+                            setNewStartTime(e.target.value);
+                            setEventStartDate(e.target.value);
+                            }
                         }
                         showButtonBar
                     />
@@ -292,6 +277,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
                         mask="99/99/9999"
                         showIcon
                         hourFormat="12"
+                        minDate={eventStartDate}
                         showTime={true}	
                         value={endTime}
                         onChange={(e) =>
@@ -375,7 +361,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
             : null }
         </li>
     </ul>
-    {user && <div><EventDetailButtons eventDetail={eventDetail} user={user} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation}/></div>}
+    {user && <div><EventDetailButtons eventDetail={eventDetail} user={user} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation} attending={attending}/></div>}
 </div>
  )
 }
