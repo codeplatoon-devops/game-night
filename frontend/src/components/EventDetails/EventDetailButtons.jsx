@@ -3,7 +3,6 @@ import axios from "axios";
 
 
 function EventDetailButtons({user, eventDetail, setDeleteChannelInformation, setLeaveChannelInformation}) {
-    console.log('event detail', eventDetail)
     const deleteEvent= function () {
         let event_id = eventDetail.id
 		axios.put('/event/delete',{id:event_id})
