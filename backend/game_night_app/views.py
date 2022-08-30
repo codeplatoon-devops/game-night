@@ -13,7 +13,7 @@ import random
 import requests
 import os
 from dotenv import load_dotenv
-from .models import AppUser, Event, EventGame, EventRequest, EventUser, Group, GroupList, GroupRequest
+from .models import AppUser, Event, EventRequest, EventUser, Group, GroupRequest
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 from itertools import chain, count
