@@ -1,6 +1,7 @@
 import DeleteEventButton from "./DeleteEventButton"
 import LeaveEventButton from "./LeaveEventButton"
 import JoinEventButton from "./JoinEventButton"
+import InviteButton from "./InviteEventButton"
 
 
 function EventDetailButtons({user, eventDetail, setDeleteChannelInformation, setJoinEventInformation, setLeaveChannelInformation, attending}) {
@@ -8,7 +9,8 @@ function EventDetailButtons({user, eventDetail, setDeleteChannelInformation, set
     if (eventDetail.owner_id === user.pk) {
         return(
             <>
-            <DeleteEventButton setDeleteChannelInformation={setDeleteChannelInformation} eventDetail={eventDetail}/>
+              <DeleteEventButton setDeleteChannelInformation={setDeleteChannelInformation} eventDetail={eventDetail}/>
+              <InviteButton eventDetail={eventDetail} />
             </>
         )
 

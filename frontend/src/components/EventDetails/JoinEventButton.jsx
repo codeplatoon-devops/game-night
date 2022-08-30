@@ -32,7 +32,7 @@ function JoinEventButton({ eventDetail, attending, setJoinEventInformation}) {
 			<Col>
 				<Button
 					label="Join"
-					icon="pi pi-trash"
+					icon="pi pi-user-plus"
 					className="p-button-outlined"
 					autoFocus
 					onClick={() => joinEvent()}
@@ -54,7 +54,7 @@ function JoinEventButton({ eventDetail, attending, setJoinEventInformation}) {
 		<>
 			<Button
 				label="Join"
-				icon="pi pi-trash"
+				icon="pi pi-user-plus"
 				className="p-button-text"
 				onClick={() => {
 					setShowMessage(true);
