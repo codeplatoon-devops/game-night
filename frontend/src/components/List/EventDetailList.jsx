@@ -5,7 +5,7 @@ import { Chip } from 'primereact/chip';
 import './EventDetailList.css';
 // import { StyleClass } from 'primereact/styleclass';
 import axios from 'axios';
-import EventDetailButtons from '../EventDetails/EventDetailsButtons';
+import EventDetailButtons from '../EventDetails/EventDetailButtons';
 
 export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2, setDeleteChannelInformation, setLeaveChannelInformation}){
 

@@ -123,7 +123,7 @@ function Chatroom({
 	}, [joinGroupInformation]);
 
     useEffect(() => {
-		leaveChannelInformation();
+		leaveChannel();
 	}, [leaveChannelInformation]);
 
 	useEffect(() => {
