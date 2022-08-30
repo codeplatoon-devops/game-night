@@ -8,12 +8,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 
-export default function EditAccountCard({ userInfo, setEdit, edit }) {
+export default function EditAccountCard({ userInfo, setEdit, edit, setDeleteUserChannels }) {
 	const [username, setUsername] = useState(userInfo.username);
 	const [email, setEmail] = useState(userInfo.email);
     const [firstname, setFirstname] = useState(userInfo.first_name)
     const [lastname, setLastname] = useState(userInfo.last_name)
     const [confirmationDialog, setConfirmationDialog] = useState(false)
+    
 
 	const updateUser = () => {
 		axios
@@ -32,6 +33,7 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
 
 	const deleteAccount = async (event) => {
 		event.preventDefault();
+        setDeleteUserChannels(true)
 		let res = await axios.delete("/whoami");
 		window.location.replace("/");
 	};

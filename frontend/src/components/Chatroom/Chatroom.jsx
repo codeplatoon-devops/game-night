@@ -30,6 +30,8 @@ function Chatroom({
 	setClient,
     leaveChannelInformation,
 	deleteChannelInformation,
+	deleteUserChannels,
+	deleteUsername,
 }) {
 	// const [client, setClient] = useState(null)
 	// const [userId, setUserId] = useState(null)
@@ -67,8 +69,8 @@ function Chatroom({
     const leaveChannel = async () => {
         // https://getstream.io/chat/docs/react/channel_members/
         if (client && leaveChannelInformation) {
-			let channelId = deleteChannelInformation[0]
-			let channelName = deleteChannelInformation[1];
+			let channelId = leaveChannelInformation[0]
+			let channelName = leaveChannelInformation[1];
 			let user_id = user.id.toString();
 			const leave_channel = client.channel("messaging", channelId, {
 				name: channelName,
@@ -110,6 +112,17 @@ function Chatroom({
 		}
 	};
 
+	const deleteAllUserChannels = async () => {
+		if (deleteUserChannels) {
+			let user_id = deleteUsername
+			const filter = { type: 'messaging', members: { $in: [user_id] } };
+			const channels= await client.queryChannels(filter);
+			console.log('users channels to be deleted', channels)
+			channels.map((channel)=> {channel.delete()})
+			console.log('channels should be empty now', channels)
+		}
+	}
+
 	useEffect(() => {
 		createGroupChannel();
 	}, [createGroupInformation]);
@@ -133,6 +146,10 @@ function Chatroom({
     useEffect(() => {
 		deleteChannel();
 	}, [deleteChannelInformation]);
+
+	useEffect(() => {
+		deleteAllUserChannels();
+	}, [deleteUserChannels]);
 
 	const joinGroupChannel = async () => {
 		if (client && joinGroupInformation) {

@@ -37,6 +37,8 @@ export default function App() {
 	const [deleteChannelInformation, setDeleteChannelInformation] = useState(null)
 	const [leaveChannelInformation, setLeaveChannelInformation] = useState(null)
 	const [client, setClient] = useState(null);
+	const [deleteUsername, setDeleteUsername] = useState(null)
+	const [deleteUserChannels, setDeleteUserChannels] = useState(false)
 
 	const whoAmI = async () => {
 		const response = await axios.get("/whoami");
@@ -47,6 +49,7 @@ export default function App() {
 		user.pk = response.data[0].pk
 		console.log("user from whoami?", user, response);
 		setUser(user);
+		setDeleteUsername(user.id)
 	};
 
 	useEffect(() => {
@@ -80,7 +83,7 @@ export default function App() {
 					<Route path="/" element={<HomePage user={user} />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/account" element={<AccountPage />} />
+					<Route path="/account" element={<AccountPage setDeleteUserChannels={setDeleteUserChannels}/>} />
 					<Route
 						path="/chatroom"
 						element={
@@ -96,6 +99,8 @@ export default function App() {
 								joinEventInformation={joinEventInformation}
 								deleteChannelInformation={deleteChannelInformation}
 								leaveChannelInformation={leaveChannelInformation}
+								deleteUserChannels={deleteUserChannels}
+								deleteUsername={deleteUsername}
 							/>
 						}
 					/>

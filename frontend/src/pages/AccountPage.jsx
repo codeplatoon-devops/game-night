@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import EditAccountCard from '../components/Card/EditAccountCard'
 
-export default function AccountPage() {
+export default function AccountPage({setDeleteUserChannels}) {
 
 	const [edit, setEdit] = useState(false)
 	const [userInfo, setUserInfo] = useState(null)
@@ -22,7 +22,7 @@ export default function AccountPage() {
 		<div>
 			<h1>Your Account</h1>
 			{userInfo &&
-				<EditAccountCard userInfo={userInfo} setEdit={setEdit} edit={edit} />
+				<EditAccountCard userInfo={userInfo} setEdit={setEdit} edit={edit} setDeleteUserChannels={setDeleteUserChannels}/>
 			}
 		</div>
 	);
