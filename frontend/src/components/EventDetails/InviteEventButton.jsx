@@ -56,7 +56,7 @@ export default function InviteButton({eventDetail}) {
         }}
       />
       <Dialog
-        className="form-group-invite"
+        className="form-group-invite text-center"
 				header="Create Event Invitation"
 				visible={showDialog}
 				onHide={() => setShowDialog(false)}
