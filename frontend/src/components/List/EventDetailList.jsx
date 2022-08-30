@@ -19,9 +19,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import EventDetailButtons from '../EventDetails/EventDetailButtons';
 
-export default function EventDetailList({eventDetail, games, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation}){
+export default function EventDetailList({eventDetail, games, editable, startTime, endTime, setGameInfo, setDisplayBasic2, user, setDeleteChannelInformation, setLeaveChannelInformation}){
 
-    const [editable, setEditable] = useState(false);
+
     const [editName, setEditName] = useState(false);
     const [editDesc, setEditDesc] = useState(false);
     const [editGames, setEditGames] = useState(false);
@@ -114,12 +114,6 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
         .catch((error) => console.log('error: ' + error))
     }
 
-    useEffect(() => {
-        if(user.id === eventDetail.username){
-            setEditable(true);
-        }
-    }, [])
-
     const updateEvent = () => {
         setEditName(false);
         setEditDesc(false);
@@ -144,6 +138,7 @@ export default function EventDetailList({eventDetail, games, startTime, endTime,
             end_time: newEndTime
         })
         .then((response) => {
+            window.location.reload()
             console.log(response)
         })
         .catch((error) => console.log(error))
