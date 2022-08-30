@@ -111,22 +111,8 @@ export default function GroupCreationForm({
 				breakpoints={{ "960px": "80vw" }}
 				style={{ width: "30vw" }}
 			>
-				{/* TODO: get group code for dialog message */}
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
-					{groupCode ? (
-						<div>
-							<h5>Group Creation Successful!</h5>
-							<p style={{ lineHeight: 1.5 }}>
-								Your group has been saved under the code{" "}
-								{groupCode}.
-							</p>
-						</div>
-					) : (
-						<div>
-							<h5>Something went wrong here . . . </h5>
-							<p style={{ lineHeight: 1.5 }}>{creationError}</p>
-						</div>
-					)}
+					<h5>Group Creation Successful!</h5>
 				</div>
 			</Dialog>
 			<Dialog

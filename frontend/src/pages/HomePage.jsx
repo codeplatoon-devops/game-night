@@ -32,8 +32,7 @@ export default function HomePage({ user }) {
 								</h1>
 								<hr />
 
-								{
-									!user &&
+								{!user && (
 									<Button
 										label="Log In"
 										type="button"
@@ -41,9 +40,8 @@ export default function HomePage({ user }) {
 										style={{ margin: "15px" }}
 										onClick={handleLogInClick}
 									/>
-								}
-								{
-									!user &&
+								)}
+								{!user && (
 									<Button
 										label="Sign Up"
 										type="button"
@@ -51,7 +49,7 @@ export default function HomePage({ user }) {
 										style={{ margin: "15px" }}
 										onClick={handleSignUpClick}
 									/>
-								}
+								)}
 							</span>
 						</Row>
 						<Row xs={4}></Row>
@@ -185,19 +183,22 @@ export default function HomePage({ user }) {
 				<Row style={{ "margin-top": "30px", "margin-bottom": "30px" }}>
 					<Col xs={2}></Col>
 					<Col>
-						<Card className=" text-center">
-							<h2 className="mb-3">Join Our Community</h2>
-							<h5 className="mb-5">
-								Lorem ipsum dolor sit, amet consectetur
-								adipisicing elit. Velit numquam eligendi quos.
-							</h5>
-							<Button
-								label="Sign Up Now"
-								icon="pi pi-user"
-								className="font-bold px-5 py-3 p-button-raised p-button-rounded white-space-nowrap"
-								onClick={handleSignUpClick}
-							/>
-						</Card>
+						{!user && (
+							<Card className=" text-center">
+								<h2 className="mb-3">Join Our Community</h2>
+								<h5 className="mb-5">
+									Lorem ipsum dolor sit, amet consectetur
+									adipisicing elit. Velit numquam eligendi
+									quos.
+								</h5>
+								<Button
+									label="Sign Up Now"
+									icon="pi pi-user"
+									className="font-bold px-5 py-3 p-button-raised p-button-rounded white-space-nowrap"
+									onClick={handleSignUpClick}
+								/>
+							</Card>
+						)}
 					</Col>
 					<Col xs={2}></Col>
 				</Row>
