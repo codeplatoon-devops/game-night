@@ -18,6 +18,10 @@ export default function GroupPage({
 	whoAmI,
 	client,
 	setClient,
+	setDeleteChannelInformation,
+	deleteChannelInformation,
+	leaveChannelInformation,
+	setLeaveChannelInformation,
 }) {
 	const nav = useNavigate();
 	const [createGroupInformation, setCreateGroupInformation] = useState(null);
@@ -50,7 +54,6 @@ export default function GroupPage({
 	useEffect(() => {
 		viewGroups();
 		viewGroupInvitations();
-
 		whoAmI();
 
 		setTimeout(() => {
@@ -67,7 +70,7 @@ export default function GroupPage({
 				<h1>Group Page</h1>
 				<Row>
 					<Col md={4}>
-						<GroupsTable groups={groups} />
+						<GroupsTable groups={groups} setLeaveChannelInformation={setLeaveChannelInformation} setDeleteChannelInformation={setDeleteChannelInformation}/>
 						{/* Group creation */}
 						<GroupCreationForm
 							viewGroups={viewGroups}
@@ -101,6 +104,8 @@ export default function GroupPage({
 								client={client}
 								setClient={setClient}
 								whoAmI={whoAmI}
+								leaveChannelInformation={leaveChannelInformation}
+								deleteChannelInformation={deleteChannelInformation}
 							/>
 						)}
 					</Col>

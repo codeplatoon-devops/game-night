@@ -6,6 +6,7 @@ urlpatterns = [
     path('chattoken', views.create_chat_user_token),
     path('group/create', views.create_group),
     path('group/join', views.join_group),
+    path('group/leave', views.leave_group),
     path('group/decline', views.decline_group),
     path('groups/view', views.view_groups),
     path('group/code', views.group_code),
@@ -28,5 +29,10 @@ urlpatterns = [
     path('groupdetails/<int:id>', views.group_details),
     path('streamapi', views.stream_api),
     path('events/create', views.create_event),
+    path('event/delete', views.delete_event),
+    path('event/join/<int:id>', views.join_event),
+    path('amattending/<int:id>', views.am_attending),
+    path('event/leave', views.leave_event),
+    path('new_password', views.new_password),
 
 ]

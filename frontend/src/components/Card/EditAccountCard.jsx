@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import NewPassword from './NewPassword';
 
 export default function EditAccountCard({ userInfo, setEdit, edit }) {
 	const [username, setUsername] = useState(userInfo.username);
@@ -14,6 +15,7 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
     const [firstname, setFirstname] = useState(userInfo.first_name)
     const [lastname, setLastname] = useState(userInfo.last_name)
     const [confirmationDialog, setConfirmationDialog] = useState(false)
+    const [passwordDialog, setPasswordDialog] = useState(false)
 
 	const updateUser = () => {
 		axios
@@ -64,12 +66,12 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
 			/>
 			<Button
 				label="Delete Account"
-				className="p-button-danger"
+				className="p-button-danger ms-3"
 				onClick={() => setConfirmationDialog(true)}
 			/>
 		</span>
 	);
-
+    
     return(
         <div>
         {edit ? 
@@ -94,17 +96,22 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
                     <br></br>
                     <Row>
                         <Col>
-                            <span className="ml-2">Username</span>
+                            <span className="ml-2">Email</span>
                             <br></br>
-                            <InputText value={username} id="accountUsername" onChange={(e) => setUsername(e.target.value)} />
+                            <InputText value={email} id="accountEmail" onChange={(e) => setEmail(e.target.value)} />
                         </Col>
                     </Row>
                     <br></br>
                     <Row>
                         <Col>
-                            <span className="ml-2">Email</span>
+                            <span className="ml-2">Password</span>
                             <br></br>
-                            <InputText value={email} id="accountEmail" onChange={(e) => setEmail(e.target.value)} />
+                            {/* <InputText value={username} id="accountUsername" onChange={(e) => setUsername(e.target.value)} /> */}
+                            <Button
+                                label='Change Password'
+				                icon="pi pi-user-edit"
+                                onClick={() => setPasswordDialog(true)}
+                            ></Button>
                         </Col>
                     </Row>
                 </Container>
@@ -132,6 +139,15 @@ export default function EditAccountCard({ userInfo, setEdit, edit }) {
                 onHide={() => setConfirmationDialog(false)}
 			>
                 <Button label="Delete Account" className="p-button-danger" onClick={deleteAccount}/>
+            </Dialog>
+
+            <Dialog
+                className='confirmation-modal text-center'
+                header="Change Password"
+                visible={passwordDialog}
+                onHide={() => setPasswordDialog(false)}
+            >
+                <NewPassword username={username} setPasswordDialog={setPasswordDialog} />
             </Dialog>
         </div>
     )

@@ -7,16 +7,50 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/Images/logo.png";
+import { Badge } from "primereact/badge";
+import { useState, useEffect } from "react";
 
 import "./NavBar.css";
 
-export default function LoginNavBar({ client }) {
+export default function LoginNavBar({ client, whoAmI }) {
 	let navigate = useNavigate();
+	const [groupInvitations, setGroupInvitations] = useState(null);
+	const [numInvites, setNumInvites] = useState(0);
+	// const client = props.client;
+	// console.log("client: ", client);
+	const viewGroupInvitations = function () {
+		axios.get("/group/request/view").then((response) => {
+			// console.log("view group invitations response.data", response.data);
+			if (response.data.success == "True") {
+				let new_invitations =
+					response && response.data && response.data.group_requests;
+				setGroupInvitations(new_invitations);
+				setNumInvites(new_invitations.length);
+				console.log("new group invites: ", new_invitations);
+				console.log("num group invites: ", new_invitations.length);
+			}
+			// else{
+			// 	console.log('')
+			// }
+		});
+	};
+
+	useEffect(() => {
+		viewGroupInvitations();
+		whoAmI();
+
+		setTimeout(() => {
+			// setShowChat(true);
+			// console.log("TIMEOUT");
+		}, 700);
+	}, []);
 
 	const logout = function (event) {
 		event.preventDefault();
 		if (client) {
+			console.log("line 19 of logout, client should exist", client);
 			client.disconnectUser();
+			console.log("line 21 of logout, client should not exist", client);
 		}
 		axios
 			.post("/logout")
@@ -42,11 +76,16 @@ export default function LoginNavBar({ client }) {
 						<Container>
 							<Row style={{ "font-size": "20px" }}>
 								<Col>
-									<Nav.Link href="#/chatroom">Chatroom</Nav.Link>
+									<Nav.Link href="#/chatroom">
+										Chatroom
+									</Nav.Link>
 								</Col>
 								<Col>
 									<Nav.Link href="#/groups">
-										Your Groups
+										Your Groups{" "}
+										{numInvites > 0 ? (
+											<Badge value={numInvites}></Badge>
+										) : null}
 									</Nav.Link>
 								</Col>
 								<Col>

@@ -58,13 +58,13 @@ class Event(models.Model):
 #     def __str__(self):
 #         return f"ID: {self.id}, Title: {self.title}"
 
-class EventGame(models.Model):
-    game=models.CharField(max_length=32, blank=False, unique=True, verbose_name="Game")
-    # game=models.ForeignKey(Game, on_delete=models.CASCADE, related_name='games') # through='Game'?
-    event=models.ForeignKey(Event, on_delete=models.CASCADE, related_name='eventgames') # through='Event'?
+# class EventGame(models.Model):
+#     game=models.CharField(max_length=32, blank=False, unique=True, verbose_name="Game")
+#     # game=models.ForeignKey(Game, on_delete=models.CASCADE, related_name='games') # through='Game'?
+#     event=models.ForeignKey(Event, on_delete=models.CASCADE, related_name='eventgames') # through='Event'?
 
-    def __str__(self):
-        return f"ID: {self.id}, Game: {self.game}, Event: {self.event}"
+#     def __str__(self):
+#         return f"ID: {self.id}, Game: {self.game}, Event: {self.event}"
 
 # Not sure I interpreted the requirements for this model correctly?
 class EventUser(models.Model):
@@ -74,6 +74,9 @@ class EventUser(models.Model):
 
     def __str__(self):
         return f"ID: {self.id}, Attendee: {self.attendee}"
+    
+    class Meta:
+        unique_together = (('attendee', 'event'))
 
 class Group(models.Model):
     name=models.CharField(max_length=32, blank=False,default=None, unique=True, verbose_name="Name")
@@ -84,10 +87,10 @@ class Group(models.Model):
     def __str__(self):
         return f"ID: {self.id}, Name: {self.name}, Code: {self.code}"
 
-class GroupList(models.Model):
-    owner = models.OneToOneField(AppUser, default=None, on_delete = models.CASCADE, related_name='owner')
-    group = models.ManyToManyField(Group, blank=True, related_name='Listgroups')
-    # not sure how to create a __str__ for this?
+# class GroupList(models.Model):
+#     owner = models.OneToOneField(AppUser, default=None, on_delete = models.CASCADE, related_name='owner')
+#     group = models.ManyToManyField(Group, blank=True, related_name='Listgroups')
+#     # not sure how to create a __str__ for this?
 
 class GroupRequest(models.Model):
     sender = models.ForeignKey(AppUser, on_delete = models.CASCADE, related_name='Groupsender')
@@ -111,28 +114,3 @@ class EventRequest(models.Model):
 
     class Meta:
         unique_together = (('sender', 'receiver'))
-
-# fields returned from https://api.boardgameatlas.com/api/
-# class GameDetail(models.Model):
-#     gameid=models.CharField(max_length = 10, unique=True, verbose_name="Game ID") # primary_key=True?
-#     handle=models.CharField(max_length = 32, blank=True, null=True, default=None, verbose_name="Handle") # required?
-#     url=models.URLField(max_length = 64, blank=True, null=True, default=None, verbose_name="URL") #CharField instead?
-#     edit_url=models.URLField(max_length = 64, blank=True, null=True, default=None, verbose_name="Edit URL") #CharField instead?
-#     name=models.CharField(max_length = 32, blank=True, null=True, default=None, verbose_name="Name") #required?
-#     price=models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=None, verbose_name="Price") # games > $1000?
-#     price_ca=models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=None, verbose_name="Canada Price")
-#     price_uk=models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=None, verbose_name=" UK Price")
-#     price_au=models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=None, verbose_name="Australia Price")
-#     msrp=models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=None, verbose_name="MSRP")
-#     discount=models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True, default=None, verbose_name="Discount")
-#     year_published=models.IntegerField(blank=True, null=True, default=None, verbose_name="Year Published")
-#     min_players=models.IntegerField(blank=True, null=True, default=None, verbose_name="Minimum Players")
-#     max_players=models.IntegerField(blank=True, null=True, default=None, verbose_name="Maximum Players")
-#     min_playtime=models.IntegerField(blank=True, null=True, default=None, verbose_name="Minimum Playtime")
-#     max_playtime=models.IntegerField(blank=True, null=True, default=None, verbose_name="Maximum Playtime")
-#     min_age=models.IntegerField(blank=True, null=True, default=None, verbose_name="Minimum Age")
-#     description=models.TextField(blank=True, null=True, default=None)
-    # Do we want to include more?
-
-    # def __str__(self):
-    #     return f"ID: {self.id}, Name: {self.name}"
