@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import Chatroom from "../components/Chatroom/Chatroom";
-import axios from "axios";
 import { StreamChat } from "stream-chat";
 
 export default function ChatroomPage({
-	setUser,
 	user,
 	stream,
 	token,
@@ -14,7 +12,9 @@ export default function ChatroomPage({
 	createEventInformation,
 	joinEventInformation,
 	leaveChannelInformation,
-	deleteChannelInformation
+	deleteChannelInformation,
+	deleteUserChannels,
+	deleteUsername,
 }) {
 	const [showChatroom, setShowChatroom] = useState(false);
 
@@ -36,16 +36,6 @@ export default function ChatroomPage({
 						"This is your personal Notes/Reminders/Chat Space";
 					let channelId = user_id;
 					channelId += "PersonalChat";
-					// console.log(
-					// 	"USER ID HERE LINE 95",
-					// 	user_id,
-					// 	"type here",
-					// 	typeof user_id,
-					// 	"channelName",
-					// 	channelName,
-					// 	"channelID",
-					// 	channelId
-					// );
 					const chatClient = StreamChat.getInstance(stream);
 					await chatClient.connectUser(user, token);
 					setClient(chatClient);
@@ -81,6 +71,9 @@ export default function ChatroomPage({
 							joinEventInformation={joinEventInformation}
 							leaveChannelInformation={leaveChannelInformation}
 							deleteChannelInformation={deleteChannelInformation}
+							// delteuserchannels if true means delete all their channels
+							deleteUserChannels={deleteUserChannels}
+							deleteUsername={deleteUsername}
 						/>
 					)}
 				</div>

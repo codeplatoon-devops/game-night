@@ -14,7 +14,8 @@ export default function EventPage({ data }) {
 	};
 	return (
 		<Container>
-			<h1 className="page-title">Scheduled Events</h1>
+			<h1 style={{ margin: "20px" }}>Scheduled Events</h1>
+			<hr />
 			<Row>
 				<Col md={4}>
 					<div>
