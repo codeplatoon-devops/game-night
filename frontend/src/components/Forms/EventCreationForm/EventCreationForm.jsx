@@ -113,6 +113,9 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 		if (!category) {
 			errors.category = "Category is required.";
 		}
+		if (games.length === 0) {
+			errors.boardgames = "Games are required.";
+		}
 		if (!eventStartDate) {
 			errors.eventstartdate = "Start date is required.";
 		}
@@ -139,6 +142,7 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 	const handleSubmit = (form) => {
 		// console.log("in on submit for event");
 		setShowMessage(true);
+
 		// setShowMessage(true);
 		// let attendees = document.getElementById('maxattendees').value
 		// console.log('attendees', attendees)
@@ -349,7 +353,7 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 										<Col>
 											<Field
 												name="boardgames"
-												render={({ input }) => (
+												render={({ input, meta }) => (
 													<div className="field">
 														<span className="p-float-label">
 															<Chips
@@ -363,11 +367,32 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 																	)
 																}
 																tooltip="Type in a game then press enter to add it to your game list."
+																className={classNames(
+																	{
+																		"p-error":
+																			isFormFieldValid(
+																				meta
+																			),
+																	}
+																)}
 															/>
-															<label htmlFor="boardgames">
+															<label
+																htmlFor="boardgames"
+																className={classNames(
+																	{
+																		"p-error":
+																			isFormFieldValid(
+																				meta
+																			),
+																	}
+																)}
+															>
 																Games
 															</label>
 														</span>
+														{getFormErrorMessage(
+															meta
+														)}
 													</div>
 												)}
 											/>
