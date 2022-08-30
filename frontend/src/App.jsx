@@ -167,6 +167,10 @@ export default function App() {
 							/>
 						}
 					/>
+					<Route
+						path="/groups/:groupId"
+						element={<EventDetailPage />}
+					/>
 				</Routes>
 			</Router>
 		</div>
