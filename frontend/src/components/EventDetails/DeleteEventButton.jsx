@@ -1,33 +1,34 @@
-import {useState } from "react";
+import { useState } from "react";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Container, Col } from "react-bootstrap";
 import { Row as myRow } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
+function DeleteEventButton({ eventDetail, setDeleteChannelInformation }) {
+	const [showMessage, setShowMessage] = useState(false);
+	const nav = useNavigate();
 
-function DeleteEventButton({eventDetail, setDeleteChannelInformation}) {
-    const [showMessage, setShowMessage] = useState(false);
-
-    const deleteEvent= function () {
-        let event_id = eventDetail.id
-		axios.put('/event/delete',{id:event_id})
-			.then((response)=> {
-				console.log('delete event response.data', response.data)
-                let channelId = "EventChatroom";
-                let channelName = eventDetail.name
-                channelName += " Chatroom";
-                let code = eventDetail.code
-                channelId += code.toString();
-                setDeleteChannelInformation([channelId,channelName])
-            })
-    }
+	const deleteEvent = function () {
+		let event_id = eventDetail.id;
+		axios.put("/event/delete", { id: event_id }).then((response) => {
+			console.log("delete event response.data", response.data);
+			let channelId = "EventChatroom";
+			let channelName = eventDetail.name;
+			channelName += " Chatroom";
+			let code = eventDetail.code;
+			channelId += code.toString();
+			setDeleteChannelInformation([channelId, channelName]);
+			nav("/events/");
+		});
+	};
 
 	const hideDetails = () => {
 		setShowMessage(false);
 	};
 
-    const dialogFooter = (
+	const dialogFooter = (
 		<Container as={myRow} className="flex justify-content-center">
 			<Col>
 				<Button
@@ -35,9 +36,7 @@ function DeleteEventButton({eventDetail, setDeleteChannelInformation}) {
 					icon="pi pi-trash"
 					className="p-button-outlined"
 					autoFocus
-					onClick={() =>
-						deleteEvent()
-					}
+					onClick={() => deleteEvent()}
 				/>
 			</Col>
 			<Col></Col>
@@ -46,20 +45,24 @@ function DeleteEventButton({eventDetail, setDeleteChannelInformation}) {
 					label="No"
 					icon="pi pi-times"
 					className="p-button-outlined"
-					onClick={() =>
-						hideDetails()
-					}
+					onClick={() => hideDetails()}
 				/>
 			</Col>
 		</Container>
 	);
 
-            
-        return(
-            <>
-            <Button label="Delete" icon="pi pi-trash" className="p-button-text" onClick={()=>{setShowMessage(true)}}/>
-            {/* <Button onClick={() => showDetails(invitation)}>Show Details</Button> */}
-            <Dialog
+	return (
+		<>
+			<Button
+				label="Delete"
+				icon="pi pi-trash"
+				className="p-button-text"
+				onClick={() => {
+					setShowMessage(true);
+				}}
+			/>
+			{/* <Button onClick={() => showDetails(invitation)}>Show Details</Button> */}
+			<Dialog
 				visible={showMessage}
 				onHide={hideDetails}
 				showHeader={true}
@@ -69,12 +72,14 @@ function DeleteEventButton({eventDetail, setDeleteChannelInformation}) {
 				style={{ width: "30vw" }}
 			>
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
-					<p style={{ lineHeight: 1.5 }}>Deleting this event will delete it for all attendees, are you sure you want to delete this event?</p>
+					<p style={{ lineHeight: 1.5 }}>
+						Deleting this event will delete it for all attendees,
+						are you sure you want to delete this event?
+					</p>
 				</div>
 			</Dialog>
-            </>
-        )
-
+		</>
+	);
 }
 
-export default DeleteEventButton
+export default DeleteEventButton;
