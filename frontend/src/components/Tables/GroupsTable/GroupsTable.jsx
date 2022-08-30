@@ -49,7 +49,7 @@ export default function GroupsTable(props) {
 				channelName += " Chatroom";
 				channelId += code.toString();
 				props.setLeaveChannelInformation([channelId,channelName])
-				if (response.data.group_deleted) {
+				if (response.data.group_deleted==="True") {
 					props.setDeleteChannelInformation([channelId,channelName])
 				}
 			})
@@ -80,7 +80,7 @@ export default function GroupsTable(props) {
 			})}
 		</TabView>
 	</div> */}
-		<Button onClick={()=>{leaveGroup("FourGroup1","57644060")}}>Leave Group</Button>
+		<Button onClick={()=>{leaveGroup("FourGroup4","55244412")}}>Leave Group</Button>
 	</div>
 	);
 }
