@@ -60,8 +60,8 @@ export default function HomePage({ user }) {
 							alt="hero-1"
 							className="md:ml-auto block md:h-full"
 							style={{
-								clipPath:
-									"polygon(8% 0, 100% 0%, 100% 100%, 0 100%)",
+								clipPath: "polygon(8% 0, 100% 0%, 100% 100%, 0 100%)",
+								'max-width': '100%'
 							}}
 						/>
 					</Col>
