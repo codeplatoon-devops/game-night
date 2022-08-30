@@ -7,18 +7,20 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/Images/logo.png";
+import { Badge } from "primereact/badge";
 
 import "./NavBar.css";
 
 export default function LoginNavBar({ client }) {
 	let navigate = useNavigate();
+	const pendingInvites = 3;
 
 	const logout = function (event) {
 		event.preventDefault();
 		if (client) {
-			console.log('line 19 of logout, client should exist', client)
+			console.log("line 19 of logout, client should exist", client);
 			client.disconnectUser();
-			console.log('line 21 of logout, client should not exist', client)
+			console.log("line 21 of logout, client should not exist", client);
 		}
 		axios
 			.post("/logout")
@@ -44,11 +46,14 @@ export default function LoginNavBar({ client }) {
 						<Container>
 							<Row style={{ "font-size": "20px" }}>
 								<Col>
-									<Nav.Link href="#/chatroom">Chatroom</Nav.Link>
+									<Nav.Link href="#/chatroom">
+										Chatroom
+									</Nav.Link>
 								</Col>
 								<Col>
 									<Nav.Link href="#/groups">
-										Your Groups
+										Your Groups{" "}
+										<Badge value={pendingInvites}></Badge>
 									</Nav.Link>
 								</Col>
 								<Col>
