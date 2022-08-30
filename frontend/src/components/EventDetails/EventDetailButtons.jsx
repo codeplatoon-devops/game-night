@@ -12,6 +12,7 @@ function EventDetailButtons({user, eventDetail, setDeleteChannelInformation, set
 
     }
     else {
+        // if user is not the event onwer they can leave
         return(
             <LeaveEventButton setLeaveChannelInformation={setLeaveChannelInformation} eventDetail={eventDetail}/>
         )
