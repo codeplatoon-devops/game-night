@@ -7,7 +7,7 @@ import { ListBox } from "primereact/listbox";
 import { Panel } from "primereact/panel";
 
 import axios from "axios";
-import GroupRequestForm from "../components/Forms/GroupRequestForm/GroupRequestForm";
+import GroupRequestFormSpecific from "../components/Forms/GroupRequestForm/GroupRequestFormSpecific";
 
 export default function GroupDetailPage(props) {
 	const { groupId } = useParams();
@@ -71,7 +71,7 @@ export default function GroupDetailPage(props) {
 				>
 					Leave Group
 				</Button>
-				<GroupRequestForm code={groupCode} />
+				<GroupRequestFormSpecific name={groupName} code={groupCode} />
 			</Col>
 			<Col xs={3}></Col>
 		</Container>

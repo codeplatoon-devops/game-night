@@ -126,53 +126,38 @@ export default function GroupRequestForm(props) {
 									name="groupname"
 									render={({ input, meta }) => (
 										<div className="field">
-											{props.code ? (
-												<p>{props.code}</p>
-											) : (
-												<div>
-													{" "}
-													<span className="p-float-label">
-														<Dropdown
-															placeholder="Select Group"
-															{...input}
-															autoFocus
-															value={groupName}
-															options={groups}
-															onChange={(e) => {
-																setGroupName(
-																	e.value
-																);
-																getTheCode(
-																	e.value
-																);
-															}}
-															className={classNames(
-																{
-																	"p-invalid":
-																		isFormFieldValid(
-																			meta
-																		),
-																	"form-group-invite-field": true,
-																}
-															)}
-														/>
-														<label
-															htmlFor="groupname"
-															className={classNames(
-																{
-																	"p-error":
-																		isFormFieldValid(
-																			meta
-																		),
-																}
-															)}
-														>
-															Group name*
-														</label>
-													</span>
-													{getFormErrorMessage(meta)}
-												</div>
-											)}
+											<span className="p-float-label">
+												<Dropdown
+													placeholder="Select Group"
+													{...input}
+													autoFocus
+													value={groupName}
+													options={groups}
+													onChange={(e) => {
+														setGroupName(e.value);
+														getTheCode(e.value);
+													}}
+													className={classNames({
+														"p-invalid":
+															isFormFieldValid(
+																meta
+															),
+														"form-group-invite-field": true,
+													})}
+												/>
+												<label
+													htmlFor="groupname"
+													className={classNames({
+														"p-error":
+															isFormFieldValid(
+																meta
+															),
+													})}
+												>
+													Group name*
+												</label>
+											</span>
+											{getFormErrorMessage(meta)}
 										</div>
 									)}
 								/>
@@ -219,6 +204,7 @@ export default function GroupRequestForm(props) {
 								<Button
 									type="submit"
 									label="Send Group Invitation"
+									icon="pi pi-send"
 									className="mt-2 btn-continue"
 									onClick={handleSubmit}
 								/>
