@@ -7,14 +7,18 @@ import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import { Container, Col } from "react-bootstrap";
 import { Row as myRow } from "react-bootstrap";
+import { Panel } from "primereact/panel";
 import "./PendingInvitesGroups.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const PendingInvitesGroups = (props) => {
 	// props.data = groupInvitations
 	const [showMessage, setShowMessage] = useState(false);
 	const [groupDetails, setGroupDetails] = useState(null);
 	const [invitationDetails, setInvitationDetails] = useState([]);
+	const [groupCode, setGroupCode] = useState(null);
+	const nav = useNavigate();
 
 	const showDetails = (invitationInfo) => {
 		setGroupDetails(
@@ -84,6 +88,16 @@ export const PendingInvitesGroups = (props) => {
 			groupName: "None",
 		},
 	];
+
+	const handleAccept = () => {
+		joinGroup(
+			invitationDetails[0],
+			invitationDetails[1],
+			invitationDetails[2]
+		);
+		const endNav = "/groups/" + invitationDetails[2] + "/";
+		nav(endNav);
+	};
 	const dialogFooter = (
 		<Container as={myRow} className="flex justify-content-center">
 			<Col>
@@ -93,13 +107,7 @@ export const PendingInvitesGroups = (props) => {
 					icon="pi pi-check"
 					className="p-button-outlined"
 					autoFocus
-					onClick={() =>
-						joinGroup(
-							invitationDetails[0],
-							invitationDetails[1],
-							invitationDetails[2]
-						)
-					}
+					onClick={() => handleAccept()}
 				/>
 			</Col>
 			<Col></Col>
@@ -143,13 +151,19 @@ export const PendingInvitesGroups = (props) => {
 					<p style={{ lineHeight: 1.5 }}>{groupDetails}</p>
 				</div>
 			</Dialog>
-			<DataTable
-				value={props.data ? invites : noInvites}
-				headerColumnGroup={tableHeader}
+			<Panel
+				header="Pending Group Invitations"
+				style={{ width: "100%", margin: "0px" }}
 			>
-				<Column field="groupName" />
-				<Column field="details" />
-			</DataTable>
+				<DataTable
+					value={props.data ? invites : noInvites}
+					style={{ width: "100%" }}
+					// headerColumnGroup={tableHeader}
+				>
+					<Column field="groupName" />
+					<Column field="details" />
+				</DataTable>
+			</Panel>
 		</Container>
 	);
 };
