@@ -30,7 +30,7 @@ export default function DialogGame({gameInfo, displayBasic2, setDisplayBasic2}) 
                 <h5 style={{'margin-top': '12px'}}>Description</h5>
                 <p>{gameInfo.data.games[0].description_preview}</p>
                 <br></br>
-                <a href={gameInfo.data.games[0].url}>More Info?</a>
+                <a href={gameInfo.data.games[0].url} target="_blank">More Info?</a>
             </Dialog>
         }
         </>
