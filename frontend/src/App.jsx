@@ -124,6 +124,10 @@ export default function App() {
 								}
 								deleteUserChannels={deleteUserChannels}
 								deleteUsername={deleteUsername}
+								setCreateEventInformation={setCreateEventInformation}
+								setLeaveChannelInformation={setLeaveChannelInformation}
+								setDeleteChannelInformation={setDeleteChannelInformation}
+								setJoinEventInformation={setJoinEventInformation}
 							/>
 						}
 					/>
@@ -166,6 +170,7 @@ export default function App() {
 								setLeaveChannelInformation={
 									setLeaveChannelInformation
 								}
+								
 							/>
 						}
 					/>
@@ -183,6 +188,7 @@ export default function App() {
 									setLeaveChannelInformation
 								}
 								user={user}
+								
 							/>
 						}
 					/>

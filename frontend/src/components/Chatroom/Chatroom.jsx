@@ -9,7 +9,7 @@ import {
 	Thread,
 	Window,
 	LoadingIndicator,
-	ChannelList,
+	ChannelList
 } from "stream-chat-react";
 import axios from "axios";
 import "./chatroom.css";
@@ -32,6 +32,12 @@ function Chatroom({
 	deleteChannelInformation,
 	deleteUserChannels,
 	deleteUsername,
+	setJoinGroupInformation,
+	setJoinEventInformation,
+	setCreateEventInformation,
+	setCreateGroupInformation,
+	setLeaveChannelInformation,
+	setDeleteChannelInformation
 }) {
 	// const [client, setClient] = useState(null)
 	// const [userId, setUserId] = useState(null)
@@ -40,7 +46,6 @@ function Chatroom({
 	const filters = { type: "messaging", members: { $in: [user_id] } };
 	// puts the channel with the lattest message at the top
 	const sort = { last_message_at: -1 };
-	console.log('line 43 chatroom deleteUserChannels', deleteUserChannels)
 
 	useEffect(() => {
 		whoAmI();
@@ -62,6 +67,7 @@ function Chatroom({
 			// console.log("new channel", new_channel);
 
 			await new_channel.watch();
+			setCreateGroupInformation(null)
 		} else {
 			setTimeout(createGroupChannel, 3000);
 		}
@@ -70,6 +76,7 @@ function Chatroom({
     const leaveChannel = async () => {
         // https://getstream.io/chat/docs/react/channel_members/
         if (client && leaveChannelInformation) {
+			console.log('in leave channel function')
 			let channelId = leaveChannelInformation[0]
 			let channelName = leaveChannelInformation[1];
 			let user_id = user.id.toString();
@@ -77,6 +84,7 @@ function Chatroom({
 				name: channelName,
 			});
 			await leave_channel.removeMembers([user_id])
+			setLeaveChannelInformation(null)
 		} else {
 			setTimeout(leaveChannel, 2000);
 		}
@@ -91,6 +99,7 @@ function Chatroom({
 				name: channelName,
 			});
 			await delete_channel.delete()
+			setDeleteChannelInformation(null)
 		} else {
 			setTimeout(deleteChannel, 2000);
 		}
@@ -108,6 +117,7 @@ function Chatroom({
 				members: [user_id],
 			});
 			await new_event_channel.watch();
+			setCreateEventInformation(null)
 		} else {
 			setTimeout(createEventChannel, 3000);
 		}
@@ -115,14 +125,10 @@ function Chatroom({
 
 	const deleteAllUserChannels = async () => {
 		if (deleteUserChannels) {
-			console.log('in delete all User Channels')
 			let delete_user_id = deleteUsername
-			console.log('userid is',delete_user_id)
 			const filter = { type: 'messaging', members: { $in: [delete_user_id] } };
 			const channels= await client.queryChannels(filter);
-			console.log('users channels to be deleted', channels)
 			channels.map((channel)=> {channel.removeMembers([user_id])})
-			console.log('channels should be empty now', channels)
 		}
 	}
 
@@ -161,20 +167,6 @@ function Chatroom({
 			let channelName = joinGroupInformation[0];
 			channelName += " Chatroom";
 			channelId += joinGroupInformation[1].toString();
-			// console.log(
-			// 	"join group channel user_id",
-			// 	user_id,
-			// 	"type",
-			// 	typeof user_id,
-			// 	"channelID is",
-			// 	channelId,
-			// 	"channel name is",
-			// 	channelName
-			// );
-			// const response = await client.queryChannels();
-			// const filteredChannel = response.filter((c)=> c.name === channelName);
-			// filteredChannel.addMembers([user_id])
-			// await new_channel.watch()
 			const join_channel = client.channel("messaging", channelId, {
 				// want to change this up so I get a diff photo each time https://picsum.photos/id/237/200
 				// image: 'https://picsum.photos/200',
@@ -184,6 +176,7 @@ function Chatroom({
 			await join_channel.addMembers([user_id]);
 			await join_channel.watch();
 			// console.log("joinchannel", join_channel);
+			setJoinGroupInformation(null)
 		} else {
 			setTimeout(joinGroupChannel, 3000);
 		}
@@ -202,6 +195,7 @@ function Chatroom({
 			});
 			await join_event_channel.addMembers([user_id]);
 			await join_event_channel.watch();
+			setJoinEventInformation(null)
 			// console.log("joineventchannel", join_event_channel);
 		} else {
 			setTimeout(joinEventChannel, 3000);

@@ -119,6 +119,8 @@ export default function GroupPage({
 								deleteChannelInformation={
 									deleteChannelInformation
 								}
+								setCreateGroupInformation={setCreateGroupInformation}
+								setJoinGroupInformation={setJoinGroupInformation}
 							/>
 						)}
 					</Col>
