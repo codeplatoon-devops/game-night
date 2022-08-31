@@ -188,7 +188,16 @@ export default function App() {
 					/>
 					<Route
 						path="/groups/:groupId"
-						element={<GroupDetailPage />}
+						element={
+							<GroupDetailPage
+								setDeleteChannelInformation={
+									setDeleteChannelInformation
+								}
+								setLeaveChannelInformation={
+									setLeaveChannelInformation
+								}
+							/>
+						}
 					/>
 				</Routes>
 			</Router>

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Button } from "primereact/button";
@@ -9,12 +9,13 @@ import { Panel } from "primereact/panel";
 import axios from "axios";
 import GroupRequestForm from "../components/Forms/GroupRequestForm/GroupRequestForm";
 
-export default function GroupDetailPage() {
+export default function GroupDetailPage(props) {
 	const { groupId } = useParams();
 	const [groupName, setGroupName] = useState("");
 	const [groupCode, setGroupCode] = useState(null);
 	const [groupMembers, setGroupMembers] = useState([{ label: "me" }]);
 	const [member, setMember] = useState(null);
+	const nav = useNavigate();
 
 	useEffect(() => {
 		axios.get(`/groups/${groupId}`).then((response) => {
@@ -37,6 +38,7 @@ export default function GroupDetailPage() {
 				props.setDeleteChannelInformation([channelId, channelName]);
 			}
 		});
+		nav("/groups/");
 	};
 
 	let members = [];
