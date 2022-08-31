@@ -503,9 +503,9 @@ def join_event(request,id):
         add_attending = EventUser(event = event, attendee=user)
         add_attending.full_clean()
         add_attending.save()
-        return Response('joined :D')
-    except:
-        return Response('You are already attending to this event')
+        return Response('joined!')
+    except Exception as err:
+        return JsonResponse({'success': "false", 'reason': f'failed to join event: {str(err)}'})
 
 @login_required
 @api_view(['PUT'])
