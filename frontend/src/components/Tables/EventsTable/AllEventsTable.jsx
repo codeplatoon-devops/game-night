@@ -62,7 +62,7 @@ export const AllEventsTable = () => {
 			<Column field="city" header="City" filter />
 			<Column field="state" header="State" filter />
 			<Column field="zip_code" header="Zip" filter />
-			<Column field="start_date" header="Date" dataType="date" body={dateBodyTemplate} sortField="start_date"/>
+			<Column field="start_time" header="Date" dataType="date" body={dateBodyTemplate} sortable filterField="start_time" />
 		</DataTable>
 	);
 };
