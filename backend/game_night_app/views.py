@@ -111,15 +111,15 @@ def view_group_request(request):
 @api_view(['POST'])
 def create_event_request(request):
     print('YOU ARE IN THE POST REQUEST ON DJANGO FOR CREATE EVENT REQUESTS')
-    user_email = request.user.email
+    owner_id = request.data['owner_id']
     friend_email = request.data['friend_email']
     # could give the user the option to invite an entire group or send to specific individuals - the rest of the code assumes an individual, but I would think group invite would be nice as well.
     # would need if we do group invite:::: group_code = request.data['group_code']
-    event_code = request.data['event_code']
-    print('USER EMAIL', user_email, 'FRIEND EMAIL', friend_email, 'event code', event_code)
-    user = AppUser.objects.get(email = user_email)
+    event_id = request.data['event_id']
+    # print('USER EMAIL', user_email, 'FRIEND EMAIL', friend_email, 'event code', event_code)
+    user = AppUser.objects.get(id = owner_id)
     friend = AppUser.objects.get(email = friend_email)
-    event = Event.objects.get(code = event_code)
+    event = Event.objects.get(id = event_id)
     if event is not None:
         if friend is not None:
             try:
@@ -129,6 +129,7 @@ def create_event_request(request):
                 print('YOUR NEW EVENT REQUEST IS', event_request)
                 return JsonResponse({'success': "True", 'action':'event request created in db'})
             except Exception as e:
+                print(str(e))
                 return JsonResponse({'success': "False", 'reason': f'something went wrong, {str(e)}'})
         else:
             return JsonResponse({'success': "False", 'reason': 'friends account doesnt exist'})
@@ -224,10 +225,6 @@ def sign_up(request):
             newUser = AppUser.objects.create_user(username=username, password=password, email=user_email, last_name= last_name, first_name=first_name)
             newUser.full_clean
             newUser.save()
-            # list= GroupList(owner = newUser)
-            # list.full_clean
-            # list.save()
-            # print('new user is', newUser, 'new list is', list)
             print('new user is', newUser)
             return JsonResponse({'success': "True", 'action': 'user signed up'})
     except Exception as e:
@@ -284,13 +281,6 @@ def create_group(request):
         # print('new group is', new_group)
         new_group.member.add(user)
         new_group.save()
-        # print('new member now added', dir(new_group))
-        # this is adding it as game_night_app_group_member in the database
-        # adding the group to their group list
-        # I'm actually starting to think we don't need group list
-        # list = GroupList.objects.get(owner = user)
-        # list.group.add(new_group)
-        # list.save()
         return JsonResponse({'success': "True", 'action': "group created"})
     except Exception as e:
         return JsonResponse({'success': "False", 'reason': str(e)})
@@ -303,7 +293,6 @@ def join_group(request):
     user = AppUser.objects.get(email = request.user.email)
     friend= AppUser.objects.get(email = request.data['friend_email'])
     code = request.data['code']
-    # list = GroupList.objects.get(owner = user)
     all_groups = Group.objects.all()
     all_codes = []
     for group in all_groups:
@@ -313,12 +302,7 @@ def join_group(request):
             try:
                 group = Group.objects.get(code= code)
                 group.member.add(user)
-                # not sure I have this right:
                 print('group members are', group.member.all())
-                # adding this group to their list:
-                # list.group.add(group)
-                # list.save()
-                # deleting the group request
                 group_request = GroupRequest.objects.get(sender = friend, receiver = user, group = group)
                 group_request.delete()
                 print('group request should now be deleted', group_request)
@@ -356,8 +340,6 @@ def view_groups(request):
     if len(groups)>0:
         list_of_groups=[]
         for group in groups:
-            # print('group.member355', group.member.values())
-            # group_members = group.member.all
             all_members=group.member.all()
             other_members=[]
             for member in all_members:
@@ -430,7 +412,7 @@ def create_event(request):
         owner_attending.full_clean()
         owner_attending.save()
         print('NEW EVENT ADDED', new_event)
-        return JsonResponse({'added event': True, 'eventName': new_event.name, 'eventCode': new_event.code})
+        return JsonResponse({'added event': "True", 'eventName': new_event.name, 'eventCode': new_event.code})
     except Exception as e:
         return JsonResponse({'success': "false", 'reason': f'failed to create event: {str(e)}'})
 
@@ -514,12 +496,8 @@ def delete_event(request):
     event = Event.objects.get(id = event_id)
     print('in delete event, event is', event)
     try:
-        # requests = EventRequest.objects.filter(event=event)
-        # if not requests:
-        #     event.delete()
-        # else:
-        #     requests.delete()
         event.delete()
+        # does this delete event requests also? and event users?
         print('event should now be deleted', event)
         return JsonResponse({'deleted event': 'True'})
     except Exception as e:

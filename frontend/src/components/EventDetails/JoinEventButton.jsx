@@ -6,19 +6,19 @@ import { Row as myRow } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function JoinEventButton({ eventDetail, attending}) {
+function JoinEventButton({ eventDetail, attending, setJoinEventInformation}) {
 	const [showMessage, setShowMessage] = useState(false);
 	const nav = useNavigate();
 
 	const joinEvent = function () {
 		let event_id = eventDetail.id;
+		let name = eventDetail.name
+		let code = eventDetail.code
 		axios.post(`/event/join/${eventDetail.code}`).then((response) => {
 			console.log("join event response.data", response.data);
-			let channelId = "EventChatroom";
-			let channelName = eventDetail.name;
-			channelName += " Chatroom";
-			let code = eventDetail.code;
-			channelId += code.toString();
+			if(eventDetail.chat_creation===true) {
+				setJoinEventInformation([name, code])
+			}
 			nav("/events/");
 		});
 	};
@@ -32,7 +32,7 @@ function JoinEventButton({ eventDetail, attending}) {
 			<Col>
 				<Button
 					label="Join"
-					icon="pi pi-trash"
+					icon="pi pi-user-plus"
 					className="p-button-outlined"
 					autoFocus
 					onClick={() => joinEvent()}
@@ -54,7 +54,7 @@ function JoinEventButton({ eventDetail, attending}) {
 		<>
 			<Button
 				label="Join"
-				icon="pi pi-trash"
+				icon="pi pi-user-plus"
 				className="p-button-text"
 				onClick={() => {
 					setShowMessage(true);
