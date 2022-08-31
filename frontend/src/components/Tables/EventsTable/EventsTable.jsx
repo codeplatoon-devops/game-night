@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ListBox } from "primereact/listbox";
 import { useNavigate } from "react-router-dom";
 import { Panel } from "primereact/panel";
+import moment from 'moment';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -33,22 +34,9 @@ export const EventsTable = () => {
 
 	
 
-	function convertUTCDateToLocalDate(date) {
-		var newDate = new Date(
-			date.getTime() + date.getTimezoneOffset() * 60 * 1000
-		);
-
-		var offset = date.getTimezoneOffset() / 60;
-		var hours = date.getHours();
-
-		newDate.setHours(hours - offset);
-
-		return newDate;
-	}
-
 	const eventsTemplate = (option) => {
-		let date = convertUTCDateToLocalDate(new Date(option.start_time));
-		let dateStr = date.toLocaleString();
+		let date = moment(option.start_time).format('MM/DD/YYYY, h:mm a')
+		
 		return (
 			<Container>
 				<Row>
@@ -59,7 +47,7 @@ export const EventsTable = () => {
 						<div>{option.category}</div>
 					</Col>
 					<Col>
-						<div>{dateStr}</div>
+						<div>{date}</div>
 					</Col>
 				</Row>
 			</Container>
