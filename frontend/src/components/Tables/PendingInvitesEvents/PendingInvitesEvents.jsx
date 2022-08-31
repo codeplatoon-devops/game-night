@@ -7,7 +7,7 @@ import { ColumnGroup } from "primereact/columngroup";
 import { Container, Row, Col } from "react-bootstrap";
 import "./PendingInvitesEvents.css";
 
-export const PendingInvitesEvents = (props) => {
+export default function PendingInvitesEvents(props) {
 	const [showMessage, setShowMessage] = useState(false);
 	const showDetails = () => {
 		setShowMessage(true);
@@ -27,20 +27,7 @@ export const PendingInvitesEvents = (props) => {
 			invites.push(tempInvite);
 		}
 	}
-	const noInvites = [
-		{
-			eventName: "None",
-		},
-	];
-	// const invites = [
-	// 	{
-	// 		eventName: "session zero",
-	// 		category: "DnD",
-	// 		location: "city state",
-	// 		date: "24 Aug 2022",
-	// 		details: <Button onClick={showDetails}>Show Details</Button>,
-	// 	},
-	// ];
+
 	const dialogFooter = (
 		<div className="flex justify-content-center">
 			<Row>
@@ -96,4 +83,4 @@ export const PendingInvitesEvents = (props) => {
 			</DataTable>
 		</Container>
 	);
-};
+}

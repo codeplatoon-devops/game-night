@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
+import PendingInvitesEvents from "../components/Tables/PendingInvitesEvents/PendingInvitesEvents";
 
 export default function EventPage({ data }) {
 	const navigate = useNavigate();
@@ -26,6 +27,8 @@ export default function EventPage({ data }) {
 							label="Create Event"
 							className="btn-create-event"
 						/>
+						{/* TODO: add data for table */}
+						<PendingInvitesEvents data={null} />
 					</div>
 				</Col>
 				<Col md={8}>

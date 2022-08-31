@@ -15,7 +15,9 @@ import "./NavBar.css";
 export default function LoginNavBar({ client, whoAmI }) {
 	let navigate = useNavigate();
 	const [groupInvitations, setGroupInvitations] = useState(null);
-	const [numInvites, setNumInvites] = useState(0);
+	const [numGroupInvites, setNumGroupInvites] = useState(0);
+	const [eventInvitations, setEventInvitations] = useState(null);
+	const [numEventInvites, setNumEventInvites] = useState(4);
 	// const client = props.client;
 	// console.log("client: ", client);
 	const viewGroupInvitations = function () {
@@ -25,7 +27,7 @@ export default function LoginNavBar({ client, whoAmI }) {
 				let new_invitations =
 					response && response.data && response.data.group_requests;
 				setGroupInvitations(new_invitations);
-				setNumInvites(new_invitations.length);
+				setNumGroupInvites(new_invitations.length);
 				console.log("new group invites: ", new_invitations);
 				console.log("num group invites: ", new_invitations.length);
 			}
@@ -35,8 +37,23 @@ export default function LoginNavBar({ client, whoAmI }) {
 		});
 	};
 
+	const viewEventInvitations = () => {
+		axios.get("/eventrequest/view").then((response) => {
+			if (response.data.success == "True") {
+				console.log(response.data);
+				let new_event_invitations =
+					response && response.data && response.data.event_requests;
+				setEventInvitations(new_event_invitations);
+				setNumEventInvites(new_event_invitations.length);
+				console.log("new event invites: ", new_event_invitations);
+				console.log("num event invites: ", numEventInvites);
+			}
+		});
+	};
+
 	useEffect(() => {
 		viewGroupInvitations();
+		viewEventInvitations();
 		whoAmI();
 
 		setTimeout(() => {
@@ -48,20 +65,17 @@ export default function LoginNavBar({ client, whoAmI }) {
 	const logout = function (event) {
 		event.preventDefault();
 		if (client) {
-			console.log("line 19 of logout, client should exist", client);
+			console.log("logout client should exist", client);
 			client.disconnectUser();
-			console.log("line 21 of logout, client should not exist", client);
+			console.log("logout client should not exist", client);
 		}
 		axios
 			.post("/logout")
 			.then((response) => {
-				// console.log("response from server: ", response);
 				navigate("/");
 				window.location.reload();
 			})
-			.catch((error) => {
-				// console.log("error: ", error);
-			});
+			.catch((error) => {});
 	};
 
 	return (
@@ -83,21 +97,28 @@ export default function LoginNavBar({ client, whoAmI }) {
 								<Col>
 									<Nav.Link href="#/groups">
 										Your Groups{" "}
-										{numInvites > 0 ? (
-											<Badge value={numInvites}></Badge>
+										{numGroupInvites > 0 ? (
+											<Badge
+												value={numGroupInvites}
+											></Badge>
 										) : null}
 									</Nav.Link>
 								</Col>
 								<Col>
 									<NavDropdown
-										title="Events"
+										title="Events "
 										id="basic-nav-dropdown"
 									>
 										<NavDropdown.Item
 											className="dropdown-text"
 											href="#/events"
 										>
-											Your Events
+											Your Events{" "}
+											{numEventInvites > 0 ? (
+												<Badge
+													value={numEventInvites}
+												></Badge>
+											) : null}
 										</NavDropdown.Item>
 										<NavDropdown.Item
 											className="dropdown-text"
