@@ -37,8 +37,23 @@ export default function LoginNavBar({ client, whoAmI }) {
 		});
 	};
 
+	const viewEventInvitations = () => {
+		axios.get("/eventrequest/view").then((response) => {
+			if (response.data.success == "True") {
+				console.log(response.data);
+				let new_event_invitations =
+					response && response.data && response.data.event_requests;
+				setEventInvitations(new_event_invitations);
+				setNumEventInvites(new_event_invitations.length);
+				console.log("new event invites: ", new_event_invitations);
+				console.log("num event invites: ", numEventInvites);
+			}
+		});
+	};
+
 	useEffect(() => {
 		viewGroupInvitations();
+		viewEventInvitations();
 		whoAmI();
 
 		setTimeout(() => {

@@ -27,6 +27,7 @@ export default function EventPage({ data }) {
 							label="Create Event"
 							className="btn-create-event"
 						/>
+						{/* TODO: add data for table */}
 						<PendingInvitesEvents data={null} />
 					</div>
 				</Col>
