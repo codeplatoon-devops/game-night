@@ -468,8 +468,17 @@ def userevents_byid(request,id):
 def group_details(request, id):
     if request.user.is_authenticated:
         code = str(id)
-        group = Group.objects.filter(code=code)
-        return Response(group)
+        group = Group.objects.get(code=code)
+        group_list = []
+        member_names = []
+        all_members=group.member.all()
+        for member in all_members:
+            member_names.append(member.username)
+        group_list.append([group.name, group.code, member_names])
+        try:
+            return JsonResponse({'success': 'True', 'group_info': group_list})
+        except Exception as e:
+            return JsonResponse({'success': "False", 'reason': str(e)})
     else:
         return JsonResponse({'user': False})
 

@@ -15,6 +15,7 @@ import AllEventsPage from "./pages/AllEventsPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
 import getCSRFToken from "../utils";
+import GroupDetailPage from "./pages/GroupDetailPage";
 
 import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
@@ -27,7 +28,7 @@ export default function App() {
 	let { eventId } = useParams();
 
 	axios.defaults.headers.common["X-CSRFToken"] = getCSRFToken();
-	let firstRender = useRef(true)
+	let firstRender = useRef(true);
 	const [user, setUser] = useState(null); //setting to true will set LoginNavbar
 	const [token, setToken] = useState(null);
 	const [stream, setStream] = useState(null);
@@ -39,9 +40,8 @@ export default function App() {
 	const [leaveChannelInformation, setLeaveChannelInformation] =
 		useState(null);
 	const [client, setClient] = useState(null);
-	const [deleteUsername, setDeleteUsername] = useState(null)
-	const [deleteUserChannels, setDeleteUserChannels] = useState(false)
-
+	const [deleteUsername, setDeleteUsername] = useState(null);
+	const [deleteUserChannels, setDeleteUserChannels] = useState(false);
 
 	const whoAmI = async () => {
 		const response = await axios.get("/whoami");
@@ -52,10 +52,10 @@ export default function App() {
 		console.log("user from whoami?", user, response);
 		setUser(user);
 		if (firstRender.current) {
-			let newusername=""
-			newusername+=user.id
-			setDeleteUsername(newusername)
-			firstRender.current=false
+			let newusername = "";
+			newusername += user.id;
+			setDeleteUsername(newusername);
+			firstRender.current = false;
 		}
 	};
 
@@ -94,7 +94,15 @@ export default function App() {
 					<Route path="/" element={<HomePage user={user} />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/account" element={<AccountPage setDeleteUserChannels={setDeleteUserChannels} client={client}/>} />
+					<Route
+						path="/account"
+						element={
+							<AccountPage
+								setDeleteUserChannels={setDeleteUserChannels}
+								client={client}
+							/>
+						}
+					/>
 					<Route
 						path="/chatroom"
 						element={
@@ -108,8 +116,12 @@ export default function App() {
 								setClient={setClient}
 								createEventInformation={createEventInformation}
 								joinEventInformation={joinEventInformation}
-								deleteChannelInformation={deleteChannelInformation}
-								leaveChannelInformation={leaveChannelInformation}
+								deleteChannelInformation={
+									deleteChannelInformation
+								}
+								leaveChannelInformation={
+									leaveChannelInformation
+								}
 								deleteUserChannels={deleteUserChannels}
 								deleteUsername={deleteUsername}
 							/>
@@ -176,7 +188,7 @@ export default function App() {
 					/>
 					<Route
 						path="/groups/:groupId"
-						element={<EventDetailPage />}
+						element={<GroupDetailPage />}
 					/>
 				</Routes>
 			</Router>
