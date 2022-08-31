@@ -38,7 +38,7 @@ export const AllEventsTable = () => {
 	}, [selectedEvent])
 
 	const addressBodyTemplate = (rowData) => {
-		return address = rowData.address_1 + " " + rowData.address_2;
+		return rowData.address_1 + " " + rowData.address_2;
 	};
 
 	const formatDate = (value) => {
