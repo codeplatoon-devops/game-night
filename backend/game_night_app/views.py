@@ -384,9 +384,9 @@ def create_event(request):
     all_codes = []
     for event in all_events:
         all_codes.append(event.code)
-    code = str(random.randint(10001,99999999))
+    code = str(random.randint(10000001,99999999))
     while code in all_codes:
-        code = str(random.randint(10001,99999999))
+        code = str(random.randint(10000001,99999999))
     name = request.data['event_name']
     # code = str(random.randint(10001, 99999999))
     category = request.data['category']
