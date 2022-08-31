@@ -58,11 +58,11 @@ export const AllEventsTable = () => {
 		<DataTable value={event} paginator rows={15} filterDisplay="menu" selectionMode="single" selection={selectedEvent} onSelectionChange={e => setSelectedEvent(e.value)} >
 			<Column field="name" header="Event Name" filter />
 			<Column field="category" header="Category" filter />
-			<Column body={addressBodyTemplate} header="Address" />
+			<Column field="address_1" body={addressBodyTemplate} header="Address" filter filterField="address_1"/>
 			<Column field="city" header="City" filter />
 			<Column field="state" header="State" filter />
 			<Column field="zip_code" header="Zip" filter />
-			<Column field="start_date" header="Date" dataType="date" body={dateBodyTemplate} sortField="start_date"/>
+			<Column field="start_time" header="Date" dataType="date" body={dateBodyTemplate} sortable filterField="start_time" />
 		</DataTable>
 	);
 };

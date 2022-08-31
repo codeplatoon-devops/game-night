@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from django.core.validators import *
 
 # requires 'pip install django-localflavor'
 # INSTALLED_APPS = (
@@ -7,6 +9,13 @@ from django.contrib.auth.models import AbstractUser
    # 'localflavor',
 # )
 # from localflavor.models import USStateField
+def max_attending_event(event):
+    event_obj = Event.objects.get(pk=event)
+    current_attendance = EventUser.objects.filter(event=event_obj.id).count()
+    if current_attendance >= event_obj.max_attendees:
+        raise ValidationError('Event is currently full')
+    else:
+        return True
 
 class AppUser(AbstractUser):
     email = models.EmailField(
@@ -70,7 +79,7 @@ class Event(models.Model):
 class EventUser(models.Model):
     # owner=models.ForeignKey(AppUser, on_delete=models.CASCADE)
     attendee=models.ForeignKey(AppUser, on_delete = models.CASCADE, related_name="attendees")
-    event=models.ForeignKey(Event, on_delete = models.CASCADE, related_name="events")
+    event=models.ForeignKey(Event, on_delete = models.CASCADE, related_name="events",validators=[max_attending_event])
 
     def __str__(self):
         return f"ID: {self.id}, Attendee: {self.attendee}"
