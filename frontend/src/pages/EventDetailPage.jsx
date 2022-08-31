@@ -63,7 +63,7 @@ export default function EventDetailPage({user, setDeleteChannelInformation, setL
 				}} />
 			<div style={{'margin-left': '20%', 'margin-right': '20%'}}>
 				{eventDetail &&
-					<EventDetailList eventDetail={eventDetail} editable={editable} user={user} games={games} startTime={startTime} endTime={endTime} setGameInfo={setGameInfo} setDisplayBasic2={setDisplayBasic2} ChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation} attending={attending} setJoinEventInformation={setJoinEventInformation}/>
+					<EventDetailList eventDetail={eventDetail} editable={editable} user={user} games={games} startTime={startTime} endTime={endTime} setGameInfo={setGameInfo} setDisplayBasic2={setDisplayBasic2} setDeleteChannelInformation={setDeleteChannelInformation} setLeaveChannelInformation={setLeaveChannelInformation} attending={attending} setJoinEventInformation={setJoinEventInformation}/>
 					
 				}
 				{gameInfo &&

@@ -15,6 +15,10 @@ export default function ChatroomPage({
 	deleteChannelInformation,
 	deleteUserChannels,
 	deleteUsername,
+	setJoinEventInformation,
+	setCreateEventInformation,
+	setLeaveChannelInformation,
+	setDeleteChannelInformation
 }) {
 	const [showChatroom, setShowChatroom] = useState(false);
 
@@ -74,6 +78,10 @@ export default function ChatroomPage({
 							// delteuserchannels if true means delete all their channels
 							deleteUserChannels={deleteUserChannels}
 							deleteUsername={deleteUsername}
+							setJoinEventInformation={setJoinEventInformation}
+							setCreateEventInformation={setCreateEventInformation}
+							setLeaveChannelInformation={setLeaveChannelInformation}
+							setDeleteChannelInformation={setDeleteChannelInformation}
 						/>
 					)}
 				</div>

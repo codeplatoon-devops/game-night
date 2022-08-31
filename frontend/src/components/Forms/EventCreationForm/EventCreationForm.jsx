@@ -188,7 +188,12 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 	const onAck = () => {
 		const eventURL = "/events/" + eventCode + "/";
 		setShowMessage(false);
-		navigate(eventURL);
+		if (createChat) {
+			navigate('/chatroom');
+		}
+		else {
+			navigate(eventURL);
+		}
 		// navigate not working.
 	};
 
@@ -226,10 +231,16 @@ export const EventCreationForm = ({ setCreateEventInformation }) => {
 				{/* TODO: get event code for dialog message */}
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
 					<h5>Event Creation Successful!</h5>
-					<p style={{ lineHeight: 1.5 }}>
-						Your event has been created! Please proceed to the next
-						page for more details.
+					{createChat &&
+						<p style={{ lineHeight: 1.5 }}>
+						Your event and event-chatroom have now been created!
 					</p>
+					}
+					{!createChat &&
+						<p style={{ lineHeight: 1.5 }}>
+							Your event has been created!
+						</p>
+					}
 				</div>
 			</Dialog>
 			<Col></Col>
