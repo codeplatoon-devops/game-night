@@ -19,36 +19,64 @@ export default function EventDetailPage({user, setDeleteChannelInformation, setL
 	const [startTime, setStartTime] = useState(null);
 	const [endTime, setEndTime] = useState(null);
 
-	const [attending, setAttending ] = useState(false);
-	
-	const [gameInfo, setGameInfo] = useState(null)
-    const [displayBasic2, setDisplayBasic2] = useState(false);
+	const [attending, setAttending] = useState(false);
 
+	const [gameInfo, setGameInfo] = useState(null);
+	const [displayBasic2, setDisplayBasic2] = useState(false);
 
-    useEffect(() => {
-		axios
-		.get(`/userevents/${eventId}`)
-		.then((response) => {
-			setGames(Object.values(response.data[0].games))
-			setStartTime(moment(response.data[0].start_time).format('MMMM Do YYYY, h:mm a'))
-			setEndTime(moment(response.data[0].end_time).format('MMMM Do YYYY, h:mm a'))
-			//this if statement never gets called because user is null
-			if(response.data[0].owner_true === 0){
-				setEditable(false)
-			}
-			setEventDetail(response.data[0])
-		})
-
-		}, [])
-	
 	useEffect(() => {
-		axios
-		.get(`/amattending/${eventId}`)
-		.then((response)=> {
-			setAttending(response.data)
-	})
-	},[])
+		axios.get(`/userevents/${eventId}`).then((response) => {
+			setGames(Object.values(response.data[0].games));
+			setStartTime(
+				moment(response.data[0].start_time).format(
+					"MMMM Do YYYY, h:mm a"
+				)
+			);
+			setEndTime(
+				moment(response.data[0].end_time).format("MMMM Do YYYY, h:mm a")
+			);
+			//this if statement never gets called because user is null
+			if (response.data[0].owner_true === 0) {
+				setEditable(false);
+			}
+			setEventDetail(response.data[0]);
+		});
+	}, []);
 
+	useEffect(() => {
+		axios.get(`/amattending/${eventId}`).then((response) => {
+			setAttending(response.data);
+		});
+	}, []);
+
+<<<<<<< HEAD
+	return (
+		<div style={{ "margin-left": "20%", "margin-right": "20%" }}>
+			{eventDetail && (
+				<EventDetailList
+					eventDetail={eventDetail}
+					editable={editable}
+					user={user}
+					games={games}
+					startTime={startTime}
+					endTime={endTime}
+					setGameInfo={setGameInfo}
+					setDisplayBasic2={setDisplayBasic2}
+					ChannelInformation={setDeleteChannelInformation}
+					setLeaveChannelInformation={setLeaveChannelInformation}
+					attending={attending}
+				/>
+			)}
+			{gameInfo && (
+				<DialogGame
+					gameInfo={gameInfo}
+					displayBasic2={displayBasic2}
+					setDisplayBasic2={setDisplayBasic2}
+				/>
+			)}
+		</div>
+	);
+=======
 	const goBack = () => {
 		navigate("/events/")
 	}
@@ -72,4 +100,5 @@ export default function EventDetailPage({user, setDeleteChannelInformation, setL
         </div>
 		</>
     )
+>>>>>>> main
 }

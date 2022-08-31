@@ -204,6 +204,7 @@ export default function GroupRequestForm(props) {
 								<Button
 									type="submit"
 									label="Send Group Invitation"
+									icon="pi pi-send"
 									className="mt-2 btn-continue"
 									onClick={handleSubmit}
 								/>
