@@ -54,26 +54,31 @@ export default function GroupDetailPage(props) {
 
 	// 35164354
 	return (
-		<Container as={Row}>
-			<Col xs={3}></Col>
-			<Col xs={6}>
-				<h1 style={{ margin: "20px" }}>Group Information</h1>
-				<hr />
+		<Container>
+			<Row>
+				<Col xs={3}></Col>
+				<Col xs={6}>
+					<h1 style={{ margin: "20px" }}>Group Information</h1>
+					<hr />
 
-				<Panel header={groupName}>
-					<ListBox options={groupMembers} />
-				</Panel>
-				<Button
-					style={{ margin: "15px" }}
-					onClick={() => {
-						leaveGroup(groupName, groupCode);
-					}}
-				>
-					Leave Group
-				</Button>
-				<GroupRequestFormSpecific name={groupName} code={groupCode} />
-			</Col>
-			<Col xs={3}></Col>
+					<Panel header={groupName}>
+						<ListBox options={groupMembers} />
+					</Panel>
+					<Button
+						style={{ margin: "15px" }}
+						onClick={() => {
+							leaveGroup(groupName, groupCode);
+						}}
+					>
+						Leave Group
+					</Button>
+					<GroupRequestFormSpecific
+						name={groupName}
+						code={groupCode}
+					/>
+				</Col>
+				<Col xs={3}></Col>
+			</Row>
 		</Container>
 	);
 }
