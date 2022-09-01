@@ -23,6 +23,7 @@ function DeleteEventButton({ eventDetail, setDeleteChannelInformation }) {
 					let code = eventDetail.code
 					channelId += code.toString();
 					setDeleteChannelInformation([channelId,channelName])
+					nav('/chatroom')
 				}
 				nav("/events/");
             })
