@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 export const PendingInvitesGroups = (props) => {
 	// props.data = groupInvitations
 	const [showMessage, setShowMessage] = useState(false);
+	const [showAcceptedMessage, setShowAcceptedMessage] = useState(false);
 	const [groupDetails, setGroupDetails] = useState(null);
 	const [invitationDetails, setInvitationDetails] = useState([]);
 	const [groupCode, setGroupCode] = useState(null);
@@ -34,14 +35,21 @@ export const PendingInvitesGroups = (props) => {
 	const hideDetails = () => {
 		setShowMessage(false);
 	};
+	const hideAcceptedDetails = () => {
+		setShowAcceptedMessage(false);
+		window.location.reload();
+	};
 	const joinGroup = function (email, name, code) {
 		axios
 			.put("/group/join", { friend_email: email, code: code })
 			.then((response) => {
 				hideDetails();
+				props.viewGroups();
+
 				// console.log("join group response.data", response.data);
 				if (response.data.success == "True") {
-					window.alert("Group joined!");
+					// window.alert("Group joined!");
+					setShowAcceptedMessage(true);
 					props.setJoinGroupInformation([name, code]);
 				} else {
 					window.alert(`${response.data.reason}`);
@@ -49,13 +57,15 @@ export const PendingInvitesGroups = (props) => {
 			});
 	};
 	const delineGroup = function (email, code) {
-		// console.log("in decline group");
-		// console.log("email: ", email);
-		// console.log("code: ", code);
 		axios
 			.put("/group/decline", { friend_email: email, code: code })
 			.then((response) => {
 				hideDetails();
+				props.viewGroups();
+				setTimeout(() => {
+					props.viewGroupInvitations();
+				}, 300);
+
 				// console.log("decline group response.data", response.data);
 				if (response.data.success == "True") {
 					window.alert("Group invite declined");
@@ -95,8 +105,16 @@ export const PendingInvitesGroups = (props) => {
 			invitationDetails[1],
 			invitationDetails[2]
 		);
-		const endNav = "/groups/" + invitationDetails[2] + "/";
-		nav(endNav);
+		// window.location.replace("/#/groups/");
+
+		// const endNav = "/groups/" + invitationDetails[2] + "/";
+		// setTimeout(() => {
+		// 	props.viewGroupInvitations();
+		// 	window.location.reload();
+		// 	// setTimeout(() => {
+		// 	// 	nav(endNav);
+		// 	// }, 600);
+		// }, 400);
 	};
 	const dialogFooter = (
 		<Container as={myRow} className="flex justify-content-center">
@@ -150,6 +168,20 @@ export const PendingInvitesGroups = (props) => {
 				<div className="flex align-items-center flex-column pt-6 px-3 field">
 					<p style={{ lineHeight: 1.5 }}>{groupDetails}</p>
 				</div>
+			</Dialog>
+			<Dialog
+				visible={showAcceptedMessage}
+				onHide={() => hideAcceptedDetails()}
+				showHeader={true}
+				header="Successfully joined group!"
+				breakpoints={{ "960px": "80vw" }}
+				style={{ width: "30vw" }}
+			>
+				<Button
+					label="OK"
+					onClick={() => hideAcceptedDetails()}
+					className="p-button-outlined"
+				></Button>
 			</Dialog>
 			<Panel
 				header="Pending Group Invitations"

@@ -97,6 +97,10 @@ export default function GroupPage({
 										setJoinGroupInformation={
 											setJoinGroupInformation
 										}
+										viewGroups={viewGroups}
+										viewGroupInvitations={
+											viewGroupInvitations
+										}
 									/>
 								) : null}
 							</Col>
@@ -119,8 +123,12 @@ export default function GroupPage({
 								deleteChannelInformation={
 									deleteChannelInformation
 								}
-								setCreateGroupInformation={setCreateGroupInformation}
-								setJoinGroupInformation={setJoinGroupInformation}
+								setCreateGroupInformation={
+									setCreateGroupInformation
+								}
+								setJoinGroupInformation={
+									setJoinGroupInformation
+								}
 							/>
 						)}
 					</Col>
