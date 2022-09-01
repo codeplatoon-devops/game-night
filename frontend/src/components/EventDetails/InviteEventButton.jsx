@@ -36,7 +36,8 @@ export default function InviteButton({eventDetail}) {
   const handleSubmit = () => {
     console.log(eventDetail)
     axios.post('/eventrequest/create', {owner_id: eventDetail.owner_id, friend_email: friendEmail, event_id: eventDetail.id}).then((response) => {
-      if(response.data.success === "True") {
+		console.log('eventrequest create response.data', response.data)
+		if(response.data.success === "True") {
         window.alert("Invite Successful")
         setShowDialog(false)
       } else {
