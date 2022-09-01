@@ -320,14 +320,15 @@ def join_group(request):
 # deletes a group invite
 def decline_group(request):
     user = AppUser.objects.get(email = request.user.email)
-    friend= AppUser.objects.get(email = request.data['friend_email'])
+    friend_list= AppUser.objects.filter(email = request.data['friend_email'])
     code = request.data['code']
     try:
         group = Group.objects.get(code= code)
-        group_request = GroupRequest.objects.get(sender = friend, receiver = user, group = group)
-        group_request.delete()
-        print('group request should now be deleted', group_request)
-        return JsonResponse({'success': "True", 'action': "group created"})
+        for friend in friend_list:
+            group_request = GroupRequest.objects.get(sender = friend, receiver = user, group = group)
+            group_request.delete()
+            print('group request should now be deleted', group_request)
+        return JsonResponse({'success': "True", 'action': "group invite declined"})
     except Exception as e:
         return JsonResponse({'success': "False", 'reason': str(e)}) 
 
