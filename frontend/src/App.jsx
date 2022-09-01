@@ -16,6 +16,7 @@ import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailPage from "./pages/EventDetailPage";
 import getCSRFToken from "../utils";
 import GroupDetailPage from "./pages/GroupDetailPage";
+import LoginNeededPage from "./pages/LoginNeededPage";
 
 import LogoutNavBar from "./components/NavBar/LogoutNavBar";
 import LoginNavBar from "./components/NavBar/LoginNavBar";
@@ -174,9 +175,10 @@ export default function App() {
 							/>
 						}
 					/>
+		
 					<Route
 						path="/events/:eventId"
-						element={
+						element={ user ? 
 							<EventDetailPage
 								setJoinEventInformation={
 									setJoinEventInformation
@@ -188,10 +190,13 @@ export default function App() {
 									setLeaveChannelInformation
 								}
 								user={user}
-								
 							/>
+							: 
+							<LoginNeededPage />
 						}
+							
 					/>
+
 					<Route
 						path="/groups/:groupId"
 						element={
