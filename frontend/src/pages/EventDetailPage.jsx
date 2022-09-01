@@ -50,7 +50,7 @@ export default function EventDetailPage({user, setDeleteChannelInformation, setL
 	}, []);
 
 	const goBack = () => {
-		navigate("/events/")
+		navigate(-1)
 	}
 
 	return(
