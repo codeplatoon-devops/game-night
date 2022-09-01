@@ -23,12 +23,24 @@ export const SignUpForm = () => {
 
 		if (!data.firstname) {
 			errors.firstname = "First Name is required.";
+		} else if (!/^[A-Za-z0-9_-]{1,40}$/i.test(data.firstname)) {
+			errors.firstname =
+				"Sorry, you've exceeded the number of characters we allow for this field";
 		}
 		if (!data.lastname) {
 			errors.lastname = "Last Name is required.";
+		} else if (!/^[A-Za-z0-9_-]{1,40}$/i.test(data.lastname)) {
+			errors.lastname =
+				"Sorry, you've exceeded the number of characters we allow for this field";
 		}
 		if (!data.username) {
 			errors.username = "Username is required.";
+		} else if (!/^[A-Za-z0-9_-]{3,30}$/i.test(data.username)) {
+			errors.username =
+				"Username can only contain letters, numbers, hyphens, and underscores";
+		} else if (data.username.length > 30 || data.username.length < 3) {
+			errors.username =
+				"Please choose a username between 3 and 30 characters long";
 		}
 		if (!data.email) {
 			errors.email = "Email is required.";
@@ -39,6 +51,12 @@ export const SignUpForm = () => {
 		}
 		if (!data.password) {
 			errors.password = "Password is required.";
+		} else if (data.password.length < 8) {
+			errors.password =
+				"Your password must be at least 8 characters long";
+		} else if (data.password.length > 50) {
+			errors.password =
+				"Sorry, you've exceeded the number of characters we allow for this field";
 		}
 
 		return errors;

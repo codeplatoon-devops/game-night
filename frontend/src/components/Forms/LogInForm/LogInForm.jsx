@@ -19,14 +19,13 @@ export const LoginForm = () => {
 		let errors = {};
 		if (!data.username) {
 			errors.username = "Username is required.";
+		} else if (!/^[A-Za-z0-9_-]{3,30}$/i.test(data.username)) {
+			errors.username = "Invalid username, please try again";
 		}
-		// else if (
-		// !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
-		// ) {
-		// 	errors.email = "Invalid email address. E.g. example@email.com";
-		// }
 		if (!data.password) {
 			errors.password = "Password is required.";
+		} else if (data.password.length > 50) {
+			errors.password = "Invalid password, please try again";
 		}
 		return errors;
 	};
