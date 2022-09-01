@@ -148,7 +148,8 @@ def view_event_request(request):
         for item in event_requests:
             #sends back the emails of all pending event requests
             sender = item.sender
-            list_of_event_requests.append(sender.email)
+            event = item.event
+            list_of_event_requests.append([event.name, event.code, event.description, item.id])
         print('list of event_requests:', list_of_event_requests)
         try:
             return JsonResponse({'success': "True", 'event_requests': list_of_event_requests})
@@ -500,12 +501,28 @@ def join_event(request,id):
             code = code.rjust(8,'0') 
         event = Event.objects.get(code=code)
         user = AppUser.objects.get(pk = request.user.id)
+        event_requests = EventRequest.objects.filter(receiver= user)
+        for item in event_requests:
+            if(item.event.code == event.code):
+                try:
+                    item.delete()
+                except Exception as err:
+                    return JsonResponse({'delete invite': False, 'reason': str(err)})
         add_attending = EventUser(event = event, attendee=user)
         add_attending.full_clean()
         add_attending.save()
         return Response('joined!')
     except Exception as err:
         return JsonResponse({'success': "false", 'reason': f'failed to join event: {str(err)}'})
+
+@api_view(['DELETE'])
+def decline_event(request, id):
+    try:
+        invite = EventRequest.objects.all().get(id=id)
+        invite.delete()
+        return JsonResponse({'deleted': True})
+    except Exception as err:
+        return JsonResponse({'deleted': False, 'reason': str(err)})
 
 @login_required
 @api_view(['PUT'])

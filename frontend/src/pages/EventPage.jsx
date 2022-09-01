@@ -6,10 +6,28 @@ import Col from "react-bootstrap/Col";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import PendingInvitesEvents from "../components/Tables/PendingInvitesEvents/PendingInvitesEvents";
+import { useEffect, useState } from "react";
+import axios from 'axios'
 
 export default function EventPage({ data }) {
 	const navigate = useNavigate();
+	const [eventInvitation, setEventInvitation] = useState(null);
+	
+	const viewEventInvitations = () => {
+		axios.get("/eventrequest/view").then((response) => {
+		console.log(response.data.event_requests)
+			if (response.data.success === "True") {
+				let invites = 
+					response && response.data && response.data.event_requests;
+				setEventInvitation(invites);
+			}	
+		});
+	}
 
+	useEffect(() => {
+		viewEventInvitations();
+	}, [])
+	
 	const handleClick = () => {
 		navigate("/events/create");
 	};
@@ -27,8 +45,10 @@ export default function EventPage({ data }) {
 							label="Create Event"
 							className="btn-create-event"
 						/>
-						{/* TODO: add data for table */}
-						<PendingInvitesEvents data={null} />
+						{eventInvitation ? (
+							<PendingInvitesEvents data={eventInvitation} />
+						) : null
+						}
 					</div>
 				</Col>
 				<Col md={8}>
