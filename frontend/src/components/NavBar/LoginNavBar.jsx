@@ -17,7 +17,7 @@ export default function LoginNavBar({ client, whoAmI }) {
 	const [groupInvitations, setGroupInvitations] = useState(null);
 	const [numGroupInvites, setNumGroupInvites] = useState(0);
 	const [eventInvitations, setEventInvitations] = useState(null);
-	const [numEventInvites, setNumEventInvites] = useState(4);
+	const [numEventInvites, setNumEventInvites] = useState(0);
 	// const client = props.client;
 	// console.log("client: ", client);
 	const viewGroupInvitations = function () {
