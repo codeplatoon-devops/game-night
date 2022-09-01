@@ -64,6 +64,7 @@ export const PendingInvitesGroups = (props) => {
 				props.viewGroups();
 				setTimeout(() => {
 					props.viewGroupInvitations();
+					window.location.reload();
 				}, 300);
 
 				// console.log("decline group response.data", response.data);
