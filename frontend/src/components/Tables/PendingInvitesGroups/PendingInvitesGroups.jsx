@@ -65,8 +65,7 @@ export const PendingInvitesGroups = (props) => {
 				props.viewGroups();
 				setTimeout(() => {
 					props.viewGroupInvitations();
-					// reload is in hide accepted details to allow time to join chatroom
-					// window.location.reload();
+					window.location.reload();
 				}, 300);
 
 				// console.log("decline group response.data", response.data);
