@@ -1,36 +1,64 @@
-# game-night
+[<img alt="logo" width="400px" src="frontend/public/gamenightlogo.png" />](https://game-night.net)
 
-## how to merge new features to the main branch
+<table>
+<tr>
+<td>
+    GameNight welcomes all board game, card game, dice, DnD, and other game enthusiasts! Our site makes it easy to plan the perfect game night! Create a private game night with just your close-knit friends, or create and search for public games in your area. Use the calendar and chatroom to make communication and scheduling a piece of cake! Lets play!
+</td>
+</tr>
+</table>
 
-### Loot at what branch you are standing, if it's not main you can change back
+## Demo 
+Here is a working live demo :  https://game-night.net
 
-    git checkout main
+## Site 
 
-### Fetch the newest code
+### Landing Page
+Sign up and start planning your next event!
 
-    git fetch
-    git merge
-    
+![landing](frontend/public/landingPage.png)
 
-### get the issue link in Jira and create a branch
+### Groups and Chat
+Talk to your groups and invite your friends
 
-example:
-    git checkout -b RBT-6-create-list-of-best-practices
+![groups](frontend/public/groups.png)
 
-### make your changes
+### Events
+Schedule new events and update your calendar
 
-    remember to test the code before pushing, if possible include the result of the tests passing.
+![events](frontend/public/events.png)
 
-### push them to your branch, make sure to add the Jira issue in the commit message
+### Details
+Share information for your public or private event
 
-    git add .
-    git commit -m "JRA-123 <summary of commit>"
-    git push -u origin <branch name>
+![details](frontend/public/details.png)
 
-### send a pull request in github repo
-    
+## Usage
 
-    If no reviewer has beeen asigned in Jira, any member can review the code and accept the changes if they are sure it wont cause problems
- 
+### Development
+Want to contribute? Great!
 
+To contribute with the code, fixing a bug or adding new features, follow these steps:
 
+- Fork the repo
+- Create a new branch (`git checkout -b improve-feature`)
+- Make the changes in the files
+- Stage the changes (`git add 'changed-file'`)
+- Commit your changes (`git commit -am 'Improve feature'`)
+- Push to the branch (`git push origin improve-feature`)
+- Create a Pull Request
+
+### Bug / Feature Request
+
+If you find a bug, you can open a new issue [here](https://github.com/Romeo-Best-Team/game-night/issues/new), including information about how to replicate the bug.
+
+If you want to request a new function, feel free to open a new issue [here](https://github.com/Romeo-Best-Team/game-night/issues/new). Include as many details as you can.
+
+## Built with 
+
+- Django
+- React
+- PostgresQL
+
+## Team
+[Megann Herdegen](https://github.com/m-herdegen) | [Alisha Burgfeld] (https://github.com/alishaburgfeld) | [Daniel Pizarro] (https://github.com/Galuf1) | [Kaylee Burch] (https://github.com/kayleeburch) | [Michael Heinzinger] (https://github.com/MHeinz1996) | [Craig Bucher] (https://github.com/craigbucher)
