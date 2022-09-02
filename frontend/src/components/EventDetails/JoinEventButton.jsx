@@ -18,6 +18,7 @@ function JoinEventButton({ eventDetail, attending, setJoinEventInformation}) {
 			console.log("join event response.data", response.data);
 			if(eventDetail.chat_creation===true) {
 				setJoinEventInformation([name, code])
+				nav("/chatroom");
 			}
 			nav("/events/");
 		});

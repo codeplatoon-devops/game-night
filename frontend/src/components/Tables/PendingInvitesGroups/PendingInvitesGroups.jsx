@@ -51,7 +51,7 @@ export const PendingInvitesGroups = (props) => {
 					// window.alert("Group joined!");
 					setShowAcceptedMessage(true);
 					props.setJoinGroupInformation([name, code]);
-					// reloading is in hide accepted details
+
 				} else {
 					window.alert(`${response.data.reason}`);
 				}

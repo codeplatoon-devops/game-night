@@ -60,8 +60,9 @@ export default function HomePage({ user }) {
 							alt="hero-1"
 							className="md:ml-auto block md:h-full"
 							style={{
-								clipPath: "polygon(8% 0, 100% 0%, 100% 100%, 0 100%)",
-								'max-width': '100%'
+								clipPath:
+									"polygon(8% 0, 100% 0%, 100% 100%, 0 100%)",
+								"max-width": "100%",
 							}}
 						/>
 					</Col>
@@ -127,8 +128,10 @@ export default function HomePage({ user }) {
 										Event Planning
 									</h5>
 									<span className=" text-sm line-height-3">
-										Plan your next game night with an event creation! 
-										Keep up to date with future events using our event calendar. Never forget a game night again! 
+										Plan your next game night with an event
+										creation! Keep up to date with future
+										events using our event calendar. Never
+										forget a game night again!
 									</span>
 								</Card>
 							</Col>
@@ -170,7 +173,11 @@ export default function HomePage({ user }) {
 										User Groups and Chatrooms
 									</h5>
 									<span className="text-sm line-height-3">
-										GameNight Group offers the ability to talk and plan about your next game night event with ease! Invite and join members to your group and use our chatroom for easy communication and scheduling.
+										GameNight Group offers the ability to
+										talk and plan about your next game night
+										event with ease! Invite and join members
+										to your group and use our chatroom for
+										easy communication and scheduling.
 									</span>
 								</Card>
 							</Col>
@@ -184,11 +191,7 @@ export default function HomePage({ user }) {
 						{!user && (
 							<Card className=" text-center">
 								<h2 className="mb-3">Join Our Community</h2>
-								<h5 className="mb-5">
-									Lorem ipsum dolor sit, amet consectetur
-									adipisicing elit. Velit numquam eligendi
-									quos.
-								</h5>
+
 								<Button
 									label="Sign Up Now"
 									icon="pi pi-user"

@@ -24,7 +24,7 @@ export default function LeaveEventButton({eventDetail, setLeaveChannelInformatio
 					channelName += " Chatroom";
 					channelId += code.toString();
 					setLeaveChannelInformation([channelId, channelName])
-
+					nav("/chatroom");
 				}
 				nav("/events/");
 			})
