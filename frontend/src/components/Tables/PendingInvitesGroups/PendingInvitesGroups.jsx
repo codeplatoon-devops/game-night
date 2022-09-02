@@ -51,6 +51,7 @@ export const PendingInvitesGroups = (props) => {
 					// window.alert("Group joined!");
 					setShowAcceptedMessage(true);
 					props.setJoinGroupInformation([name, code]);
+					// reloading is in hide accepted details
 				} else {
 					window.alert(`${response.data.reason}`);
 				}
@@ -62,8 +63,11 @@ export const PendingInvitesGroups = (props) => {
 			.then((response) => {
 				hideDetails();
 				props.viewGroups();
+				setShowAcceptedMessage(true);
 				setTimeout(() => {
 					props.viewGroupInvitations();
+					// reload is in hide accepted details to allow time to join chatroom
+					// window.location.reload();
 				}, 300);
 
 				// console.log("decline group response.data", response.data);
