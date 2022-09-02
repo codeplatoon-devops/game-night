@@ -63,7 +63,6 @@ export const PendingInvitesGroups = (props) => {
 			.then((response) => {
 				hideDetails();
 				props.viewGroups();
-				setShowAcceptedMessage(true);
 				setTimeout(() => {
 					props.viewGroupInvitations();
 					// reload is in hide accepted details to allow time to join chatroom
