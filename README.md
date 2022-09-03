@@ -61,4 +61,4 @@ If you want to request a new function, feel free to open a new issue [here](http
 - PostgresQL
 
 ## Team
-[Megann Herdegen](https://github.com/m-herdegen) | [Alisha Burgfeld] (https://github.com/alishaburgfeld) | [Daniel Pizarro] (https://github.com/Galuf1) | [Kaylee Burch] (https://github.com/kayleeburch) | [Michael Heinzinger] (https://github.com/MHeinz1996) | [Craig Bucher] (https://github.com/craigbucher)
+[Megann Herdegen](https://github.com/m-herdegen) | [Alisha Burgfeld](https://github.com/alishaburgfeld) | [Daniel Pizarro](https://github.com/Galuf1) | [Kaylee Burch](https://github.com/kayleeburch) | [Michael Heinzinger](https://github.com/MHeinz1996) | [Craig Bucher](https://github.com/craigbucher)
