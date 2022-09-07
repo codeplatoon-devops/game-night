@@ -9,7 +9,7 @@
 </table>
 
 ## Demo 
-Here is a working live demo :  https://game-night.net
+Here is our live site :  https://game-night.net
 
 ## Site 
 
