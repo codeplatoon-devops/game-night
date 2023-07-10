@@ -19,7 +19,7 @@ psycopg2==2.9.3
 pycares==4.2.2
 pycparser==2.21
 PyJWT==2.4.0
-python-dotenv==0.20.0
+python-dotenv==1.0.0
 python-stdnum==1.17
 pytz==2022.2.1
 requests==2.28.1
